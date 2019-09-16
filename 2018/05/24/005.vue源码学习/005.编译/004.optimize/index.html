@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Vue源码学习 - optimize | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="日常学习,前端资源,Vue源码学习">
+    <meta name="description" content="optimize当我们的模板 template 经过 parse 过程后，会输出生成 AST 树，那么接下来我们需要对这颗树做优化，optimize 的逻辑是远简单于 parse 的逻辑，所以理解起来会轻松很多。 为什么要有优化过程，因为我们知道 Vue 是数据驱动，是响应式的，但是我们的模板并不是所有数据都是响应式的，也有很多数据是首次渲染后就永远不会变化的，那么这部分数据生成的 DOM 也不会">
+<meta name="keywords" content="日常学习,前端资源,Vue源码学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue源码学习 - optimize">
+<meta property="og:url" content="http://www.chenya.site/2018/05/24/005.vue源码学习/005.编译/004.optimize/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="optimize当我们的模板 template 经过 parse 过程后，会输出生成 AST 树，那么接下来我们需要对这颗树做优化，optimize 的逻辑是远简单于 parse 的逻辑，所以理解起来会轻松很多。 为什么要有优化过程，因为我们知道 Vue 是数据驱动，是响应式的，但是我们的模板并不是所有数据都是响应式的，也有很多数据是首次渲染后就永远不会变化的，那么这部分数据生成的 DOM 也不会">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.507Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue源码学习 - optimize">
+<meta name="twitter:description" content="optimize当我们的模板 template 经过 parse 过程后，会输出生成 AST 树，那么接下来我们需要对这颗树做优化，optimize 的逻辑是远简单于 parse 的逻辑，所以理解起来会轻松很多。 为什么要有优化过程，因为我们知道 Vue 是数据驱动，是响应式的，但是我们的模板并不是所有数据都是响应式的，也有很多数据是首次渲染后就永远不会变化的，那么这部分数据生成的 DOM 也不会">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">Vue源码学习 - optimize</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Vue源码学习 - optimize</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-05-24T15:21:15.000Z" itemprop="datePublished" class="page-time">
+  2018-05-24
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#optimize"><span class="post-toc-number">1.</span> <span class="post-toc-text">optimize</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#标记静态节点"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">标记静态节点</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#标记静态根"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">标记静态根</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">总结</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-005.vue源码学习/005.编译/004.optimize"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Vue源码学习 - optimize</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-05-24 23:21:15" datetime="2018-05-24T15:21:15.000Z"  itemprop="datePublished">2018-05-24</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="optimize"><a href="#optimize" class="headerlink" title="optimize"></a>optimize</h1><p>当我们的模板 <code>template</code> 经过 <code>parse</code> 过程后，会输出生成 AST 树，那么接下来我们需要对这颗树做优化，<code>optimize</code> 的逻辑是远简单于 <code>parse</code> 的逻辑，所以理解起来会轻松很多。</p>
+<p>为什么要有优化过程，因为我们知道 Vue 是数据驱动，是响应式的，但是我们的模板并不是所有数据都是响应式的，也有很多数据是首次渲染后就永远不会变化的，那么这部分数据生成的 DOM 也不会变化，我们可以在 <code>patch</code> 的过程跳过对他们的比对。</p>
+<p>来看一下 <code>optimize</code> 方法的定义，在 <code>src/compiler/optimizer.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">/**
+ * Goal of the optimizer: walk the generated template AST tree
+ * and detect sub-trees that are purely static, i.e. parts of
+ * the DOM that never needs to change.
+ *
+ * Once we detect these sub-trees, we can:
+ *
+ * 1. Hoist them into constants, so that we no longer need to
+ *    create fresh nodes for them on each re-render;
+ * 2. Completely skip them in the patching process.
+ */</span>
+<span class="token keyword">export</span> <span class="token keyword">function</span> optimize <span class="token punctuation">(</span>root<span class="token punctuation">:</span> <span class="token operator">?</span>ASTElement<span class="token punctuation">,</span> options<span class="token punctuation">:</span> CompilerOptions<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>root<span class="token punctuation">)</span> <span class="token keyword">return</span>
+  isStaticKey <span class="token operator">=</span> <span class="token function">genStaticKeysCached</span><span class="token punctuation">(</span>options<span class="token punctuation">.</span>staticKeys <span class="token operator">||</span> <span class="token string">''</span><span class="token punctuation">)</span>
+  isPlatformReservedTag <span class="token operator">=</span> options<span class="token punctuation">.</span>isReservedTag <span class="token operator">||</span> no
+  <span class="token comment" spellcheck="true">// first pass: mark all non-static nodes.</span>
+  <span class="token function">markStatic</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span>
+  <span class="token comment" spellcheck="true">// second pass: mark static roots.</span>
+  <span class="token function">markStaticRoots</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> genStaticKeys <span class="token punctuation">(</span>keys<span class="token punctuation">:</span> string<span class="token punctuation">)</span><span class="token punctuation">:</span> Function <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">makeMap</span><span class="token punctuation">(</span>
+    <span class="token string">'type,tag,attrsList,attrsMap,plain,parent,children,attrs'</span> <span class="token operator">+</span>
+    <span class="token punctuation">(</span>keys <span class="token operator">?</span> <span class="token string">','</span> <span class="token operator">+</span> keys <span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们在编译阶段可以把一些 AST 节点优化成静态节点，所以整个 <code>optimize</code> 的过程实际上就干 2 件事情，<code>markStatic(root)</code> 标记静态节点 ，<code>markStaticRoots(root, false)</code> 标记静态根。</p>
+<h2 id="标记静态节点"><a href="#标记静态节点" class="headerlink" title="标记静态节点"></a>标记静态节点</h2><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> markStatic <span class="token punctuation">(</span>node<span class="token punctuation">:</span> ASTNode<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  node<span class="token punctuation">.</span><span class="token keyword">static</span> <span class="token operator">=</span> <span class="token function">isStatic</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span>type <span class="token operator">===</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// do not make component slot content static. this avoids</span>
+    <span class="token comment" spellcheck="true">// 1. components not able to mutate slot nodes</span>
+    <span class="token comment" spellcheck="true">// 2. static slot content fails for hot-reloading</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>
+      <span class="token operator">!</span><span class="token function">isPlatformReservedTag</span><span class="token punctuation">(</span>node<span class="token punctuation">.</span>tag<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span>
+      node<span class="token punctuation">.</span>tag <span class="token operator">!==</span> <span class="token string">'slot'</span> <span class="token operator">&amp;&amp;</span>
+      node<span class="token punctuation">.</span>attrsMap<span class="token punctuation">[</span><span class="token string">'inline-template'</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token keyword">null</span>
+    <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> l <span class="token operator">=</span> node<span class="token punctuation">.</span>children<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i <span class="token operator">&lt;</span> l<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> child <span class="token operator">=</span> node<span class="token punctuation">.</span>children<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+      <span class="token function">markStatic</span><span class="token punctuation">(</span>child<span class="token punctuation">)</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>child<span class="token punctuation">.</span><span class="token keyword">static</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        node<span class="token punctuation">.</span><span class="token keyword">static</span> <span class="token operator">=</span> <span class="token boolean">false</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span>ifConditions<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span> l <span class="token operator">=</span> node<span class="token punctuation">.</span>ifConditions<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i <span class="token operator">&lt;</span> l<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> block <span class="token operator">=</span> node<span class="token punctuation">.</span>ifConditions<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>block
+        <span class="token function">markStatic</span><span class="token punctuation">(</span>block<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>block<span class="token punctuation">.</span><span class="token keyword">static</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          node<span class="token punctuation">.</span><span class="token keyword">static</span> <span class="token operator">=</span> <span class="token boolean">false</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> isStatic <span class="token punctuation">(</span>node<span class="token punctuation">:</span> ASTNode<span class="token punctuation">)</span><span class="token punctuation">:</span> boolean <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span>type <span class="token operator">===</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// expression</span>
+    <span class="token keyword">return</span> <span class="token boolean">false</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span>type <span class="token operator">===</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// text</span>
+    <span class="token keyword">return</span> <span class="token boolean">true</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> <span class="token operator">!</span><span class="token operator">!</span><span class="token punctuation">(</span>node<span class="token punctuation">.</span>pre <span class="token operator">||</span> <span class="token punctuation">(</span>
+    <span class="token operator">!</span>node<span class="token punctuation">.</span>hasBindings <span class="token operator">&amp;&amp;</span> <span class="token comment" spellcheck="true">// no dynamic bindings</span>
+    <span class="token operator">!</span>node<span class="token punctuation">.</span><span class="token keyword">if</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>node<span class="token punctuation">.</span><span class="token keyword">for</span> <span class="token operator">&amp;&amp;</span> <span class="token comment" spellcheck="true">// not v-if or v-for or v-else</span>
+    <span class="token operator">!</span><span class="token function">isBuiltInTag</span><span class="token punctuation">(</span>node<span class="token punctuation">.</span>tag<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token comment" spellcheck="true">// not a built-in</span>
+    <span class="token function">isPlatformReservedTag</span><span class="token punctuation">(</span>node<span class="token punctuation">.</span>tag<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token comment" spellcheck="true">// not a component</span>
+    <span class="token operator">!</span><span class="token function">isDirectChildOfTemplateFor</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span>
+    Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">every</span><span class="token punctuation">(</span>isStaticKey<span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>首先执行 <code>node.static = isStatic(node)</code></p>
+<p><code>isStatic</code> 是对一个 AST 元素节点是否是静态的判断，如果是表达式，就是非静态；如果是纯文本，就是静态；对于一个普通元素，如果有 pre 属性，那么它使用了 <code>v-pre</code> 指令，是静态，否则要同时满足以下条件：没有使用 <code>v-if</code>、<code>v-for</code>，没有使用其它指令（不包括 <code>v-once</code>），非内置组件，是平台保留的标签，非带有 <code>v-for</code> 的 <code>template</code> 标签的直接子节点，节点的所有属性的 <code>key</code> 都满足静态 key；这些都满足则这个 AST 节点是一个静态节点。</p>
+<p>如果这个节点是一个普通元素，则遍历它的所有 <code>children</code>，递归执行 <code>markStatic</code>。因为所有的 <code>elseif</code> 和 <code>else</code> 节点都不在 <code>children</code> 中， 如果节点的 <code>ifConditions</code> 不为空，则遍历 <code>ifConditions</code> 拿到所有条件中的 <code>block</code>，也就是它们对应的 AST 节点，递归执行 <code>markStatic</code>。在这些递归过程中，一旦子节点有不是 <code>static</code> 的情况，则它的父节点的 <code>static</code> 均变成 false。</p>
+<h2 id="标记静态根"><a href="#标记静态根" class="headerlink" title="标记静态根"></a>标记静态根</h2><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> markStaticRoots <span class="token punctuation">(</span>node<span class="token punctuation">:</span> ASTNode<span class="token punctuation">,</span> isInFor<span class="token punctuation">:</span> boolean<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span>type <span class="token operator">===</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span><span class="token keyword">static</span> <span class="token operator">||</span> node<span class="token punctuation">.</span>once<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      node<span class="token punctuation">.</span>staticInFor <span class="token operator">=</span> isInFor
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// For a node to qualify as a static root, it should have children that</span>
+    <span class="token comment" spellcheck="true">// are not just static text. Otherwise the cost of hoisting out will</span>
+    <span class="token comment" spellcheck="true">// outweigh the benefits and it's better off to just always render it fresh.</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span><span class="token keyword">static</span> <span class="token operator">&amp;&amp;</span> node<span class="token punctuation">.</span>children<span class="token punctuation">.</span>length <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token punctuation">(</span>
+      node<span class="token punctuation">.</span>children<span class="token punctuation">.</span>length <span class="token operator">===</span> <span class="token number">1</span> <span class="token operator">&amp;&amp;</span>
+      node<span class="token punctuation">.</span>children<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>type <span class="token operator">===</span> <span class="token number">3</span>
+    <span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      node<span class="token punctuation">.</span>staticRoot <span class="token operator">=</span> <span class="token boolean">true</span>
+      <span class="token keyword">return</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      node<span class="token punctuation">.</span>staticRoot <span class="token operator">=</span> <span class="token boolean">false</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span>children<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> l <span class="token operator">=</span> node<span class="token punctuation">.</span>children<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i <span class="token operator">&lt;</span> l<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">markStaticRoots</span><span class="token punctuation">(</span>node<span class="token punctuation">.</span>children<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> isInFor <span class="token operator">||</span> <span class="token operator">!</span><span class="token operator">!</span>node<span class="token punctuation">.</span><span class="token keyword">for</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span>ifConditions<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span> l <span class="token operator">=</span> node<span class="token punctuation">.</span>ifConditions<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i <span class="token operator">&lt;</span> l<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">markStaticRoots</span><span class="token punctuation">(</span>node<span class="token punctuation">.</span>ifConditions<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>block<span class="token punctuation">,</span> isInFor<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>markStaticRoots</code> 第二个参数是 <code>isInFor</code>，对于已经是 <code>static</code> 的节点或者是 <code>v-once</code> 指令的节点，<code>node.staticInFor = isInFor</code>。<br>接着就是对于 <code>staticRoot</code> 的判断逻辑，从注释中我们可以看到，对于有资格成为 <code>staticRoot</code> 的节点，除了本身是一个静态节点外，必须满足拥有 <code>children</code>，并且 <code>children</code> 不能只是一个文本节点，不然的话把它标记成静态根节点的收益就很小了。</p>
+<p>接下来和标记静态节点的逻辑一样，遍历 <code>children</code> 以及 <code>ifConditions</code>，递归执行 <code>markStaticRoots</code>。</p>
+<p>回归我们之前的例子，经过 <code>optimize</code> 后，AST 树变成了如下：</p>
+<pre class="line-numbers language-js"><code class="language-js">ast <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token string">'type'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token string">'tag'</span><span class="token punctuation">:</span> <span class="token string">'ul'</span><span class="token punctuation">,</span>
+  <span class="token string">'attrsList'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token string">'attrsMap'</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token string">':class'</span><span class="token punctuation">:</span> <span class="token string">'bindCls'</span><span class="token punctuation">,</span>
+    <span class="token string">'class'</span><span class="token punctuation">:</span> <span class="token string">'list'</span><span class="token punctuation">,</span>
+    <span class="token string">'v-if'</span><span class="token punctuation">:</span> <span class="token string">'isShow'</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string">'if'</span><span class="token punctuation">:</span> <span class="token string">'isShow'</span><span class="token punctuation">,</span>
+  <span class="token string">'ifConditions'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+    <span class="token string">'exp'</span><span class="token punctuation">:</span> <span class="token string">'isShow'</span><span class="token punctuation">,</span>
+    <span class="token string">'block'</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true">// ul ast element</span>
+  <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token string">'parent'</span><span class="token punctuation">:</span> undefined<span class="token punctuation">,</span>
+  <span class="token string">'plain'</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+  <span class="token string">'staticClass'</span><span class="token punctuation">:</span> <span class="token string">'list'</span><span class="token punctuation">,</span>
+  <span class="token string">'classBinding'</span><span class="token punctuation">:</span> <span class="token string">'bindCls'</span><span class="token punctuation">,</span>
+  <span class="token string">'static'</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+  <span class="token string">'staticRoot'</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+  <span class="token string">'children'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+    <span class="token string">'type'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token string">'tag'</span><span class="token punctuation">:</span> <span class="token string">'li'</span><span class="token punctuation">,</span>
+    <span class="token string">'attrsList'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+      <span class="token string">'name'</span><span class="token punctuation">:</span> <span class="token string">'@click'</span><span class="token punctuation">,</span>
+      <span class="token string">'value'</span><span class="token punctuation">:</span> <span class="token string">'clickItem(index)'</span>
+    <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token string">'attrsMap'</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+      <span class="token string">'@click'</span><span class="token punctuation">:</span> <span class="token string">'clickItem(index)'</span><span class="token punctuation">,</span>
+      <span class="token string">'v-for'</span><span class="token punctuation">:</span> <span class="token string">'(item,index) in data'</span>
+     <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string">'parent'</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true">// ul ast element</span>
+    <span class="token string">'plain'</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token string">'events'</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+      <span class="token string">'click'</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token string">'value'</span><span class="token punctuation">:</span> <span class="token string">'clickItem(index)'</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string">'hasBindings'</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token string">'for'</span><span class="token punctuation">:</span> <span class="token string">'data'</span><span class="token punctuation">,</span>
+    <span class="token string">'alias'</span><span class="token punctuation">:</span> <span class="token string">'item'</span><span class="token punctuation">,</span>
+    <span class="token string">'iterator1'</span><span class="token punctuation">:</span> <span class="token string">'index'</span><span class="token punctuation">,</span>
+    <span class="token string">'static'</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token string">'staticRoot'</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token string">'children'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+      <span class="token string">'type'</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+      <span class="token string">'expression'</span><span class="token punctuation">:</span> <span class="token string">'_s(item)+":"+_s(index)'</span>
+      <span class="token string">'text'</span><span class="token punctuation">:</span> <span class="token string">'{{item}}:{{index}}'</span><span class="token punctuation">,</span>
+      <span class="token string">'tokens'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span><span class="token string">'@binding'</span><span class="token punctuation">:</span><span class="token string">'item'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token string">':'</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span><span class="token string">'@binding'</span><span class="token punctuation">:</span><span class="token string">'index'</span><span class="token punctuation">}</span>
+      <span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token string">'static'</span><span class="token punctuation">:</span> <span class="token boolean">false</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们发现每一个 AST 元素节点都多了 <code>staic</code> 属性，并且 <code>type</code> 为 1 的普通元素 AST 节点多了 <code>staticRoot</code> 属性。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>那么至此我们分析完了 <code>optimize</code> 的过程，就是深度遍历这个 AST 树，去检测它的每一颗子树是不是静态节点，如果是静态节点则它们生成 DOM 永远不需要改变，这对运行时对模板的更新起到极大的优化作用。</p>
+<p>我们通过 <code>optimize</code> 我们把整个 AST 树中的每一个 AST 元素节点标记了 <code>static</code> 和 <code>staticRoot</code>，它会影响我们接下来执行代码生成的过程。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/05/24/005.vue源码学习/005.编译/004.optimize/" target="_blank" rel="external">http://www.chenya.site/2018/05/24/005.vue源码学习/005.编译/004.optimize/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue源码学习/">Vue源码学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端资源/">前端资源</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/日常学习/">日常学习</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2018/05/24/005.vue源码学习/005.编译/004.optimize/&title=《Vue源码学习 - optimize》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2018/05/24/005.vue源码学习/005.编译/004.optimize/&title=《Vue源码学习 - optimize》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2018/05/24/005.vue源码学习/005.编译/004.optimize/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Vue源码学习 - optimize》 — 陈亚的个人主页&url=http://www.chenya.site/2018/05/24/005.vue源码学习/005.编译/004.optimize/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2018/05/24/005.vue源码学习/005.编译/004.optimize/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/05/26/005.vue源码学习/005.编译/005.codegen/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Vue源码学习 - codegen</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/05/22/005.vue源码学习/005.编译/003.parse/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Vue源码学习 - parse</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2018/05/24/005.vue源码学习/005.编译/004.optimize/&title=《Vue源码学习 - optimize》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2018/05/24/005.vue源码学习/005.编译/004.optimize/&title=《Vue源码学习 - optimize》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2018/05/24/005.vue源码学习/005.编译/004.optimize/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Vue源码学习 - optimize》 — 陈亚的个人主页&url=http://www.chenya.site/2018/05/24/005.vue源码学习/005.编译/004.optimize/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2018/05/24/005.vue源码学习/005.编译/004.optimize/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACsElEQVR42u3a0W7kIAwF0P7/T3dfK7XJ3GsgilaHp1EnChwqYcb211c8vn+Mn3/5/czVt+1IZtw28PDw8BZe9HvcP3P/zvtZ7hmz9fyxKjw8PLxjvPsltsudPXM/bxIk8PDw8N7MS66/929OjnU8PDy8/4OXf04CQ4LHw8PDeydvtqD7q3aeyFgJPNtyLXh4eHgxL68ivefzkfoeHh4e3nJVPS8+JcFjJSQMV4uHh4d3gJcfuLsur23Cop0RDw8P7zRvpeHpw54FZbD7t+WltcsV4uHh4R3g5UuZtU+1zVvtphQhCg8PD+8Ab/M9vVx621iQBBU8PDy8Z3jJJTVPy7aH+0OVPTw8PLwF3kqhK7mC5ymGNthEqRM8PDy8w7yVxEHOW9+yZEY8PDy807wZIE9e5JvYXqPrdis8PDy8rbz22J2VxPKNyL+93BQ8PDy8A7zZwd22WM2uyG1B7sP/EA8PD28Trz18Z0vPExyzpPCHkICHh4d3gJe3AkRlpzLFkJfc6qYrPDw8vGO8PImwUuKaXalXLt94eHh4J3j5YZ0nI1YCwMp5fonHw8PDe5x3fxDn07SlsocCAx4eHt6mK/WuKfOxgsfDw8N7kpenHvJLc/L39RmLjcDDw8M7wNtVLcobDtq2g7xQh4eHh/cML0+nttfctiFgJQx8SOPi4eHhHeAljFm7Vdva1ca06BcDHh4e3jFeW3PP0wor7VmzpDAeHh7eCd53OVZSq3kaYhYe8PDw8J7hzUr7Lbgtm7WzbGhowMPDwyt5bTCYJV7bwlXOLgpgeHh4eFt5Kw1P60ucJTX6xAseHh7eu3htUrhNECdFrz+ex8PDw3sNb9ZE1bYazNoX8PDw8J7htZfjWcq1bZnKi2eX3+Lh4eEd4LW/6GcFqpUExJEkBR4eHt6E9w8qzHOogCH95gAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

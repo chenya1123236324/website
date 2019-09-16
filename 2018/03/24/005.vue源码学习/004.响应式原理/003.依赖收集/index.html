@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Vue源码学习 - 依赖收集 | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="日常学习,前端资源,Vue源码学习">
+    <meta name="description" content="依赖收集通过上一节的分析我们了解 Vue 会把普通对象变成响应式对象，响应式对象 getter 相关的逻辑就是做依赖收集，这一节我们来详细分析这个过程。 我们先来回顾一下 getter 部分的逻辑： export function defineReactive (   obj: Object,   key: string,   val: any,   customSetter?: ?Functio">
+<meta name="keywords" content="日常学习,前端资源,Vue源码学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue源码学习 - 依赖收集">
+<meta property="og:url" content="http://www.chenya.site/2018/03/24/005.vue源码学习/004.响应式原理/003.依赖收集/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="依赖收集通过上一节的分析我们了解 Vue 会把普通对象变成响应式对象，响应式对象 getter 相关的逻辑就是做依赖收集，这一节我们来详细分析这个过程。 我们先来回顾一下 getter 部分的逻辑： export function defineReactive (   obj: Object,   key: string,   val: any,   customSetter?: ?Functio">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.505Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue源码学习 - 依赖收集">
+<meta name="twitter:description" content="依赖收集通过上一节的分析我们了解 Vue 会把普通对象变成响应式对象，响应式对象 getter 相关的逻辑就是做依赖收集，这一节我们来详细分析这个过程。 我们先来回顾一下 getter 部分的逻辑： export function defineReactive (   obj: Object,   key: string,   val: any,   customSetter?: ?Functio">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">Vue源码学习 - 依赖收集</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Vue源码学习 - 依赖收集</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-03-24T00:23:41.000Z" itemprop="datePublished" class="page-time">
+  2018-03-24
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#依赖收集"><span class="post-toc-number">1.</span> <span class="post-toc-text">依赖收集</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Dep"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Dep</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Watcher"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Watcher</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#过程分析"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">过程分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">总结</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-005.vue源码学习/004.响应式原理/003.依赖收集"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Vue源码学习 - 依赖收集</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-03-24 08:23:41" datetime="2018-03-24T00:23:41.000Z"  itemprop="datePublished">2018-03-24</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="依赖收集"><a href="#依赖收集" class="headerlink" title="依赖收集"></a>依赖收集</h1><p>通过上一节的分析我们了解 Vue 会把普通对象变成响应式对象，响应式对象 getter 相关的逻辑就是做依赖收集，这一节我们来详细分析这个过程。</p>
+<p>我们先来回顾一下 getter 部分的逻辑：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> defineReactive <span class="token punctuation">(</span>
+  obj<span class="token punctuation">:</span> Object<span class="token punctuation">,</span>
+  key<span class="token punctuation">:</span> string<span class="token punctuation">,</span>
+  val<span class="token punctuation">:</span> any<span class="token punctuation">,</span>
+  customSetter<span class="token operator">?</span><span class="token punctuation">:</span> <span class="token operator">?</span>Function<span class="token punctuation">,</span>
+  shallow<span class="token operator">?</span><span class="token punctuation">:</span> boolean
+<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> dep <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Dep</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+  <span class="token keyword">const</span> property <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">getOwnPropertyDescriptor</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> key<span class="token punctuation">)</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>property <span class="token operator">&amp;&amp;</span> property<span class="token punctuation">.</span>configurable <span class="token operator">===</span> <span class="token boolean">false</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment" spellcheck="true">// cater for pre-defined getter/setters</span>
+  <span class="token keyword">const</span> getter <span class="token operator">=</span> property <span class="token operator">&amp;&amp;</span> property<span class="token punctuation">.</span><span class="token keyword">get</span>
+  <span class="token keyword">const</span> setter <span class="token operator">=</span> property <span class="token operator">&amp;&amp;</span> property<span class="token punctuation">.</span><span class="token keyword">set</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">!</span>getter <span class="token operator">||</span> setter<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> arguments<span class="token punctuation">.</span>length <span class="token operator">===</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    val <span class="token operator">=</span> obj<span class="token punctuation">[</span>key<span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">let</span> childOb <span class="token operator">=</span> <span class="token operator">!</span>shallow <span class="token operator">&amp;&amp;</span> <span class="token function">observe</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span>
+  Object<span class="token punctuation">.</span><span class="token function">defineProperty</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> key<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    enumerable<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    configurable<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token keyword">get</span><span class="token punctuation">:</span> <span class="token keyword">function</span> reactiveGetter <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> value <span class="token operator">=</span> getter <span class="token operator">?</span> getter<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span> <span class="token punctuation">:</span> val
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>Dep<span class="token punctuation">.</span>target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        dep<span class="token punctuation">.</span><span class="token function">depend</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>childOb<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          childOb<span class="token punctuation">.</span>dep<span class="token punctuation">.</span><span class="token function">depend</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>Array<span class="token punctuation">.</span><span class="token function">isArray</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">dependArray</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">return</span> value
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token comment" spellcheck="true">// ...</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这段代码我们只需要关注 2 个地方，一个是 <code>const dep = new Dep()</code> 实例化一个 <code>Dep</code> 的实例，另一个是在 <code>get</code> 函数中通过 <code>dep.depend</code> 做依赖收集，这里还有个对 <code>childOb</code> 判断的逻辑，我们之后会介绍它的作用。</p>
+<h2 id="Dep"><a href="#Dep" class="headerlink" title="Dep"></a>Dep</h2><p><code>Dep</code> 是整个 getter 依赖收集的核心，它的定义在 <code>src/core/observer/dep.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">import</span> type Watcher <span class="token keyword">from</span> <span class="token string">'./watcher'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> remove <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../util/index'</span>
+
+<span class="token keyword">let</span> uid <span class="token operator">=</span> <span class="token number">0</span>
+
+<span class="token comment" spellcheck="true">/**
+ * A dep is an observable that can have multiple
+ * directives subscribing to it.
+ */</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">class</span> <span class="token class-name">Dep</span> <span class="token punctuation">{</span>
+  <span class="token keyword">static</span> target<span class="token punctuation">:</span> <span class="token operator">?</span>Watcher<span class="token punctuation">;</span>
+  id<span class="token punctuation">:</span> number<span class="token punctuation">;</span>
+  subs<span class="token punctuation">:</span> Array<span class="token operator">&lt;</span>Watcher<span class="token operator">></span><span class="token punctuation">;</span>
+
+  constructor <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>id <span class="token operator">=</span> uid<span class="token operator">++</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>subs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+
+  addSub <span class="token punctuation">(</span>sub<span class="token punctuation">:</span> Watcher<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>subs<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>sub<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+
+  removeSub <span class="token punctuation">(</span>sub<span class="token punctuation">:</span> Watcher<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">remove</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>subs<span class="token punctuation">,</span> sub<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+
+  depend <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>Dep<span class="token punctuation">.</span>target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      Dep<span class="token punctuation">.</span>target<span class="token punctuation">.</span><span class="token function">addDep</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  notify <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// stabilize the subscriber list first</span>
+    <span class="token keyword">const</span> subs <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>subs<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> l <span class="token operator">=</span> subs<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i <span class="token operator">&lt;</span> l<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      subs<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// the current target watcher being evaluated.</span>
+<span class="token comment" spellcheck="true">// this is globally unique because there could be only one</span>
+<span class="token comment" spellcheck="true">// watcher being evaluated at any time.</span>
+Dep<span class="token punctuation">.</span>target <span class="token operator">=</span> <span class="token keyword">null</span>
+<span class="token keyword">const</span> targetStack <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+<span class="token keyword">export</span> <span class="token keyword">function</span> pushTarget <span class="token punctuation">(</span>_target<span class="token punctuation">:</span> <span class="token operator">?</span>Watcher<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>Dep<span class="token punctuation">.</span>target<span class="token punctuation">)</span> targetStack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>Dep<span class="token punctuation">.</span>target<span class="token punctuation">)</span>
+  Dep<span class="token punctuation">.</span>target <span class="token operator">=</span> _target
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">function</span> popTarget <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  Dep<span class="token punctuation">.</span>target <span class="token operator">=</span> targetStack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>Dep</code> 是一个 Class，它定义了一些属性和方法，这里需要特别注意的是它有一个静态属性 <code>target</code>，这是一个全局唯一 <code>Watcher</code>，这是一个非常巧妙的设计，因为在同一时间只能有一个全局的 <code>Watcher</code> 被计算，另外它的自身属性 <code>subs</code> 也是 <code>Watcher</code> 的数组。</p>
+<p><code>Dep</code> 实际上就是对 <code>Watcher</code> 的一种管理，<code>Dep</code>  脱离 <code>Watcher</code> 单独存在是没有意义的，为了完整地讲清楚依赖收集过程，我们有必要看一下 <code>Watcher</code> 的一些相关实现，它的定义在 <code>src/core/observer/watcher.js</code> 中：</p>
+<h2 id="Watcher"><a href="#Watcher" class="headerlink" title="Watcher"></a><code>Watcher</code></h2><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">let</span> uid <span class="token operator">=</span> <span class="token number">0</span>
+
+<span class="token comment" spellcheck="true">/**
+ * A watcher parses an expression, collects dependencies,
+ * and fires callback when the expression value changes.
+ * This is used for both the $watch() api and directives.
+ */</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">class</span> <span class="token class-name">Watcher</span> <span class="token punctuation">{</span>
+  vm<span class="token punctuation">:</span> Component<span class="token punctuation">;</span>
+  expression<span class="token punctuation">:</span> string<span class="token punctuation">;</span>
+  cb<span class="token punctuation">:</span> Function<span class="token punctuation">;</span>
+  id<span class="token punctuation">:</span> number<span class="token punctuation">;</span>
+  deep<span class="token punctuation">:</span> boolean<span class="token punctuation">;</span>
+  user<span class="token punctuation">:</span> boolean<span class="token punctuation">;</span>
+  computed<span class="token punctuation">:</span> boolean<span class="token punctuation">;</span>
+  sync<span class="token punctuation">:</span> boolean<span class="token punctuation">;</span>
+  dirty<span class="token punctuation">:</span> boolean<span class="token punctuation">;</span>
+  active<span class="token punctuation">:</span> boolean<span class="token punctuation">;</span>
+  dep<span class="token punctuation">:</span> Dep<span class="token punctuation">;</span>
+  deps<span class="token punctuation">:</span> Array<span class="token operator">&lt;</span>Dep<span class="token operator">></span><span class="token punctuation">;</span>
+  newDeps<span class="token punctuation">:</span> Array<span class="token operator">&lt;</span>Dep<span class="token operator">></span><span class="token punctuation">;</span>
+  depIds<span class="token punctuation">:</span> SimpleSet<span class="token punctuation">;</span>
+  newDepIds<span class="token punctuation">:</span> SimpleSet<span class="token punctuation">;</span>
+  before<span class="token punctuation">:</span> <span class="token operator">?</span>Function<span class="token punctuation">;</span>
+  getter<span class="token punctuation">:</span> Function<span class="token punctuation">;</span>
+  value<span class="token punctuation">:</span> any<span class="token punctuation">;</span>
+
+  constructor <span class="token punctuation">(</span>
+    vm<span class="token punctuation">:</span> Component<span class="token punctuation">,</span>
+    expOrFn<span class="token punctuation">:</span> string <span class="token operator">|</span> Function<span class="token punctuation">,</span>
+    cb<span class="token punctuation">:</span> Function<span class="token punctuation">,</span>
+    options<span class="token operator">?</span><span class="token punctuation">:</span> <span class="token operator">?</span>Object<span class="token punctuation">,</span>
+    isRenderWatcher<span class="token operator">?</span><span class="token punctuation">:</span> boolean
+  <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>vm <span class="token operator">=</span> vm
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>isRenderWatcher<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      vm<span class="token punctuation">.</span>_watcher <span class="token operator">=</span> <span class="token keyword">this</span>
+    <span class="token punctuation">}</span>
+    vm<span class="token punctuation">.</span>_watchers<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true">// options</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>options<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>deep <span class="token operator">=</span> <span class="token operator">!</span><span class="token operator">!</span>options<span class="token punctuation">.</span>deep
+      <span class="token keyword">this</span><span class="token punctuation">.</span>user <span class="token operator">=</span> <span class="token operator">!</span><span class="token operator">!</span>options<span class="token punctuation">.</span>user
+      <span class="token keyword">this</span><span class="token punctuation">.</span>computed <span class="token operator">=</span> <span class="token operator">!</span><span class="token operator">!</span>options<span class="token punctuation">.</span>computed
+      <span class="token keyword">this</span><span class="token punctuation">.</span>sync <span class="token operator">=</span> <span class="token operator">!</span><span class="token operator">!</span>options<span class="token punctuation">.</span>sync
+      <span class="token keyword">this</span><span class="token punctuation">.</span>before <span class="token operator">=</span> options<span class="token punctuation">.</span>before
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>deep <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>user <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>computed <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>sync <span class="token operator">=</span> <span class="token boolean">false</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>cb <span class="token operator">=</span> cb
+    <span class="token keyword">this</span><span class="token punctuation">.</span>id <span class="token operator">=</span> <span class="token operator">++</span>uid <span class="token comment" spellcheck="true">// uid for batching</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>active <span class="token operator">=</span> <span class="token boolean">true</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>dirty <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>computed <span class="token comment" spellcheck="true">// for computed watchers</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>deps <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>newDeps <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>depIds <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Set</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>newDepIds <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Set</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>expression <span class="token operator">=</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>NODE_ENV <span class="token operator">!==</span> <span class="token string">'production'</span>
+      <span class="token operator">?</span> expOrFn<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">:</span> <span class="token string">''</span>
+    <span class="token comment" spellcheck="true">// parse expression for getter</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> expOrFn <span class="token operator">===</span> <span class="token string">'function'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>getter <span class="token operator">=</span> expOrFn
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>getter <span class="token operator">=</span> <span class="token function">parsePath</span><span class="token punctuation">(</span>expOrFn<span class="token punctuation">)</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>getter<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>getter <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+        process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>NODE_ENV <span class="token operator">!==</span> <span class="token string">'production'</span> <span class="token operator">&amp;&amp;</span> <span class="token function">warn</span><span class="token punctuation">(</span>
+          <span class="token template-string"><span class="token string">`Failed watching path: "</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>expOrFn<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">" `</span></span> <span class="token operator">+</span>
+          <span class="token string">'Watcher only accepts simple dot-delimited paths. '</span> <span class="token operator">+</span>
+          <span class="token string">'For full control, use a function instead.'</span><span class="token punctuation">,</span>
+          vm
+        <span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>computed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>value <span class="token operator">=</span> undefined
+      <span class="token keyword">this</span><span class="token punctuation">.</span>dep <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Dep</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment" spellcheck="true">/**
+   * Evaluate the getter, and re-collect dependencies.
+   */</span>
+  <span class="token keyword">get</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">pushTarget</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span>
+    <span class="token keyword">let</span> value
+    <span class="token keyword">const</span> vm <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>vm
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+      value <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>getter<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> vm<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">handleError</span><span class="token punctuation">(</span>e<span class="token punctuation">,</span> vm<span class="token punctuation">,</span> <span class="token template-string"><span class="token string">`getter for watcher "</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>expression<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">"`</span></span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> e
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// "touch" every property so they are all tracked as</span>
+      <span class="token comment" spellcheck="true">// dependencies for deep watching</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>deep<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">traverse</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+      <span class="token function">popTarget</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">cleanupDeps</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> value
+  <span class="token punctuation">}</span>
+
+  <span class="token comment" spellcheck="true">/**
+   * Add a dependency to this directive.
+   */</span>
+  addDep <span class="token punctuation">(</span>dep<span class="token punctuation">:</span> Dep<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> id <span class="token operator">=</span> dep<span class="token punctuation">.</span>id
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>newDepIds<span class="token punctuation">.</span><span class="token function">has</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>newDepIds<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>newDeps<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>dep<span class="token punctuation">)</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>depIds<span class="token punctuation">.</span><span class="token function">has</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        dep<span class="token punctuation">.</span><span class="token function">addSub</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment" spellcheck="true">/**
+   * Clean up for dependency collection.
+   */</span>
+  cleanupDeps <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>deps<span class="token punctuation">.</span>length
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>i<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> dep <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>deps<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>newDepIds<span class="token punctuation">.</span><span class="token function">has</span><span class="token punctuation">(</span>dep<span class="token punctuation">.</span>id<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        dep<span class="token punctuation">.</span><span class="token function">removeSub</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">let</span> tmp <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>depIds
+    <span class="token keyword">this</span><span class="token punctuation">.</span>depIds <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>newDepIds
+    <span class="token keyword">this</span><span class="token punctuation">.</span>newDepIds <span class="token operator">=</span> tmp
+    <span class="token keyword">this</span><span class="token punctuation">.</span>newDepIds<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    tmp <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>deps
+    <span class="token keyword">this</span><span class="token punctuation">.</span>deps <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>newDeps
+    <span class="token keyword">this</span><span class="token punctuation">.</span>newDeps <span class="token operator">=</span> tmp
+    <span class="token keyword">this</span><span class="token punctuation">.</span>newDeps<span class="token punctuation">.</span>length <span class="token operator">=</span> <span class="token number">0</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// ...</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>Watcher</code> 是一个 Class，在它的构造函数中，定义了一些和 <code>Dep</code> 相关的属性：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">this</span><span class="token punctuation">.</span>deps <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">this</span><span class="token punctuation">.</span>newDeps <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">this</span><span class="token punctuation">.</span>depIds <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Set</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">this</span><span class="token punctuation">.</span>newDepIds <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Set</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其中，<code>this.deps</code> 和 <code>this.newDeps</code> 表示 <code>Watcher</code> 实例持有的 <code>Dep</code> 实例的数组；而 <code>this.depIds</code> 和 <code>this.newDepIds</code> 分别代表 <code>this.deps</code> 和 <code>this.newDeps</code> 的 <code>id</code> Set（这个 Set 是 ES6 的数据结构，它的实现在 <code>src/core/util/env.js</code> 中）。那么这里为何需要有 2 个 <code>Dep</code> 实例数组呢，稍后我们会解释。</p>
+<p><code>Watcher</code> 还定义了一些原型的方法，和依赖收集相关的有 <code>get</code>、<code>addDep</code> 和 <code>cleanupDeps</code> 方法，单个介绍它们的实现不方便理解，我会结合整个依赖收集的过程把这几个方法讲清楚。</p>
+<h2 id="过程分析"><a href="#过程分析" class="headerlink" title="过程分析"></a>过程分析</h2><p>之前我们介绍当对数据对象的访问会触发他们的 getter 方法，那么这些对象什么时候被访问呢？还记得之前我们介绍过 Vue 的 mount 过程是通过 <code>mountComponent</code> 函数，其中有一段比较重要的逻辑，大致如下：</p>
+<pre class="line-numbers language-js"><code class="language-js">updateComponent <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  vm<span class="token punctuation">.</span><span class="token function">_update</span><span class="token punctuation">(</span>vm<span class="token punctuation">.</span><span class="token function">_render</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> hydrating<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">new</span> <span class="token class-name">Watcher</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> updateComponent<span class="token punctuation">,</span> noop<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+  before <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>vm<span class="token punctuation">.</span>_isMounted<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">callHook</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> <span class="token string">'beforeUpdate'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token boolean">true</span> <span class="token comment" spellcheck="true">/* isRenderWatcher */</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当我们去实例化一个渲染 <code>watcher</code> 的时候，首先进入 <code>watcher</code> 的构造函数逻辑，然后会执行它的 <code>this.get()</code> 方法，进入 <code>get</code> 函数，首先会执行：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token function">pushTarget</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>pushTarget</code> 的定义在 <code>src/core/observer/dep.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> pushTarget <span class="token punctuation">(</span>_target<span class="token punctuation">:</span> Watcher<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>Dep<span class="token punctuation">.</span>target<span class="token punctuation">)</span> targetStack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>Dep<span class="token punctuation">.</span>target<span class="token punctuation">)</span>
+  Dep<span class="token punctuation">.</span>target <span class="token operator">=</span> _target
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>实际上就是把 <code>Dep.target</code> 赋值为当前的渲染 <code>watcher</code> 并压栈（为了恢复用）。接着又执行了：</p>
+<pre class="line-numbers language-js"><code class="language-js">value <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>getter<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> vm<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>this.getter</code> 对应就是 <code>updateComponent</code> 函数，这实际上就是在执行：</p>
+<pre class="line-numbers language-js"><code class="language-js">vm<span class="token punctuation">.</span><span class="token function">_update</span><span class="token punctuation">(</span>vm<span class="token punctuation">.</span><span class="token function">_render</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> hydrating<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>它会先执行 <code>vm._render()</code> 方法，因为之前分析过这个方法会生成 渲染 VNode，并且在这个过程中会对 <code>vm</code> 上的数据访问，这个时候就触发了数据对象的 getter。</p>
+<p>那么每个对象值的 getter 都持有一个 <code>dep</code>，在触发 getter 的时候会调用 <code>dep.depend()</code> 方法，也就会执行 <code>Dep.target.addDep(this)</code>。</p>
+<p>刚才我们提到这个时候 <code>Dep.target</code> 已经被赋值为渲染 <code>watcher</code>，那么就执行到 <code>addDep</code> 方法：</p>
+<pre class="line-numbers language-js"><code class="language-js">addDep <span class="token punctuation">(</span>dep<span class="token punctuation">:</span> Dep<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> id <span class="token operator">=</span> dep<span class="token punctuation">.</span>id
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>newDepIds<span class="token punctuation">.</span><span class="token function">has</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>newDepIds<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>newDeps<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>dep<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>depIds<span class="token punctuation">.</span><span class="token function">has</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      dep<span class="token punctuation">.</span><span class="token function">addSub</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这时候会做一些逻辑判断（保证同一数据不会被添加多次）后执行 <code>dep.addSub(this)</code>，那么就会执行 <code>this.subs.push(sub)</code>，也就是说把当前的 <code>watcher</code> 订阅到这个数据持有的 <code>dep</code> 的 <code>subs</code> 中，这个目的是为后续数据变化时候能通知到哪些 <code>subs</code> 做准备。</p>
+<p>所以在 <code>vm._render()</code> 过程中，会触发所有数据的 getter，这样实际上已经完成了一个依赖收集的过程。那么到这里就结束了么，其实并没有，在完成依赖收集后，还有几个逻辑要执行，首先是：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>deep<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">traverse</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>这个是要递归去访问 <code>value</code>，触发它所有子项的 <code>getter</code>，这个之后会详细讲。接下来执行：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token function">popTarget</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>popTarget</code> 的定义在 <code>src/core/observer/dep.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js">Dep<span class="token punctuation">.</span>target <span class="token operator">=</span> targetStack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>实际上就是把 <code>Dep.target</code> 恢复成上一个状态，因为当前 vm 的数据依赖收集已经完成，那么对应的渲染<code>Dep.target</code> 也需要改变。最后执行：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">cleanupDeps</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>其实很多人都分析过并了解到 Vue 有依赖收集的过程，但我几乎没有看到有人分析依赖清空的过程，其实这是大部分同学会忽视的一点，也是 Vue 考虑特别细的一点。</p>
+<pre class="line-numbers language-js"><code class="language-js">cleanupDeps <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>deps<span class="token punctuation">.</span>length
+  <span class="token keyword">while</span> <span class="token punctuation">(</span>i<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> dep <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>deps<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>newDepIds<span class="token punctuation">.</span><span class="token function">has</span><span class="token punctuation">(</span>dep<span class="token punctuation">.</span>id<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      dep<span class="token punctuation">.</span><span class="token function">removeSub</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">let</span> tmp <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>depIds
+  <span class="token keyword">this</span><span class="token punctuation">.</span>depIds <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>newDepIds
+  <span class="token keyword">this</span><span class="token punctuation">.</span>newDepIds <span class="token operator">=</span> tmp
+  <span class="token keyword">this</span><span class="token punctuation">.</span>newDepIds<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  tmp <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>deps
+  <span class="token keyword">this</span><span class="token punctuation">.</span>deps <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>newDeps
+  <span class="token keyword">this</span><span class="token punctuation">.</span>newDeps <span class="token operator">=</span> tmp
+  <span class="token keyword">this</span><span class="token punctuation">.</span>newDeps<span class="token punctuation">.</span>length <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>考虑到 Vue 是数据驱动的，所以每次数据变化都会重新 render，那么 <code>vm._render()</code> 方法又会再次执行，并再次触发数据的 getters，所以 <code>Wathcer</code> 在构造函数中会初始化 2 个 <code>Dep</code> 实例数组，<code>newDeps</code> 表示新添加的 <code>Dep</code> 实例数组，而 <code>deps</code> 表示上一次添加的 <code>Dep</code> 实例数组。</p>
+<p>在执行 <code>cleanupDeps</code> 函数的时候，会首先遍历 <code>deps</code>，移除对 <code>dep.subs</code> 数组中 <code>Wathcer</code> 的订阅，然后把 <code>newDepIds</code> 和 <code>depIds</code> 交换，<code>newDeps</code> 和 <code>deps</code> 交换，并把 <code>newDepIds</code> 和 <code>newDeps</code> 清空。</p>
+<p>那么为什么需要做 <code>deps</code> 订阅的移除呢，在添加 <code>deps</code> 的订阅过程，已经能通过 <code>id</code> 去重避免重复订阅了。</p>
+<p>考虑到一种场景，我们的模板会根据 <code>v-if</code> 去渲染不同子模板 a 和 b，当我们满足某种条件的时候渲染 a 的时候，会访问到 a 中的数据，这时候我们对 a 使用的数据添加了 getter，做了依赖收集，那么当我们去修改 a 的数据的时候，理应通知到这些订阅者。那么如果我们一旦改变了条件渲染了 b 模板，又会对 b 使用的数据添加了 getter，如果我们没有依赖移除的过程，那么这时候我去修改 a 模板的数据，会通知 a 数据的订阅的回调，这显然是有浪费的。</p>
+<p>因此 Vue 设计了在每次添加完新的订阅，会移除掉旧的订阅，这样就保证了在我们刚才的场景中，如果渲染 b 模板的时候去修改 a 模板的数据，a 数据订阅回调已经被移除了，所以不会有任何浪费，真的是非常赞叹 Vue 对一些细节上的处理。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过这一节的分析，我们对 Vue 数据的依赖收集过程已经有了认识，并且对这其中的一些细节做了分析。收集依赖的目的是为了当这些响应式数据发生变化，触发它们的 setter 的时候，能知道应该通知哪些订阅者去做相应的逻辑处理，我们把这个过程叫派发更新，其实 <code>Watcher</code> 和 <code>Dep</code> 就是一个非常经典的观察者设计模式的实现，下一节我们来详细分析一下派发更新的过程。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/03/24/005.vue源码学习/004.响应式原理/003.依赖收集/" target="_blank" rel="external">http://www.chenya.site/2018/03/24/005.vue源码学习/004.响应式原理/003.依赖收集/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue源码学习/">Vue源码学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端资源/">前端资源</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/日常学习/">日常学习</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2018/03/24/005.vue源码学习/004.响应式原理/003.依赖收集/&title=《Vue源码学习 - 依赖收集》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2018/03/24/005.vue源码学习/004.响应式原理/003.依赖收集/&title=《Vue源码学习 - 依赖收集》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2018/03/24/005.vue源码学习/004.响应式原理/003.依赖收集/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Vue源码学习 - 依赖收集》 — 陈亚的个人主页&url=http://www.chenya.site/2018/03/24/005.vue源码学习/004.响应式原理/003.依赖收集/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2018/03/24/005.vue源码学习/004.响应式原理/003.依赖收集/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/03/27/004.koa学习/001.基础篇/006.模板引擎/001.koa2加载模板引擎/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">koa2加载模板引擎</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/03/21/004.koa学习/001.基础篇/005. cookie-session/002.koa2实现session/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">koa2实现session</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2018/03/24/005.vue源码学习/004.响应式原理/003.依赖收集/&title=《Vue源码学习 - 依赖收集》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2018/03/24/005.vue源码学习/004.响应式原理/003.依赖收集/&title=《Vue源码学习 - 依赖收集》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2018/03/24/005.vue源码学习/004.响应式原理/003.依赖收集/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Vue源码学习 - 依赖收集》 — 陈亚的个人主页&url=http://www.chenya.site/2018/03/24/005.vue源码学习/004.响应式原理/003.依赖收集/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2018/03/24/005.vue源码学习/004.响应式原理/003.依赖收集/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADL0lEQVR42u3aW07rWhAEUOY/6dwBoDhV3T5X8Wb5C4EJXjtSin78/MTX69f17p7fXyd3/r7/+vvX99x2YWNjYz+E/bq83v2B64NIXqE9oPYQP7xV2NjY2Mex20B6B0uiJcG3B5pbsLGxsbGvQy7/n789voSKjY2Njb1hzxpMeQOrDTNsbGzsv8ZOYmbW+m9hyesnr3BbLw0bGxv769l5qHz/1/9kvo2NjY39xexXeSVjgLw8uH6e/dO+VWBjY2MfxG7XYmYP1Daq8qWc1fNjY2NjH8HetOBnw9p28NC2nKI7sbGxsQ9i3zVAnS3r7I++LVGwsbGxz2PPBqV5gdHGzOxw89LlQymCjY2NfRB71srZtHvan7a/FQUYNjY29sPZeXhshgH7yKwrLWxsbOw/xi5+OShCZgPavOQYxh42Njb2oexZ66cdx+bFTzvAKMYS2NjY2Iey82bQh5ZNGWBtuZLE57CphI2Njf1A9iYM9g+RI5MyKTlobGxs7PPY14DZ8s1sSLBZGGoDEhsbG/s89qadtMe0Dal98YONjY19EvuugmRfHswKjzxEf/L3FhsbG/tR7CRI2kjYjwHalaC6lMLGxsY+iJ1/9LeYdiUoCaf8EKOgxcbGxj6CnTeV7oqlthmUlzFF+GFjY2Mfx24jJF/EmQ0eZiE3LEKwsbGxH85OPu7zoGojavYks4Wht8eBjY2NfRD73mFq/uiz2NuULtjY2Njnse8d3LZt/fw4kgFGUcZgY2NjH8SevUTbGGrDph0q5G8ANjY29nns/F/8u8qGWbunbVfdtnmKjY2N/Sh2O0DNW/abYmazxLNa3MHGxsZ+FDtv9CfNoNmqzWz5ph1RY2NjY5/Kbtd09uuS7eB2P7XGxsbGPo/9Kq/8sdpx8qbdXz8nNjY29kHs9qN/tnDTDgzagxiWItjY2NgHsfPQyouNZGzQhlwbVB/KJ2xsbOzj2G3bfTPunS3ZDMuJ614aNjY29h9mb6JuVnLsx73Y2NjY2P9Pgz4Puc04GRsbG/s8dj7czaMoWfRJXmEWUR/+FjY2NvZB7LodExckeYu/DbN8dr1a3MHGxsb+dvZ/GGftOZSE28EAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

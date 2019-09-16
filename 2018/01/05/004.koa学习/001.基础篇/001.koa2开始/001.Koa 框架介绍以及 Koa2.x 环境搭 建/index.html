@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Koa 框架介绍以及 Koa2.x 环境搭建 | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="日常学习,前端资源,koa学习">
+    <meta name="description" content="目录 内容     一 Koa 框架介绍   二 Koa2.x 框架的安装使用    一、 Koa 框架介绍Node.js 是一个异步的世界， 官方 API 支持的都是 callback 形式的异步编程模型， 这会带来许多问题例如：1、callback嵌套问题2、 异步函数中可能同步调用 callback返回数据， 带来不一致性为了解决以上问题Koa出现了 Koa -- 基于 Node.js">
+<meta name="keywords" content="日常学习,前端资源,koa学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Koa 框架介绍以及 Koa2.x 环境搭建">
+<meta property="og:url" content="http://www.chenya.site/2018/01/05/004.koa学习/001.基础篇/001.koa2开始/001.Koa 框架介绍以及 Koa2.x 环境搭 建/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="目录 内容     一 Koa 框架介绍   二 Koa2.x 框架的安装使用    一、 Koa 框架介绍Node.js 是一个异步的世界， 官方 API 支持的都是 callback 形式的异步编程模型， 这会带来许多问题例如：1、callback嵌套问题2、 异步函数中可能同步调用 callback返回数据， 带来不一致性为了解决以上问题Koa出现了 Koa -- 基于 Node.js">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/1.1.start-result-01.png">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.495Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Koa 框架介绍以及 Koa2.x 环境搭建">
+<meta name="twitter:description" content="目录 内容     一 Koa 框架介绍   二 Koa2.x 框架的安装使用    一、 Koa 框架介绍Node.js 是一个异步的世界， 官方 API 支持的都是 callback 形式的异步编程模型， 这会带来许多问题例如：1、callback嵌套问题2、 异步函数中可能同步调用 callback返回数据， 带来不一致性为了解决以上问题Koa出现了 Koa -- 基于 Node.js">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/1.1.start-result-01.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">Koa 框架介绍以及 Koa2.x 环境搭建</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Koa 框架介绍以及 Koa2.x 环境搭建</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-01-05T15:12:03.000Z" itemprop="datePublished" class="page-time">
+  2018-01-05
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#一、-Koa-框架介绍"><span class="post-toc-number">1.</span> <span class="post-toc-text">一、 Koa 框架介绍</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Koa-学习网站："><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Koa 学习网站：</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#二、-Koa2-x-框架的安装使用"><span class="post-toc-number">2.</span> <span class="post-toc-text">二、 Koa2.x 框架的安装使用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1、安装-Node-js-8-x-以上的版本"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">1、安装 Node.js 8.x 以上的版本</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2、初始化package-json"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">2、初始化package.json</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3、-安装-Koa"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">3、 安装 Koa</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#4、-hello-world-代码"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">4、 hello world 代码</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5、启动demo"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">5、启动demo </span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-004.koa学习/001.基础篇/001.koa2开始/001.Koa 框架介绍以及 Koa2.x 环境搭 建"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Koa 框架介绍以及 Koa2.x 环境搭建</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-01-05 23:12:03" datetime="2018-01-05T15:12:03.000Z"  itemprop="datePublished">2018-01-05</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <table>
+<thead>
+<tr>
+<th style="text-align:center">目录</th>
+<th style="text-align:center">内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">一</td>
+<td style="text-align:center">Koa 框架介绍</td>
+</tr>
+<tr>
+<td style="text-align:center">二</td>
+<td style="text-align:center">Koa2.x 框架的安装使用</td>
+</tr>
+</tbody>
+</table>
+<h1 id="一、-Koa-框架介绍"><a href="#一、-Koa-框架介绍" class="headerlink" title="一、 Koa 框架介绍"></a>一、 Koa 框架介绍</h1><p>Node.js 是一个异步的世界， 官方 API 支持的都是 callback 形式的异步编程模型， 这会带来许多问题<br>例如：<br>1、<code>callback</code>嵌套问题<br>2、 异步函数中可能同步调用 <code>callback</code>返回数据， 带来不一致性<br>为了解决以上问题<code>Koa</code>出现了</p>
+<p><strong><code>Koa -- 基于 Node.js 平台的下一代 web 开发框架</code></strong></p>
+<p><code>koa</code>是由<code>Express</code>原班人马打造的， 致力于成为一个更小、 更富有表现力、 更健壮的Web 框架。 使用<code>koa</code>编写 web 应用，可以免除重复繁琐的回调函数嵌套<br><code>koa</code> 不在内核方法中绑定任何中间件， 它仅仅提供了一个轻量优雅的函数库， 使得编写 Web 应用变得得心应手<br>开发思路和 express 差不多， 最大的特点就是可以避免异步嵌套。</p>
+<blockquote>
+<p>阿里是业界最早的一批使用 <code>Node.js</code>来做线上大流量应用的公司，早在 2011 年的就已经开始在生产环境中使用。<br>众所周知， 在阿里的技术栈中，<code>Java</code>是最最核心的， 那 <code>Node.js</code>扮演怎么样的一个角色呢？<br>1、 基础设施大部分采用 <code>Java</code> 实现， 变化较少， 有事务要求的 <code>Business Services</code> 通常使用<code>Java</code>。<br>2、 而 <code>Node.js</code> 则替代过去<code>PHP/Java Web</code>的场景， 用在需要快速迭代， 需求变化非常快的用户侧。<br>3、 很多内部的工程化支撑系统也逐渐基于 <code>Node.js</code> 了。<br>据不完全统计， 目前阿里 <code>Node.js</code>的开发者几百号人， 线上的应用也非常之多， 仅次于<code>Java</code>应<br>用， 光对外服务的进程数就超过 1w+。<br>阿里内部就在使用<code>Koa</code>框架， 并在<code>Koa</code>基础上面做了一些扩展和封装。 并且基于 <code>koa</code>开发了一个开源框架 <code>egg</code></p>
+</blockquote>
+<h2 id="Koa-学习网站："><a href="#Koa-学习网站：" class="headerlink" title="Koa 学习网站："></a>Koa 学习网站：</h2><p><a href="http://koajs.com" title="英语官网" target="_blank" rel="noopener">英语官网</a><br><a href="https://koa.bootcss.com/" title="中文官网" target="_blank" rel="noopener">中文官网</a></p>
+<h1 id="二、-Koa2-x-框架的安装使用"><a href="#二、-Koa2-x-框架的安装使用" class="headerlink" title="二、 Koa2.x 框架的安装使用"></a>二、 Koa2.x 框架的安装使用</h1><h2 id="1、安装-Node-js-8-x-以上的版本"><a href="#1、安装-Node-js-8-x-以上的版本" class="headerlink" title="1、安装 Node.js 8.x 以上的版本"></a><strong>1、安装 Node.js 8.x 以上的版本</strong></h2><p>开发 Koa2 之前， Node.js 是有要求的， 它要求 Node.js 版本高于 <code>V7.6</code>。 因为 node.js 7.6 版本开始完全支持 <code>async/await</code>， 所以才能完全你支持我们的 Koa2。</p>
+<ul>
+<li>node.js环境 版本v7.6以上<ul>
+<li>直接安装node.js 7.6：node.js官网地址<a href="https://nodejs.org" target="_blank" rel="noopener">https://nodejs.org</a></li>
+<li>nvm管理多版本node.js：可以用nvm 进行node版本进行管理<ul>
+<li>Mac系统安装nvm <a href="https://github.com/creationix/nvm#manual-install" target="_blank" rel="noopener">https://github.com/creationix/nvm#manual-install</a></li>
+<li>windows系统安装nvm <a href="https://github.com/coreybutler/nvm-windows" target="_blank" rel="noopener">https://github.com/coreybutler/nvm-windows</a></li>
+<li>Ubuntu系统安装nvm <a href="https://github.com/creationix/nvm" target="_blank" rel="noopener">https://github.com/creationix/nvm</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>npm 版本3.x以上</li>
+</ul>
+<h2 id="2、初始化package-json"><a href="#2、初始化package-json" class="headerlink" title="2、初始化package.json"></a><strong>2、初始化package.json</strong></h2><pre class="line-numbers language-js"><code class="language-js">npm init
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="3、-安装-Koa"><a href="#3、-安装-Koa" class="headerlink" title="3、 安装 Koa"></a><strong>3、 安装 Koa</strong></h2><p>安装 Koa 框架和我们以前安装其他<code>模块</code>是一样的。</p>
+<pre class="line-numbers language-js"><code class="language-js">npm install <span class="token operator">--</span>save koa
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>或者</p>
+<pre class="line-numbers language-js"><code class="language-js">cnpm install <span class="token operator">--</span>save koa
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<blockquote>
+<p>–save 参数， 表示自动修改 package.json 文件，自动添加依赖项。</p>
+</blockquote>
+<h2 id="4、-hello-world-代码"><a href="#4、-hello-world-代码" class="headerlink" title="4、 hello world 代码"></a><strong>4、 hello world 代码</strong></h2><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> Koa <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'koa'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Koa</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span> <span class="token keyword">async</span> <span class="token punctuation">(</span> ctx <span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  ctx<span class="token punctuation">.</span>body <span class="token operator">=</span> <span class="token string">'hello koa2'</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'[demo] start-quick is starting at port 3000'</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="5、启动demo"><a href="#5、启动demo" class="headerlink" title="5、启动demo "></a><strong>5、启动demo </strong></h2><p>由于koa2是基于<code>async/await</code>操作中间件，目前node.js 7.x的harmony模式下才能使用，所以启动的时的脚本如下：</p>
+<pre class="line-numbers language-js"><code class="language-js">node index<span class="token punctuation">.</span>js
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>访问<a href="http:localhost:3000" target="_blank" rel="noopener">http:localhost:3000</a>，效果如下</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/1.1.start-result-01.png" alt="start-result-01" title>
+                </div>
+                <div class="image-caption">start-result-01</div>
+            </figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/01/05/004.koa学习/001.基础篇/001.koa2开始/001.Koa 框架介绍以及 Koa2.x 环境搭 建/" target="_blank" rel="external">http://www.chenya.site/2018/01/05/004.koa学习/001.基础篇/001.koa2开始/001.Koa 框架介绍以及 Koa2.x 环境搭 建/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/koa学习/">koa学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端资源/">前端资源</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/日常学习/">日常学习</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2018/01/05/004.koa学习/001.基础篇/001.koa2开始/001.Koa 框架介绍以及 Koa2.x 环境搭 建/&title=《Koa 框架介绍以及 Koa2.x 环境搭建》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2018/01/05/004.koa学习/001.基础篇/001.koa2开始/001.Koa 框架介绍以及 Koa2.x 环境搭 建/&title=《Koa 框架介绍以及 Koa2.x 环境搭建》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2018/01/05/004.koa学习/001.基础篇/001.koa2开始/001.Koa 框架介绍以及 Koa2.x 环境搭 建/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Koa 框架介绍以及 Koa2.x 环境搭建》 — 陈亚的个人主页&url=http://www.chenya.site/2018/01/05/004.koa学习/001.基础篇/001.koa2开始/001.Koa 框架介绍以及 Koa2.x 环境搭 建/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2018/01/05/004.koa学习/001.基础篇/001.koa2开始/001.Koa 框架介绍以及 Koa2.x 环境搭 建/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/01/06/004.koa学习/001.基础篇/001.koa2开始/002. async-await使用/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">async-await使用</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/01/05/005.vue源码学习/001.源码目录/001.学习内容/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Vue源码学习 - Vue源码学习内容</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2018/01/05/004.koa学习/001.基础篇/001.koa2开始/001.Koa 框架介绍以及 Koa2.x 环境搭 建/&title=《Koa 框架介绍以及 Koa2.x 环境搭建》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2018/01/05/004.koa学习/001.基础篇/001.koa2开始/001.Koa 框架介绍以及 Koa2.x 环境搭 建/&title=《Koa 框架介绍以及 Koa2.x 环境搭建》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2018/01/05/004.koa学习/001.基础篇/001.koa2开始/001.Koa 框架介绍以及 Koa2.x 环境搭 建/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Koa 框架介绍以及 Koa2.x 环境搭建》 — 陈亚的个人主页&url=http://www.chenya.site/2018/01/05/004.koa学习/001.基础篇/001.koa2开始/001.Koa 框架介绍以及 Koa2.x 环境搭 建/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2018/01/05/004.koa学习/001.基础篇/001.koa2开始/001.Koa 框架介绍以及 Koa2.x 环境搭 建/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASYAAAEmCAAAAADqr2IGAAAEc0lEQVR42u3aO3LbQBAFQN7/0nLqwKTemwFdXLARqSQI2G0EO7/HI75+/rqS3z/7a/uE9pnP/vp6DZddmDBhwoTpI5l+Xl754l4von1au73Nna/3jgkTJkyY7sHUvvg1ZfLMWUCQrPn1StqPigkTJkyYvo0peXFy6Labb5PhTRqMCRMmTJi+mWlG2W6+DSYSGkyYMGHC9M1M7eNmbcK2sLtvfOYhwmW1cEyYMGHC9GFMs1fe4+eLL0yYMGHC9GFMP+XVlnSTxDUPCPaByOzChAkTJkznMs1eky864dsksbO3DPeLCRMmTJgOZJq9Mi+Mbu7Zl1/bYOXpnZgwYcKE6VimWavy2pQ4HyFK1jnjiwIFTJgwYcJ0IFNSKs1LrrPNzBqNbTKcrPzp/2LChAkTplsw7Y/YFjfHSo7wzRqiCgEmTJgwYboFU1vqnRG0gcimrJw0WX+hx4QJEyZMxzLNyqmbIdTkaZuDvN3FY3ZhwoQJE6YDmfJWYv6yTRO0/TD54OksrMGECRMmTCcyzcZAZ8ltTpCECJsB1jp5xoQJEyZMxzIlm/+fAzebZDtZ/ywQwYQJEyZMpzPlae3sIM8hrg0IZkk7JkyYMGG6E1OS4uaJ7qYluSkE5wFKy/rIN4MJEyZMmD6YaT8KMyPeNBrbxLUNbjBhwoQJ052Y2mGX2dDPLDVtg4w23U3CDkyYMGHCdC7TDCVvB27oZ03WvEy8atBiwoQJE6ZDmNrm5SZ9nTUa83fN2pxRGxUTJkyYMN2CKdnYtSFC/q7ZSq5qfGLChAkTpjsxJQFBcvTO2qL5f+WH/eZdmDBhwoTpdKZry7ub1ubsgN+PAdUFaEyYMGHCdBRT8ri2FLthygvBM9BhuIAJEyZMmI5lipK9vBgal2vzlLtti+6f9nTXmDBhwoTpQKZNa3A/6JMXcDdPbtcWxU2YMGHChOlGTPsRmdXQzChtbtf2S2CBCRMmTJhuyjQbl8k/wFVH+6bEjAkTJkyYvoFpNv5ybdrZ3pOHKft7MGHChAnT6UyzYm5L+To1nSXbLWVbSsaECRMmTKcztWlwXkJNkud8G+9rXrafFhMmTJgwncU0Sz7bheYBR86dfOBZOxMTJkyYMN2PaQORF4WTozfhyO/JKX9ZLSZMmDBhOpbpHQM6bdqZl3Q3B/9s/W+cY8KECRMmTP+FKT+S8wZnWxR+3yhPizXs+mLChAkTpkOY9kfs5vebgGM2gpMXlzFhwoQJ07lMbap51W/aZDhPX/NwYXVhwoQJE6ZDmGYH6uYo3aTWxYF9UVDyj64vJkyYMGE6iml2JuYHdtIQbQdo2pAlCRrynWLChAkTphOZZkFAPvrT8iXjPnnAsS80Y8KECROmezDlh+jmuG3Lu7NE+tq3YMKECROmb2OahQ6zkussMU72WI8NYcKECROmL2NqW4CbrbaDp0k9u25bYsKECROmw5naImzbtmzLuG3zMsdNkudVLRwTJkyYMH0Y0wUF0Lj4u2mFXhUi5B8bEyZMmDAdzvQHo9jx8yLxh0IAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

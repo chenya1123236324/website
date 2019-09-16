@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>基础篇-05.Bootstrap综合问题 | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="前端知识体系,基础篇,Bootstrap">
+    <meta name="description" content="五、Bootstrap1 什么是Bootstrap？以及为什么要使用Bootstrap？ Bootstrap 是一个用于快速开发 Web应用程序和网站的前端框架。Bootstrap是基于 HTML、CSS、JAVASCRIPT 的   Bootstrap具有移动设备优先、浏览器支持良好、容易上手、响应式设计等优点，所以Bootstrap被广泛应用  2 使用Bootstrap时，要声明的文档类型是">
+<meta name="keywords" content="前端知识体系,基础篇,Bootstrap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基础篇-05.Bootstrap综合问题">
+<meta property="og:url" content="http://www.chenya.site/2016/06/03/002.前端知识体系/001.基础篇/005.基础篇之Bootstrap综合问题/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="五、Bootstrap1 什么是Bootstrap？以及为什么要使用Bootstrap？ Bootstrap 是一个用于快速开发 Web应用程序和网站的前端框架。Bootstrap是基于 HTML、CSS、JAVASCRIPT 的   Bootstrap具有移动设备优先、浏览器支持良好、容易上手、响应式设计等优点，所以Bootstrap被广泛应用  2 使用Bootstrap时，要声明的文档类型是">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.488Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基础篇-05.Bootstrap综合问题">
+<meta name="twitter:description" content="五、Bootstrap1 什么是Bootstrap？以及为什么要使用Bootstrap？ Bootstrap 是一个用于快速开发 Web应用程序和网站的前端框架。Bootstrap是基于 HTML、CSS、JAVASCRIPT 的   Bootstrap具有移动设备优先、浏览器支持良好、容易上手、响应式设计等优点，所以Bootstrap被广泛应用  2 使用Bootstrap时，要声明的文档类型是">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">基础篇-05.Bootstrap综合问题</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">基础篇-05.Bootstrap综合问题</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2016-06-02T17:02:15.000Z" itemprop="datePublished" class="page-time">
+  2016-06-03
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#五、Bootstrap"><span class="post-toc-number">1.</span> <span class="post-toc-text">五、Bootstrap</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-什么是Bootstrap？以及为什么要使用Bootstrap？"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">1 什么是Bootstrap？以及为什么要使用Bootstrap？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-使用Bootstrap时，要声明的文档类型是什么？以及为什么要这样声明？"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">2 使用Bootstrap时，要声明的文档类型是什么？以及为什么要这样声明？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-什么是Bootstrap网格系统"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">3 什么是Bootstrap网格系统</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-Bootstrap-网格系统（Grid-System）的工作原理"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">4 Bootstrap 网格系统（Grid System）的工作原理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5-对于各类尺寸的设备，Bootstrap设置的class前缀分别是什么"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">5 对于各类尺寸的设备，Bootstrap设置的class前缀分别是什么</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#6-Bootstrap-网格系统列与列之间的间隙宽度是多少"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">6 Bootstrap 网格系统列与列之间的间隙宽度是多少</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#7-如果需要在一个标题的旁边创建副标题，可以怎样操作"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">7 如果需要在一个标题的旁边创建副标题，可以怎样操作</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#8-用Bootstrap，如何设置文字的对齐方式？"><span class="post-toc-number">1.8.</span> <span class="post-toc-text">8 用Bootstrap，如何设置文字的对齐方式？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#9-Bootstrap如何设置响应式表格？"><span class="post-toc-number">1.9.</span> <span class="post-toc-text">9 Bootstrap如何设置响应式表格？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#10-使用Bootstrap创建垂直表单的基本步骤？"><span class="post-toc-number">1.10.</span> <span class="post-toc-text">10 使用Bootstrap创建垂直表单的基本步骤？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#11-使用Bootstrap创建水平表单的基本步骤？"><span class="post-toc-number">1.11.</span> <span class="post-toc-text">11 使用Bootstrap创建水平表单的基本步骤？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#12-使用Bootstrap如何创建表单控件的帮助文本？"><span class="post-toc-number">1.12.</span> <span class="post-toc-text">12 使用Bootstrap如何创建表单控件的帮助文本？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#13-使用Bootstrap激活或禁用按钮要如何操作？"><span class="post-toc-number">1.13.</span> <span class="post-toc-text">13 使用Bootstrap激活或禁用按钮要如何操作？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#14-Bootstrap有哪些关于的class？"><span class="post-toc-number">1.14.</span> <span class="post-toc-text">14 Bootstrap有哪些关于的class？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#15-Bootstrap中有关元素浮动及清除浮动的class？"><span class="post-toc-number">1.15.</span> <span class="post-toc-text">15 Bootstrap中有关元素浮动及清除浮动的class？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#16-除了屏幕阅读器外，其他设备上隐藏元素的class？"><span class="post-toc-number">1.16.</span> <span class="post-toc-text">16 除了屏幕阅读器外，其他设备上隐藏元素的class？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#17-Bootstrap如何制作下拉菜单？"><span class="post-toc-number">1.17.</span> <span class="post-toc-text">17 Bootstrap如何制作下拉菜单？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#18-Bootstrap如何制作按钮组？以及水平按钮组和垂直按钮组的优先级？"><span class="post-toc-number">1.18.</span> <span class="post-toc-text">18 Bootstrap如何制作按钮组？以及水平按钮组和垂直按钮组的优先级？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#19-Bootstrap如何设置按钮的下拉菜单？"><span class="post-toc-number">1.19.</span> <span class="post-toc-text">19 Bootstrap如何设置按钮的下拉菜单？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#20-Bootstrap中的输入框组如何制作？"><span class="post-toc-number">1.20.</span> <span class="post-toc-text">20 Bootstrap中的输入框组如何制作？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#21-Bootstrap中的导航都有哪些？"><span class="post-toc-number">1.21.</span> <span class="post-toc-text">21 Bootstrap中的导航都有哪些？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#22-Bootstrap中设置分页的class？"><span class="post-toc-number">1.22.</span> <span class="post-toc-text">22 Bootstrap中设置分页的class？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#23-Bootstrap中显示标签的class？"><span class="post-toc-number">1.23.</span> <span class="post-toc-text">23 Bootstrap中显示标签的class？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#24-Bootstrap中如何制作徽章？"><span class="post-toc-number">1.24.</span> <span class="post-toc-text">24 Bootstrap中如何制作徽章？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#25-Bootstrap中超大屏幕的作用是什么？"><span class="post-toc-number">1.25.</span> <span class="post-toc-text">25 Bootstrap中超大屏幕的作用是什么？</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-002.前端知识体系/001.基础篇/005.基础篇之Bootstrap综合问题"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">基础篇-05.Bootstrap综合问题</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2016-06-03 01:02:15" datetime="2016-06-02T17:02:15.000Z"  itemprop="datePublished">2016-06-03</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="五、Bootstrap"><a href="#五、Bootstrap" class="headerlink" title="五、Bootstrap"></a>五、Bootstrap</h2><h3 id="1-什么是Bootstrap？以及为什么要使用Bootstrap？"><a href="#1-什么是Bootstrap？以及为什么要使用Bootstrap？" class="headerlink" title="1 什么是Bootstrap？以及为什么要使用Bootstrap？"></a>1 什么是Bootstrap？以及为什么要使用Bootstrap？</h3><blockquote>
+<p><code>Bootstrap</code> 是一个用于快速开发 <code>Web</code>应用程序和网站的前端框架。<code>Bootstrap</code>是基于 <code>HTML</code>、<code>CSS</code>、<code>JAVASCRIPT</code> 的</p>
+</blockquote>
+<ul>
+<li><code>Bootstrap</code>具有移动设备优先、浏览器支持良好、容易上手、响应式设计等优点，所以<code>Bootstrap</code>被广泛应用</li>
+</ul>
+<h3 id="2-使用Bootstrap时，要声明的文档类型是什么？以及为什么要这样声明？"><a href="#2-使用Bootstrap时，要声明的文档类型是什么？以及为什么要这样声明？" class="headerlink" title="2 使用Bootstrap时，要声明的文档类型是什么？以及为什么要这样声明？"></a>2 使用Bootstrap时，要声明的文档类型是什么？以及为什么要这样声明？</h3><ul>
+<li>使用<code>Bootstrap</code>时，需要使用 <code>HTML5</code> 文档类型（<code>Doctype</code>）。<code>&lt;!DOCTYPE html&gt;</code></li>
+<li>因为<code>Bootstrap</code>使用了一些 <code>HTML5</code> 元素和 <code>CSS</code> 属性，如果在 <code>Bootstrap</code>创建的网页开头不使用 <code>HTML5</code> 的文档类型（<code>Doctype</code>），可能会面临一些浏览器显示不一致的问题，甚至可能面临一些特定情境下的不一致，以致于代码不能通过 <code>W3C</code> 标准的验证</li>
+</ul>
+<h3 id="3-什么是Bootstrap网格系统"><a href="#3-什么是Bootstrap网格系统" class="headerlink" title="3 什么是Bootstrap网格系统"></a>3 什么是Bootstrap网格系统</h3><blockquote>
+<p><code>Bootstrap</code> 包含了一个响应式的、移动设备优先的、不固定的网格系统，可以随着设备或视口大小的增加而适当地扩展到 <code>12</code> 列。它包含了用于简单的布局选项的预定义类，也包含了用于生成更多语义布局的功能强大的混合类</p>
+</blockquote>
+<ul>
+<li>响应式网格系统随着屏幕或视口（<code>viewport</code>）尺寸的增加，系统会自动分为最多<code>12</code>列。</li>
+</ul>
+<h3 id="4-Bootstrap-网格系统（Grid-System）的工作原理"><a href="#4-Bootstrap-网格系统（Grid-System）的工作原理" class="headerlink" title="4 Bootstrap 网格系统（Grid System）的工作原理"></a>4 Bootstrap 网格系统（Grid System）的工作原理</h3><ul>
+<li>（1）行必须放置在 <code>.container class</code> 内，以便获得适当的对齐（<code>alignment</code>）和内边距（<code>padding</code>）。</li>
+<li>（2）使用行来创建列的水平组。</li>
+<li>（3）内容应该放置在列内，且唯有列可以是行的直接子元素。</li>
+<li>（4）预定义的网格类，比如 <code>.row</code> 和 <code>.col-xs-4</code>，可用于快速创建网格布局。<code>LESS</code> 混合类可用于更多语义布局。</li>
+<li>（5）列通过内边距（<code>padding</code>）来创建列内容之间的间隙。该内边距是通过 <code>.rows</code> 上的外边距（<code>margin</code>）取负，表示第一列和最后一列的行偏移。</li>
+<li>（6）网格系统是通过指定您想要横跨的十二个可用的列来创建的。例如，要创建三个相等的列，则使用三个 <code>.col-xs-4</code></li>
+</ul>
+<h3 id="5-对于各类尺寸的设备，Bootstrap设置的class前缀分别是什么"><a href="#5-对于各类尺寸的设备，Bootstrap设置的class前缀分别是什么" class="headerlink" title="5 对于各类尺寸的设备，Bootstrap设置的class前缀分别是什么"></a>5 对于各类尺寸的设备，Bootstrap设置的class前缀分别是什么</h3><ul>
+<li>超小设备手机（<code>&lt;768px</code>）：<code>.col-xs-</code></li>
+<li>小型设备平板电脑（<code>&gt;=768px</code>）：<code>.col-sm-</code></li>
+<li>中型设备台式电脑（<code>&gt;=992px</code>）：<code>.col-md-</code></li>
+<li>大型设备台式电脑（<code>&gt;=1200px</code>）：<code>.col-lg-</code></li>
+</ul>
+<h3 id="6-Bootstrap-网格系统列与列之间的间隙宽度是多少"><a href="#6-Bootstrap-网格系统列与列之间的间隙宽度是多少" class="headerlink" title="6 Bootstrap 网格系统列与列之间的间隙宽度是多少"></a>6 Bootstrap 网格系统列与列之间的间隙宽度是多少</h3><blockquote>
+<p>间隙宽度为<code>30px</code>（一个列的每边分别是<code>15px</code>）</p>
+</blockquote>
+<h3 id="7-如果需要在一个标题的旁边创建副标题，可以怎样操作"><a href="#7-如果需要在一个标题的旁边创建副标题，可以怎样操作" class="headerlink" title="7 如果需要在一个标题的旁边创建副标题，可以怎样操作"></a>7 如果需要在一个标题的旁边创建副标题，可以怎样操作</h3><blockquote>
+<p>在元素两旁添加<code>&lt;small&gt;</code>，或者添加<code>.small</code>的<code>class</code></p>
+</blockquote>
+<h3 id="8-用Bootstrap，如何设置文字的对齐方式？"><a href="#8-用Bootstrap，如何设置文字的对齐方式？" class="headerlink" title="8 用Bootstrap，如何设置文字的对齐方式？"></a>8 用Bootstrap，如何设置文字的对齐方式？</h3><ul>
+<li><code>class=&quot;text-center&quot;</code> 设置居中文本</li>
+<li><code>class=&quot;text-right&quot;</code> 设置向右对齐文本</li>
+<li><code>class=&quot;text-left&quot;</code> 设置向左对齐文本</li>
+</ul>
+<h3 id="9-Bootstrap如何设置响应式表格？"><a href="#9-Bootstrap如何设置响应式表格？" class="headerlink" title="9 Bootstrap如何设置响应式表格？"></a>9 Bootstrap如何设置响应式表格？</h3><blockquote>
+<p>增加<code>class=&quot;table-responsive&quot;</code></p>
+</blockquote>
+<h3 id="10-使用Bootstrap创建垂直表单的基本步骤？"><a href="#10-使用Bootstrap创建垂直表单的基本步骤？" class="headerlink" title="10 使用Bootstrap创建垂直表单的基本步骤？"></a>10 使用Bootstrap创建垂直表单的基本步骤？</h3><ul>
+<li><p>（1）向父<code>&lt;form&gt;</code>元素添加<code>role=&quot;form&quot;</code>；</p>
+</li>
+<li><p>（2）把标签和控件放在一个带有<code>class=&quot;form-group&quot;</code>的<code>&lt;div&gt;</code>中，这是获取最佳间距所必需的；</p>
+</li>
+<li><p>（3）向所有的文本元素<code>&lt;input&gt;</code>、<code>&lt;textarea&gt;</code>、<code>&lt;select&gt;</code>添加<code>class=&quot;form-control&quot;</code></p>
+</li>
+</ul>
+<h3 id="11-使用Bootstrap创建水平表单的基本步骤？"><a href="#11-使用Bootstrap创建水平表单的基本步骤？" class="headerlink" title="11 使用Bootstrap创建水平表单的基本步骤？"></a>11 使用Bootstrap创建水平表单的基本步骤？</h3><ul>
+<li><p>（1）向父<code>&lt;form&gt;</code>元素添加<code>class=&quot;form-horizontal&quot;</code>；</p>
+</li>
+<li><p>（2）把标签和控件放在一个带有<code>class=&quot;form-group&quot;</code>的<code>&lt;div&gt;</code>中；</p>
+</li>
+<li><p>（3）向标签添加<code>class=&quot;control-label&quot;</code>。</p>
+</li>
+</ul>
+<h3 id="12-使用Bootstrap如何创建表单控件的帮助文本？"><a href="#12-使用Bootstrap如何创建表单控件的帮助文本？" class="headerlink" title="12 使用Bootstrap如何创建表单控件的帮助文本？"></a>12 使用Bootstrap如何创建表单控件的帮助文本？</h3><blockquote>
+<p>增加<code>class=&quot;help-block&quot;</code>的<code>span</code>标签或<code>p</code>标签。</p>
+</blockquote>
+<h3 id="13-使用Bootstrap激活或禁用按钮要如何操作？"><a href="#13-使用Bootstrap激活或禁用按钮要如何操作？" class="headerlink" title="13 使用Bootstrap激活或禁用按钮要如何操作？"></a>13 使用Bootstrap激活或禁用按钮要如何操作？</h3><ul>
+<li>激活按钮：给按钮增加<code>.active</code>的<code>class</code></li>
+<li>禁用按钮：给按钮增加<code>disabled=&quot;disabled&quot;</code>的属性</li>
+</ul>
+<h3 id="14-Bootstrap有哪些关于的class？"><a href="#14-Bootstrap有哪些关于的class？" class="headerlink" title="14 Bootstrap有哪些关于的class？"></a>14 Bootstrap有哪些关于<img>的class？</h3><ul>
+<li>（1）<code>.img-rounded</code> 为图片添加圆角</li>
+<li>（2）<code>.img-circle</code> 将图片变为圆形</li>
+<li>（3）<code>.img-thumbnail</code> 缩略图功能</li>
+<li>（4）<code>.img-responsive</code> 图片响应式 (将很好地扩展到父元素)</li>
+</ul>
+<h3 id="15-Bootstrap中有关元素浮动及清除浮动的class？"><a href="#15-Bootstrap中有关元素浮动及清除浮动的class？" class="headerlink" title="15 Bootstrap中有关元素浮动及清除浮动的class？"></a>15 Bootstrap中有关元素浮动及清除浮动的class？</h3><ul>
+<li><p>（1）<code>class=&quot;pull-left&quot;</code> 元素浮动到左边</p>
+</li>
+<li><p>（2）<code>class=&quot;pull-right&quot;</code> 元素浮动到右边</p>
+</li>
+<li><p>（3）<code>class=&quot;clearfix&quot;</code> 清除浮动</p>
+</li>
+</ul>
+<h3 id="16-除了屏幕阅读器外，其他设备上隐藏元素的class？"><a href="#16-除了屏幕阅读器外，其他设备上隐藏元素的class？" class="headerlink" title="16 除了屏幕阅读器外，其他设备上隐藏元素的class？"></a>16 除了屏幕阅读器外，其他设备上隐藏元素的class？</h3><blockquote>
+<p><code>class=&quot;sr-only&quot;`</code></p>
+</blockquote>
+<h3 id="17-Bootstrap如何制作下拉菜单？"><a href="#17-Bootstrap如何制作下拉菜单？" class="headerlink" title="17 Bootstrap如何制作下拉菜单？"></a>17 Bootstrap如何制作下拉菜单？</h3><ul>
+<li>（1）将下拉菜单包裹在<code>class=&quot;dropdown&quot;</code>的<code>&lt;div&gt;</code>中；</li>
+<li>（2）在触发下拉菜单的按钮中添加：<code>class=&quot;btn dropdown-toggle&quot; id=&quot;dropdownMenu1&quot; data-toggle=&quot;dropdown&quot;</code></li>
+<li>（3）在包裹下拉菜单的ul中添加：<code>class=&quot;dropdown-menu&quot; role=&quot;menu&quot; aria-labelledby=&quot;dropdownMenu1&quot;</code></li>
+<li>（4）在下拉菜单的列表项中添加：<code>role=&quot;presentation&quot;</code>。其中，下拉菜单的标题要添加<code>class=&quot;dropdown-header&quot;</code>，选项部分要添加<code>tabindex=&quot;-1&quot;</code>。</li>
+</ul>
+<h3 id="18-Bootstrap如何制作按钮组？以及水平按钮组和垂直按钮组的优先级？"><a href="#18-Bootstrap如何制作按钮组？以及水平按钮组和垂直按钮组的优先级？" class="headerlink" title="18 Bootstrap如何制作按钮组？以及水平按钮组和垂直按钮组的优先级？"></a>18 Bootstrap如何制作按钮组？以及水平按钮组和垂直按钮组的优先级？</h3><ul>
+<li>（1）用<code>class=&quot;btn-group&quot;</code>的<code>&lt;div&gt;</code>去包裹按钮组；<code>class=&quot;btn-group-vertical&quot;</code>可设置垂直按钮组。</li>
+<li>（2）<code>btn-group</code>的优先级高于<code>btn-group-vertical</code>的优先级。</li>
+</ul>
+<h3 id="19-Bootstrap如何设置按钮的下拉菜单？"><a href="#19-Bootstrap如何设置按钮的下拉菜单？" class="headerlink" title="19 Bootstrap如何设置按钮的下拉菜单？"></a>19 Bootstrap如何设置按钮的下拉菜单？</h3><blockquote>
+<p>在一个 <code>.btn-group</code> 中放置按钮和下拉菜单即可。</p>
+</blockquote>
+<h3 id="20-Bootstrap中的输入框组如何制作？"><a href="#20-Bootstrap中的输入框组如何制作？" class="headerlink" title="20 Bootstrap中的输入框组如何制作？"></a>20 Bootstrap中的输入框组如何制作？</h3><ul>
+<li>（1）把前缀或者后缀元素放在一个带有<code>class=&quot;input-group&quot;</code>中的<code>&lt;div&gt;</code>中</li>
+<li>（2）在该<code>&lt;div&gt;</code>内，在<code>class=&quot;input-group-addon&quot;</code>的<code>&lt;span&gt;</code>里面放置额外的内容；</li>
+<li>（3）把<code>&lt;span&gt;</code>放在<code>&lt;input&gt;</code>元素的前面或后面。</li>
+</ul>
+<h3 id="21-Bootstrap中的导航都有哪些？"><a href="#21-Bootstrap中的导航都有哪些？" class="headerlink" title="21 Bootstrap中的导航都有哪些？"></a>21 Bootstrap中的导航都有哪些？</h3><ul>
+<li>（1）导航元素：有<code>class=&quot;nav nav-tabs&quot;</code>的标签页导航，还有<code>class=&quot;nav nav-pills&quot;</code>的胶囊式标签页导航；</li>
+<li>（2）导航栏：<code>class=&quot;navbar navbar-default&quot; role=&quot;navigation&quot;</code>；</li>
+<li>（3）面包屑导航：<code>class=&quot;breadcrumb&quot;</code></li>
+</ul>
+<h3 id="22-Bootstrap中设置分页的class？"><a href="#22-Bootstrap中设置分页的class？" class="headerlink" title="22 Bootstrap中设置分页的class？"></a>22 Bootstrap中设置分页的class？</h3><ul>
+<li>默认的分页：<code>class=&quot;pagination&quot;</code></li>
+<li>默认的翻页：<code>class=&quot;pager&quot;</code></li>
+</ul>
+<h3 id="23-Bootstrap中显示标签的class？"><a href="#23-Bootstrap中显示标签的class？" class="headerlink" title="23 Bootstrap中显示标签的class？"></a>23 Bootstrap中显示标签的class？</h3><blockquote>
+<p><code>class=&quot;label&quot;</code></p>
+</blockquote>
+<h3 id="24-Bootstrap中如何制作徽章？"><a href="#24-Bootstrap中如何制作徽章？" class="headerlink" title="24 Bootstrap中如何制作徽章？"></a>24 Bootstrap中如何制作徽章？</h3><blockquote>
+<p><code>&lt;span class=&quot;badge&quot;&gt;26&lt;/span&gt;</code></p>
+</blockquote>
+<h3 id="25-Bootstrap中超大屏幕的作用是什么？"><a href="#25-Bootstrap中超大屏幕的作用是什么？" class="headerlink" title="25 Bootstrap中超大屏幕的作用是什么？"></a>25 Bootstrap中超大屏幕的作用是什么？</h3><blockquote>
+<p>设置<code>class=&quot;jumbotron&quot;</code>可以制作超大屏幕，该组件可以增加标题的大小并增加更多的外边距</p>
+</blockquote>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2016/06/03/002.前端知识体系/001.基础篇/005.基础篇之Bootstrap综合问题/" target="_blank" rel="external">http://www.chenya.site/2016/06/03/002.前端知识体系/001.基础篇/005.基础篇之Bootstrap综合问题/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Bootstrap/">Bootstrap</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端知识体系/">前端知识体系</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/基础篇/">基础篇</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2016/06/03/002.前端知识体系/001.基础篇/005.基础篇之Bootstrap综合问题/&title=《基础篇-05.Bootstrap综合问题》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2016/06/03/002.前端知识体系/001.基础篇/005.基础篇之Bootstrap综合问题/&title=《基础篇-05.Bootstrap综合问题》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2016/06/03/002.前端知识体系/001.基础篇/005.基础篇之Bootstrap综合问题/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《基础篇-05.Bootstrap综合问题》 — 陈亚的个人主页&url=http://www.chenya.site/2016/06/03/002.前端知识体系/001.基础篇/005.基础篇之Bootstrap综合问题/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2016/06/03/002.前端知识体系/001.基础篇/005.基础篇之Bootstrap综合问题/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2016/06/06/002.前端知识体系/001.基础篇/006.基础篇之微信小程序综合问题/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">基础篇-06.微信小程序综合问题</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2016/06/01/002.前端知识体系/001.基础篇/004.基础篇之jQuery综合问题/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">基础篇-04.jQuery综合问题</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2016/06/03/002.前端知识体系/001.基础篇/005.基础篇之Bootstrap综合问题/&title=《基础篇-05.Bootstrap综合问题》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2016/06/03/002.前端知识体系/001.基础篇/005.基础篇之Bootstrap综合问题/&title=《基础篇-05.Bootstrap综合问题》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2016/06/03/002.前端知识体系/001.基础篇/005.基础篇之Bootstrap综合问题/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《基础篇-05.Bootstrap综合问题》 — 陈亚的个人主页&url=http://www.chenya.site/2016/06/03/002.前端知识体系/001.基础篇/005.基础篇之Bootstrap综合问题/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2016/06/03/002.前端知识体系/001.基础篇/005.基础篇之Bootstrap综合问题/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAEOCAAAAABd2qZ5AAAD7klEQVR42u3ay27iUBAEUP7/pxlpVrPATlX3dYbF8SoCcjEnkYp+vF7x9f57XT3+77PJK69ef/+794/nd3LgwoEDBw4cwUe9uu7f+P717S0mJ+d/kvaeceDAgQPHWY48xhKmWZZt4nP/Wzhw4MCB4/c58mBry8K8qLt6r/tHcODAgQPHd3K0TcD8tpJzZo1LHDhw4MDxvzjyZl/egEuiMQ/OJHrzZuWBXikOHDhw4JjUWcNy69t+fnC/AwcOHDhwxBGVBFI7ZEqCtg3LduXi8hwcOHDgwLHmSAY2bbstya9NWzDB3TQ3ceDAgQPHhuO5tbbNcsOm+Zg3JYv5FQ4cOHDgiDnyEJoFWDt8mg2TkiWM+n8EBw4cOHCMOGZLDG2NeDYgZ8Vb8o44cODAgWPPMWuu5aOgpKW4KdJmrMmzOHDgwIFjz7EB2jT+2oBvB1SbMRsOHDhw4Gg5ZgtwebGUwyXntK3MenkCBw4cOHCsOWaxN7vppGzbD7ralQgcOHDgwHGWIz86f3bz8WYl4uZLQL3ZgQMHDhw4So5NETVbiXiV12b14YcvFjhw4MCB4xBHu3awGQUVNxcTzJbqLmtZHDhw4MDxAMembGtD99SKXov74XPhwIEDB441x76syt/y6eg9VgTiwIEDB44z/bRijJRH476lOAvmZAxWXzhw4MCBo+TYhFm7rHZ2BJUv5A0LORw4cODAUXLMGnP7AmkW5PsvCjhw4MCB42mO2SLCc224fHy1uecffgsHDhw4cCw48iW52bJCHs/5Ql5byOWtRhw4cODAsedo23z7MG5Puy/A2gWIVccUBw4cOHDccuQRtS+Q9mOtdqGhjnMcOHDgwPFsZVSUTO9D1yak90UgDhw4cOA4y9GO/GctxbaE2xRpqxU9HDhw4MCx4MhvKw/d2fCpjfNTJ3yYwuHAgQMHjhFHu4g2ayO2sTo7sy0so14pDhw4cODYzvfrFltCtj8t/4Pds+LAgQMHjt/kmA2T2iJqVgS2KxT5mcX/BQ4cOHDgCM4/tYLWjpra9YI2qtu4/VDR4sCBAweOBccsJmcrC5sCbLZ4UYDiwIEDB441R94QfMfX5qb3oT4r+XDgwIEDxymOd3nlb9OuQdzzJa/JmS5PxoEDBw4ca478alcW8oZdEsyzVmPC1A63cODAgQNHwtGWZG27sA3CtgicBfmwkMOBAwcOHDFH+/E2hVMb8EnjctZYLJ7GgQMHDhwPcLTlVru+sBk+tX9CHDhw4MDxbRxtBM4+Ul5k7lcicODAgQPHWY52zLNZnmtB8/tp24KrXikOHDhw4BhthbWh264atMsTw5Zf2XzEgQMHDhwjjj++cNdaCdXBPQAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

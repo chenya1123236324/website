@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>原生koa2实现静态资源服务器 | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="日常学习,前端资源,koa学习">
+    <meta name="description" content="原生koa2实现静态资源服务器前言一个http请求访问web服务静态资源，一般响应结果有三种情况  访问文本，例如js，css，png，jpg，gif 访问静态目录 找不到资源，抛出404错误  原生koa2 静态资源服务器例子demo源码 static-server 代码目录├── static # 静态资源目录 │   ├── css/ │   ├── image/ │   ├── js/ │">
+<meta name="keywords" content="日常学习,前端资源,koa学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原生koa2实现静态资源服务器">
+<meta property="og:url" content="http://www.chenya.site/2018/03/03/004.koa学习/001.基础篇/004.静态资源加载/001.原生koa2实现静态资源服务器/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="原生koa2实现静态资源服务器前言一个http请求访问web服务静态资源，一般响应结果有三种情况  访问文本，例如js，css，png，jpg，gif 访问静态目录 找不到资源，抛出404错误  原生koa2 静态资源服务器例子demo源码 static-server 代码目录├── static # 静态资源目录 │   ├── css/ │   ├── image/ │   ├── js/ │">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/4.4.1.static-server-result-01.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/4.4.1.static-server-result-02.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/4.4.1.static-server-result-03.png">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.498Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="原生koa2实现静态资源服务器">
+<meta name="twitter:description" content="原生koa2实现静态资源服务器前言一个http请求访问web服务静态资源，一般响应结果有三种情况  访问文本，例如js，css，png，jpg，gif 访问静态目录 找不到资源，抛出404错误  原生koa2 静态资源服务器例子demo源码 static-server 代码目录├── static # 静态资源目录 │   ├── css/ │   ├── image/ │   ├── js/ │">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/4.4.1.static-server-result-01.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">原生koa2实现静态资源服务器</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">原生koa2实现静态资源服务器</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-03-03T14:39:51.000Z" itemprop="datePublished" class="page-time">
+  2018-03-03
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#原生koa2实现静态资源服务器"><span class="post-toc-number">1.</span> <span class="post-toc-text">原生koa2实现静态资源服务器</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#原生koa2-静态资源服务器例子"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">原生koa2 静态资源服务器例子</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#代码目录"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">代码目录</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#代码解析"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">代码解析</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#index-js"><span class="post-toc-number">1.2.2.1.</span> <span class="post-toc-text">index.js</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#util-content-js"><span class="post-toc-number">1.2.2.2.</span> <span class="post-toc-text">util/content.js</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#util-dir-js"><span class="post-toc-number">1.2.2.3.</span> <span class="post-toc-text">util/dir.js</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#util-file-js"><span class="post-toc-number">1.2.2.4.</span> <span class="post-toc-text">util/file.js</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#util-walk-js"><span class="post-toc-number">1.2.2.5.</span> <span class="post-toc-text">util/walk.js</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#util-mime-js"><span class="post-toc-number">1.2.2.6.</span> <span class="post-toc-text">util/mime.js</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#运行效果"><span class="post-toc-number">1.2.3.</span> <span class="post-toc-text">运行效果</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#启动服务"><span class="post-toc-number">1.2.3.1.</span> <span class="post-toc-text">启动服务</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#效果"><span class="post-toc-number">1.2.3.2.</span> <span class="post-toc-text">效果</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#访问http-localhost-3000"><span class="post-toc-number">1.2.3.2.1.</span> <span class="post-toc-text">访问http://localhost:3000</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#访问http-localhost-3000-index-html"><span class="post-toc-number">1.2.3.2.2.</span> <span class="post-toc-text">访问http://localhost:3000/index.html</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#访问http-localhost-3000-js-index-js"><span class="post-toc-number">1.2.3.2.3.</span> <span class="post-toc-text">访问http://localhost:3000/js/index.js</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-004.koa学习/001.基础篇/004.静态资源加载/001.原生koa2实现静态资源服务器"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">原生koa2实现静态资源服务器</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-03-03 22:39:51" datetime="2018-03-03T14:39:51.000Z"  itemprop="datePublished">2018-03-03</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="原生koa2实现静态资源服务器"><a href="#原生koa2实现静态资源服务器" class="headerlink" title="原生koa2实现静态资源服务器"></a>原生koa2实现静态资源服务器</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>一个http请求访问web服务静态资源，一般响应结果有三种情况</p>
+<ul>
+<li>访问文本，例如js，css，png，jpg，gif</li>
+<li>访问静态目录</li>
+<li>找不到资源，抛出404错误</li>
+</ul>
+<h2 id="原生koa2-静态资源服务器例子"><a href="#原生koa2-静态资源服务器例子" class="headerlink" title="原生koa2 静态资源服务器例子"></a>原生koa2 静态资源服务器例子</h2><p>demo源码</p>
+<p><a href="https://github.com/chenya1123236324/picture-management/tree/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/demo/static-server" target="_blank" rel="noopener">static-server</a></p>
+<h3 id="代码目录"><a href="#代码目录" class="headerlink" title="代码目录"></a>代码目录</h3><pre class="line-numbers language-sh"><code class="language-sh">├── static # 静态资源目录
+│   ├── css/
+│   ├── image/
+│   ├── js/
+│   └── index.html
+├── util # 工具代码
+│   ├── content.js # 读取请求内容
+│   ├── dir.js # 读取目录内容
+│   ├── file.js # 读取文件内容
+│   ├── mimes.js # 文件类型列表
+│   └── walk.js # 遍历目录内容
+└── index.js # 启动入口文件
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="代码解析"><a href="#代码解析" class="headerlink" title="代码解析"></a>代码解析</h3><h4 id="index-js"><a href="#index-js" class="headerlink" title="index.js"></a>index.js</h4><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> Koa <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'koa'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> path <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'path'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> content <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./util/content'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> mimes <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./util/mimes'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Koa</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// 静态资源目录对于相对入口文件index.js的路径</span>
+<span class="token keyword">const</span> staticPath <span class="token operator">=</span> <span class="token string">'./static'</span>
+
+<span class="token comment" spellcheck="true">// 解析资源类型</span>
+<span class="token keyword">function</span> <span class="token function">parseMime</span><span class="token punctuation">(</span> url <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> extName <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">extname</span><span class="token punctuation">(</span> url <span class="token punctuation">)</span>
+  extName <span class="token operator">=</span> extName <span class="token operator">?</span>  extName<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token string">'unknown'</span>
+  <span class="token keyword">return</span>  mimes<span class="token punctuation">[</span> extName <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+
+app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span> <span class="token keyword">async</span> <span class="token punctuation">(</span> ctx <span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 静态资源目录在本地的绝对路径</span>
+  <span class="token keyword">let</span> fullStaticPath <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> staticPath<span class="token punctuation">)</span>
+
+  <span class="token comment" spellcheck="true">// 获取静态资源内容，有可能是文件内容，目录，或404</span>
+  <span class="token keyword">let</span> _content <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">content</span><span class="token punctuation">(</span> ctx<span class="token punctuation">,</span> fullStaticPath <span class="token punctuation">)</span>
+
+  <span class="token comment" spellcheck="true">// 解析请求内容的类型</span>
+  <span class="token keyword">let</span> _mime <span class="token operator">=</span> <span class="token function">parseMime</span><span class="token punctuation">(</span> ctx<span class="token punctuation">.</span>url <span class="token punctuation">)</span>
+
+  <span class="token comment" spellcheck="true">// 如果有对应的文件类型，就配置上下文的类型</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span> _mime <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    ctx<span class="token punctuation">.</span>type <span class="token operator">=</span> _mime
+  <span class="token punctuation">}</span>
+
+  <span class="token comment" spellcheck="true">// 输出静态资源内容</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span> _mime <span class="token operator">&amp;&amp;</span> _mime<span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span><span class="token string">'image/'</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">0</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 如果是图片，则用node原生res，输出二进制数据</span>
+    ctx<span class="token punctuation">.</span>res<span class="token punctuation">.</span><span class="token function">writeHead</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span>
+    ctx<span class="token punctuation">.</span>res<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>_content<span class="token punctuation">,</span> <span class="token string">'binary'</span><span class="token punctuation">)</span>
+    ctx<span class="token punctuation">.</span>res<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 其他则输出文本</span>
+    ctx<span class="token punctuation">.</span>body <span class="token operator">=</span> _content
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'[demo] static-server is starting at port 3000'</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="util-content-js"><a href="#util-content-js" class="headerlink" title="util/content.js"></a>util/content.js</h4><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> path <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'path'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> fs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'fs'</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// 封装读取目录内容方法</span>
+<span class="token keyword">const</span> dir <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./dir'</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// 封装读取文件内容方法</span>
+<span class="token keyword">const</span> file <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./file'</span><span class="token punctuation">)</span>
+
+
+<span class="token comment" spellcheck="true">/**
+ * 获取静态资源内容
+ * @param  {object} ctx koa上下文
+ * @param  {string} 静态资源目录在本地的绝对路径
+ * @return  {string} 请求获取到的本地内容
+ */</span>
+<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">content</span><span class="token punctuation">(</span> ctx<span class="token punctuation">,</span> fullStaticPath <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+  <span class="token comment" spellcheck="true">// 封装请求资源的完绝对径</span>
+  <span class="token keyword">let</span> reqPath <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>fullStaticPath<span class="token punctuation">,</span> ctx<span class="token punctuation">.</span>url<span class="token punctuation">)</span>
+
+  <span class="token comment" spellcheck="true">// 判断请求路径是否为存在目录或者文件</span>
+  <span class="token keyword">let</span> exist <span class="token operator">=</span> fs<span class="token punctuation">.</span><span class="token function">existsSync</span><span class="token punctuation">(</span> reqPath <span class="token punctuation">)</span>
+
+  <span class="token comment" spellcheck="true">// 返回请求内容， 默认为空</span>
+  <span class="token keyword">let</span> content <span class="token operator">=</span> <span class="token string">''</span>
+
+  <span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token operator">!</span>exist <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//如果请求路径不存在，返回404</span>
+    content <span class="token operator">=</span> <span class="token string">'404 Not Found! o(╯□╰)o！'</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//判断访问地址是文件夹还是文件</span>
+    <span class="token keyword">let</span> stat <span class="token operator">=</span> fs<span class="token punctuation">.</span><span class="token function">statSync</span><span class="token punctuation">(</span> reqPath <span class="token punctuation">)</span>
+
+    <span class="token keyword">if</span><span class="token punctuation">(</span> stat<span class="token punctuation">.</span><span class="token function">isDirectory</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">//如果为目录，则渲读取目录内容</span>
+      content <span class="token operator">=</span> <span class="token function">dir</span><span class="token punctuation">(</span> ctx<span class="token punctuation">.</span>url<span class="token punctuation">,</span> reqPath <span class="token punctuation">)</span>
+
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 如果请求为文件，则读取文件内容</span>
+      content <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">file</span><span class="token punctuation">(</span> reqPath <span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">return</span> content
+<span class="token punctuation">}</span>
+
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> content
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="util-dir-js"><a href="#util-dir-js" class="headerlink" title="util/dir.js"></a>util/dir.js</h4><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> url <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'url'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> fs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'fs'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> path <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'path'</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// 遍历读取目录内容方法</span>
+<span class="token keyword">const</span> walk <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./walk'</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">/**
+ * 封装目录内容
+ * @param  {string} url 当前请求的上下文中的url，即ctx.url
+ * @param  {string} reqPath 请求静态资源的完整本地路径
+ * @return {string} 返回目录内容，封装成HTML
+ */</span>
+<span class="token keyword">function</span> dir <span class="token punctuation">(</span> url<span class="token punctuation">,</span> reqPath <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+  <span class="token comment" spellcheck="true">// 遍历读取当前目录下的文件、子目录</span>
+  <span class="token keyword">let</span> contentList <span class="token operator">=</span> <span class="token function">walk</span><span class="token punctuation">(</span> reqPath <span class="token punctuation">)</span>
+
+  <span class="token keyword">let</span> html <span class="token operator">=</span> <span class="token template-string"><span class="token string">`&lt;ul>`</span></span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span> <span class="token keyword">let</span> <span class="token punctuation">[</span> index<span class="token punctuation">,</span> item <span class="token punctuation">]</span> <span class="token keyword">of</span> contentList<span class="token punctuation">.</span><span class="token function">entries</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    html <span class="token operator">=</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>html<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">&lt;li>&lt;a href="</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>url <span class="token operator">===</span> <span class="token string">'/'</span> <span class="token operator">?</span> <span class="token string">''</span> <span class="token punctuation">:</span> url<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>item<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">"></span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>item<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">&lt;/a>`</span></span>
+  <span class="token punctuation">}</span>
+  html <span class="token operator">=</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>html<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">&lt;/ul>`</span></span>
+
+  <span class="token keyword">return</span> html
+<span class="token punctuation">}</span>
+
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> dir
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="util-file-js"><a href="#util-file-js" class="headerlink" title="util/file.js"></a>util/file.js</h4><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> fs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'fs'</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">/**
+ * 读取文件方法
+ * @param  {string} 文件本地的绝对路径
+ * @return {string|binary}
+ */</span>
+<span class="token keyword">function</span> file <span class="token punctuation">(</span> filePath <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+ <span class="token keyword">let</span> content <span class="token operator">=</span> fs<span class="token punctuation">.</span><span class="token function">readFileSync</span><span class="token punctuation">(</span>filePath<span class="token punctuation">,</span> <span class="token string">'binary'</span> <span class="token punctuation">)</span>
+ <span class="token keyword">return</span> content
+<span class="token punctuation">}</span>
+
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> file
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="util-walk-js"><a href="#util-walk-js" class="headerlink" title="util/walk.js"></a>util/walk.js</h4><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> fs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'fs'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> mimes <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./mimes'</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">/**
+ * 遍历读取目录内容（子目录，文件名）
+ * @param  {string} reqPath 请求资源的绝对路径
+ * @return {array} 目录内容列表
+ */</span>
+<span class="token keyword">function</span> <span class="token function">walk</span><span class="token punctuation">(</span> reqPath <span class="token punctuation">)</span><span class="token punctuation">{</span>
+
+  <span class="token keyword">let</span> files <span class="token operator">=</span> fs<span class="token punctuation">.</span><span class="token function">readdirSync</span><span class="token punctuation">(</span> reqPath <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">let</span> dirList <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> fileList <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword">for</span><span class="token punctuation">(</span> <span class="token keyword">let</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> len<span class="token operator">=</span>files<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">&lt;</span>len<span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> item <span class="token operator">=</span> files<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> itemArr <span class="token operator">=</span> item<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">"\."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> itemMime <span class="token operator">=</span> <span class="token punctuation">(</span> itemArr<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">1</span> <span class="token punctuation">)</span> <span class="token operator">?</span> itemArr<span class="token punctuation">[</span> itemArr<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span> <span class="token punctuation">]</span> <span class="token punctuation">:</span> <span class="token string">"undefined"</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token keyword">typeof</span> mimes<span class="token punctuation">[</span> itemMime <span class="token punctuation">]</span> <span class="token operator">===</span> <span class="token string">"undefined"</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      dirList<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span> files<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      fileList<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span> files<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+
+  <span class="token keyword">let</span> result <span class="token operator">=</span> dirList<span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span> fileList <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> result<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> walk<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="util-mime-js"><a href="#util-mime-js" class="headerlink" title="util/mime.js"></a>util/mime.js</h4><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">let</span> mimes <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token string">'css'</span><span class="token punctuation">:</span> <span class="token string">'text/css'</span><span class="token punctuation">,</span>
+  <span class="token string">'less'</span><span class="token punctuation">:</span> <span class="token string">'text/css'</span><span class="token punctuation">,</span>
+  <span class="token string">'gif'</span><span class="token punctuation">:</span> <span class="token string">'image/gif'</span><span class="token punctuation">,</span>
+  <span class="token string">'html'</span><span class="token punctuation">:</span> <span class="token string">'text/html'</span><span class="token punctuation">,</span>
+  <span class="token string">'ico'</span><span class="token punctuation">:</span> <span class="token string">'image/x-icon'</span><span class="token punctuation">,</span>
+  <span class="token string">'jpeg'</span><span class="token punctuation">:</span> <span class="token string">'image/jpeg'</span><span class="token punctuation">,</span>
+  <span class="token string">'jpg'</span><span class="token punctuation">:</span> <span class="token string">'image/jpeg'</span><span class="token punctuation">,</span>
+  <span class="token string">'js'</span><span class="token punctuation">:</span> <span class="token string">'text/javascript'</span><span class="token punctuation">,</span>
+  <span class="token string">'json'</span><span class="token punctuation">:</span> <span class="token string">'application/json'</span><span class="token punctuation">,</span>
+  <span class="token string">'pdf'</span><span class="token punctuation">:</span> <span class="token string">'application/pdf'</span><span class="token punctuation">,</span>
+  <span class="token string">'png'</span><span class="token punctuation">:</span> <span class="token string">'image/png'</span><span class="token punctuation">,</span>
+  <span class="token string">'svg'</span><span class="token punctuation">:</span> <span class="token string">'image/svg+xml'</span><span class="token punctuation">,</span>
+  <span class="token string">'swf'</span><span class="token punctuation">:</span> <span class="token string">'application/x-shockwave-flash'</span><span class="token punctuation">,</span>
+  <span class="token string">'tiff'</span><span class="token punctuation">:</span> <span class="token string">'image/tiff'</span><span class="token punctuation">,</span>
+  <span class="token string">'txt'</span><span class="token punctuation">:</span> <span class="token string">'text/plain'</span><span class="token punctuation">,</span>
+  <span class="token string">'wav'</span><span class="token punctuation">:</span> <span class="token string">'audio/x-wav'</span><span class="token punctuation">,</span>
+  <span class="token string">'wma'</span><span class="token punctuation">:</span> <span class="token string">'audio/x-ms-wma'</span><span class="token punctuation">,</span>
+  <span class="token string">'wmv'</span><span class="token punctuation">:</span> <span class="token string">'video/x-ms-wmv'</span><span class="token punctuation">,</span>
+  <span class="token string">'xml'</span><span class="token punctuation">:</span> <span class="token string">'text/xml'</span>
+<span class="token punctuation">}</span>
+
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> mimes
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="运行效果"><a href="#运行效果" class="headerlink" title="运行效果"></a>运行效果</h3><h4 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h4><pre class="line-numbers language-sh"><code class="language-sh">node index.js
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><h5 id="访问http-localhost-3000"><a href="#访问http-localhost-3000" class="headerlink" title="访问http://localhost:3000"></a>访问<a href="http://localhost:3000" target="_blank" rel="noopener">http://localhost:3000</a></h5><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/4.4.1.static-server-result-01.png" alt="static-server-result" title>
+                </div>
+                <div class="image-caption">static-server-result</div>
+            </figure>
+<h5 id="访问http-localhost-3000-index-html"><a href="#访问http-localhost-3000-index-html" class="headerlink" title="访问http://localhost:3000/index.html"></a>访问<a href="http://localhost:3000/index.html" target="_blank" rel="noopener">http://localhost:3000/index.html</a></h5><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/4.4.1.static-server-result-02.png" alt="static-server-result" title>
+                </div>
+                <div class="image-caption">static-server-result</div>
+            </figure>
+<h5 id="访问http-localhost-3000-js-index-js"><a href="#访问http-localhost-3000-js-index-js" class="headerlink" title="访问http://localhost:3000/js/index.js"></a>访问<a href="http://localhost:3000/js/index.js" target="_blank" rel="noopener">http://localhost:3000/js/index.js</a></h5><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/4.4.1.static-server-result-03.png" alt="static-server-result" title>
+                </div>
+                <div class="image-caption">static-server-result</div>
+            </figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/03/03/004.koa学习/001.基础篇/004.静态资源加载/001.原生koa2实现静态资源服务器/" target="_blank" rel="external">http://www.chenya.site/2018/03/03/004.koa学习/001.基础篇/004.静态资源加载/001.原生koa2实现静态资源服务器/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/koa学习/">koa学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端资源/">前端资源</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/日常学习/">日常学习</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2018/03/03/004.koa学习/001.基础篇/004.静态资源加载/001.原生koa2实现静态资源服务器/&title=《原生koa2实现静态资源服务器》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2018/03/03/004.koa学习/001.基础篇/004.静态资源加载/001.原生koa2实现静态资源服务器/&title=《原生koa2实现静态资源服务器》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2018/03/03/004.koa学习/001.基础篇/004.静态资源加载/001.原生koa2实现静态资源服务器/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《原生koa2实现静态资源服务器》 — 陈亚的个人主页&url=http://www.chenya.site/2018/03/03/004.koa学习/001.基础篇/004.静态资源加载/001.原生koa2实现静态资源服务器/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2018/03/03/004.koa学习/001.基础篇/004.静态资源加载/001.原生koa2实现静态资源服务器/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/03/06/005.vue源码学习/003.组件化/007.异步组件/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Vue源码学习 - 异步组件</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/02/23/004.koa学习/001.基础篇/003.请求数据获取/003.koa-bodyparser中间件/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">koa-bodyparser中间件</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2018/03/03/004.koa学习/001.基础篇/004.静态资源加载/001.原生koa2实现静态资源服务器/&title=《原生koa2实现静态资源服务器》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2018/03/03/004.koa学习/001.基础篇/004.静态资源加载/001.原生koa2实现静态资源服务器/&title=《原生koa2实现静态资源服务器》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2018/03/03/004.koa学习/001.基础篇/004.静态资源加载/001.原生koa2实现静态资源服务器/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《原生koa2实现静态资源服务器》 — 陈亚的个人主页&url=http://www.chenya.site/2018/03/03/004.koa学习/001.基础篇/004.静态资源加载/001.原生koa2实现静态资源服务器/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2018/03/03/004.koa学习/001.基础篇/004.静态资源加载/001.原生koa2实现静态资源服务器/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASYAAAEmCAAAAADqr2IGAAAEmElEQVR42u3aS3LbSBAFQN3/0vTWDpvUe1XgDBtKrBQU2UAnFvXrr6/4evx2/f7J338/+9XfKzxbef8kySdf77gwYcKECdNHMj1eXvlmkv8m0K+fIbl7+83kdWLChAkTptOZ8hs/4msWVZMXkAT11ylIvndMmDBhwvTTmF6H7SQJKB5uUY1uymBMmDBhwvSTmTZ/z4L6ppWc/BcTJkyYMP0Eptly+diy3Wq7cp6IvL0XjgkTJkyYPowpLzLv9/fFFyZMmDBh+jCmR3ntR575k7TB/tqd/nEXTJgwYcJ0LNP7DsHkA8VZOpLcd/Yanq6DCRMmTJiOZbqq1ds2WDcjybZibQelmDBhwoTpfkztj9vN5OlCHshnAX41sMSECRMmTEcxJaXpJsDn5etVI9U2uUkaypgwYcKE6VymtlzcNF4TxCSZaIvbfM0iacCECRMmTEcxzUaDs8d6d+O4TQKKtAYTJkyYMB3LNBsBXju8nJWj+8J72BfHhAkTJkxHMc0Gk0mhu2dtR6R70KefY8KECROmA5lmYTL5ZttUbYvtZGDZNpSfroYJEyZMmI5lStqsLd+1oFclBHk7++mamDBhwoTpFkzJD2bjwHbQuE8I2kL6m+9gwoQJE6ZjmfIkIC8Xk0K3Df/JOpvkph5zYsKECROmj2e64DjL4hHbFnCeZMwSmqfPjwkTJkyYjmVKDq/khXG+pX1Ld7aLWamMCRMmTJjOZUq+Oksj2kFjvvk8WblqX5gwYcKE6U5MSbE6O0bTjieTMN+G/3xfmDBhwoTpTkz7gJq3U9tfbUJ72/Ct27uYMGHChOnjmdqb7R8oOXaTlLubM0qb/2LChAkTprOYZqHxdRncFpyzmJu8vE18X3WLMWHChAnThzHNNtYer2kL0bbhmx/QSdZ/2gvHhAkTJkyHM7Ut4CQkt2nBLMnYl+5Pd4EJEyZMmI5lumok2R7r2TRq2yFrPiiNcDFhwoQJ0y2Y9kVpi9UmBHla0DaLv1kHEyZMmDAdyNSG6tmNNyeJ9unCbAj6xyeYMGHChOkWTFeNDPNPZg3iNvC37V1MmDBhwnQnptktixFgWYjmL6xNFzYFNiZMmDBhOpEpD/CbUeVsDLn/1WbI+s35JkyYMGHCdDhTS5BsMi+hr23mzorzf/QGMGHChAnTgUx54ZpTzoaUedoxK79nLxUTJkyYMN2DKQ/h7Yhx1nLNU5NZ6tCmLJgwYcKE6VymPJBvys4ZXB7a96/2G2JMmDBhwnQLprwVW7dE42M9s4CdX+34c5iJYMKECROmj2F6RzN3duwmx52NNr+uvTBhwoQJ0yFM7wio7XGZ/PXkbd/kRRZHhTBhwoQJ07FM+0Qhb6e2Q8fZwaDXxXzbpL4sn8KECRMmTP8rU7uNzYGbWZDOi+Gr2tOYMGHChOl+THkQbZuwydhyNgRtQVcDV0yYMGHC9GOYZodvZm3ctnbPX1jyDMUpJ0yYMGHC9MOY8jFkUu4+FlfevL44K8GECRMmTB/G1B64aceTm0HmjLvd72W9cEyYMGHC9GFMs9ZnDvffpwj5jjYrYMKECROmj2f6BQ1eTs8+xKayAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

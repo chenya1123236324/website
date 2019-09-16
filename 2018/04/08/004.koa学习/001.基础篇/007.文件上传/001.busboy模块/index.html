@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>busboy模块 | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="日常学习,前端资源,koa学习">
+    <meta name="description" content="busboy模块快速开始安装npm install --save busboy  模块简介busboy 模块是用来解析POST请求，node原生req中的文件流。 开始使用const inspect = require(&apos;util&apos;).inspect const path = require(&apos;path&apos;) const fs = require(&apos;fs&apos;) const Busboy = requi">
+<meta name="keywords" content="日常学习,前端资源,koa学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="busboy模块">
+<meta property="og:url" content="http://www.chenya.site/2018/04/08/004.koa学习/001.基础篇/007.文件上传/001.busboy模块/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="busboy模块快速开始安装npm install --save busboy  模块简介busboy 模块是用来解析POST请求，node原生req中的文件流。 开始使用const inspect = require(&apos;util&apos;).inspect const path = require(&apos;path&apos;) const fs = require(&apos;fs&apos;) const Busboy = requi">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.500Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="busboy模块">
+<meta name="twitter:description" content="busboy模块快速开始安装npm install --save busboy  模块简介busboy 模块是用来解析POST请求，node原生req中的文件流。 开始使用const inspect = require(&apos;util&apos;).inspect const path = require(&apos;path&apos;) const fs = require(&apos;fs&apos;) const Busboy = requi">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">busboy模块</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">busboy模块</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-04-08T11:32:29.000Z" itemprop="datePublished" class="page-time">
+  2018-04-08
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#busboy模块"><span class="post-toc-number">1.</span> <span class="post-toc-text">busboy模块</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#快速开始"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">快速开始</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">安装</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#模块简介"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">模块简介</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#开始使用"><span class="post-toc-number">1.1.3.</span> <span class="post-toc-text">开始使用</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#更多模块信息"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">更多模块信息</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-004.koa学习/001.基础篇/007.文件上传/001.busboy模块"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">busboy模块</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-04-08 19:32:29" datetime="2018-04-08T11:32:29.000Z"  itemprop="datePublished">2018-04-08</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="busboy模块"><a href="#busboy模块" class="headerlink" title="busboy模块"></a>busboy模块</h1><h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><pre class="line-numbers language-js"><code class="language-js">npm install <span class="token operator">--</span>save busboy
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="模块简介"><a href="#模块简介" class="headerlink" title="模块简介"></a>模块简介</h3><p>busboy 模块是用来解析POST请求，node原生req中的文件流。</p>
+<h3 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h3><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> inspect <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'util'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>inspect
+<span class="token keyword">const</span> path <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'path'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> fs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'fs'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> Busboy <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'busboy'</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// req 为node原生请求</span>
+<span class="token keyword">const</span> busboy <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Busboy</span><span class="token punctuation">(</span><span class="token punctuation">{</span> headers<span class="token punctuation">:</span> req<span class="token punctuation">.</span>headers <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// ...</span>
+
+<span class="token comment" spellcheck="true">// 监听文件解析事件</span>
+busboy<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'file'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>fieldname<span class="token punctuation">,</span> file<span class="token punctuation">,</span> filename<span class="token punctuation">,</span> encoding<span class="token punctuation">,</span> mimetype<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`File [</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>fieldname<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">]: filename: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>filename<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+
+
+  <span class="token comment" spellcheck="true">// 文件保存到特定路径</span>
+  file<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>fs<span class="token punctuation">.</span><span class="token function">createWriteStream</span><span class="token punctuation">(</span><span class="token string">'./upload'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+  <span class="token comment" spellcheck="true">// 开始解析文件流</span>
+  file<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`File [</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>fieldname<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">] got </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>data<span class="token punctuation">.</span>length<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> bytes`</span></span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+  <span class="token comment" spellcheck="true">// 解析文件结束</span>
+  file<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'end'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`File [</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>fieldname<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">] Finished`</span></span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// 监听请求中的字段</span>
+busboy<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'field'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>fieldname<span class="token punctuation">,</span> val<span class="token punctuation">,</span> fieldnameTruncated<span class="token punctuation">,</span> valTruncated<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Field [</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>fieldname<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">]: value: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">inspect</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// 监听结束事件</span>
+busboy<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'finish'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Done parsing form!'</span><span class="token punctuation">)</span>
+  res<span class="token punctuation">.</span><span class="token function">writeHead</span><span class="token punctuation">(</span><span class="token number">303</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> Connection<span class="token punctuation">:</span> <span class="token string">'close'</span><span class="token punctuation">,</span> Location<span class="token punctuation">:</span> <span class="token string">'/'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  res<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+req<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>busboy<span class="token punctuation">)</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="更多模块信息"><a href="#更多模块信息" class="headerlink" title="更多模块信息"></a>更多模块信息</h2><p>更多详细API可以访问npm官方文档 <a href="https://www.npmjs.com/package/busboy" target="_blank" rel="noopener">https://www.npmjs.com/package/busboy</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/04/08/004.koa学习/001.基础篇/007.文件上传/001.busboy模块/" target="_blank" rel="external">http://www.chenya.site/2018/04/08/004.koa学习/001.基础篇/007.文件上传/001.busboy模块/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/koa学习/">koa学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端资源/">前端资源</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/日常学习/">日常学习</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2018/04/08/004.koa学习/001.基础篇/007.文件上传/001.busboy模块/&title=《busboy模块》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2018/04/08/004.koa学习/001.基础篇/007.文件上传/001.busboy模块/&title=《busboy模块》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2018/04/08/004.koa学习/001.基础篇/007.文件上传/001.busboy模块/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《busboy模块》 — 陈亚的个人主页&url=http://www.chenya.site/2018/04/08/004.koa学习/001.基础篇/007.文件上传/001.busboy模块/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2018/04/08/004.koa学习/001.基础篇/007.文件上传/001.busboy模块/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/04/11/004.koa学习/001.基础篇/007.文件上传/002.上传文件简单实现/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">上传文件简单实现</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/04/02/005.vue源码学习/004.响应式原理/005.nextTick/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Vue源码学习 - nextTick</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2018/04/08/004.koa学习/001.基础篇/007.文件上传/001.busboy模块/&title=《busboy模块》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2018/04/08/004.koa学习/001.基础篇/007.文件上传/001.busboy模块/&title=《busboy模块》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2018/04/08/004.koa学习/001.基础篇/007.文件上传/001.busboy模块/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《busboy模块》 — 陈亚的个人主页&url=http://www.chenya.site/2018/04/08/004.koa学习/001.基础篇/007.文件上传/001.busboy模块/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2018/04/08/004.koa学习/001.基础篇/007.文件上传/001.busboy模块/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADLElEQVR42u3aQXLbMAwFUN//0u62mVTKByB3JORx5ZFlko9ZIAD4esXj/ddInnx/nq9yNP/RbPn85YGNjY39EPb7dJxPfbSJ8+fJIZ4fbnJYR2thY2Njb2X3wkmyWLSJgxWTz70/DzY2Njb2OSMPbL20JPmMjY2NjZ1P10sGenNO9omNjY29m90r+lRr7+XSTzEofqSWho2NjX17di8xuOfnj/S3sbGxsW/Mfg9GPudko9W1op1jY2NjL2L3Wqq9SznVNsOkqRy1gbGxsbFXsPNrNL0NVTedN4ZHz7GxsbHXsZNUIT+U/PLNvJB0vs9RxMbGxsZ+CDtpoObfJqGuV+5PVimnN9jY2Nir2fOm7/+ZOUk8friphI2Njb2IXS24f6LcMwlp5UIYNjY29iJ2HmyqB9Rr2VbTj/y3zeiNjY2NfXt29fLNhNErBk0awIW/MzY2NvYD2fl1mejf+kFaUj3iZLbDz9jY2NiL2NWLNcmb+UgO+qowVuhIYGNjYz+QXd1Eb0PVJ9eWosoZGDY2NvZD2HmI6iUSSbCp7qT65j/ewcbGxl7ErgaPajBL0pVXa+QHXYje2NjY2A9nTxq3efCYZ069dvLoRLGxsbFvz76qcZuTemHyqrQHGxsbexO7t3C1VPS5QtXophI2Njb2InbvYk3e9K02lfOw2kuWsLGxsTexq2nGpACUl5x6x1QNwNjY2Ng72L2if16U783QG3kihI2Njb2PnYALkfD0V9U3e63cHyzY2NjYi9iTkUxXTVomTehq8oONjY29gz0PKtXneSC8tsH85VfY2NjYi9j5xZpPF5V6R99rY2BjY2NvYueN1Uno6l21yfdQDpbY2NjYi9jVK5K9byfzzItNh29iY2Njr2D3rsVUw081FPWu5pRDFzY2NvYK9ryBmgOqcTU/3GqxCRsbG3sfuxe0eu3Ya5sEo7YxNjY29jp2rwCUh7F5cJoE3cMAho2Njf3L2L2yzuSw8iJRtbyFjY2N/TvZvRBSDV2T6zuFKho2Njb2OnZ1Q/lxJJurHlxvxVEtDRsbG/vG7GooqjKSNKbXAK6++ZpEYGxsbOw7sv8AXWW1qcMIjE4AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

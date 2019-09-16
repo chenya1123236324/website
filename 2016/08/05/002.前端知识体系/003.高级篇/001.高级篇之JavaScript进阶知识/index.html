@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>高级篇-01.JavaScript进阶知识 | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="前端知识体系,高级篇,JavaScript">
+    <meta name="description" content="一、JavaScript进阶1 内置类型 JS 中分为七种内置类型，七种内置类型又分为两大类型：基本类型和对象（Object）。 基本类型有六种： null，undefined，boolean，number，string，symbol。 其中 JS 的数字类型是浮点类型的，没有整型。并且浮点类型基于 IEEE 754标准实现，在使用中会遇到某些 Bug。NaN 也属于 number 类型，并且 N">
+<meta name="keywords" content="前端知识体系,高级篇,JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高级篇-01.JavaScript进阶知识">
+<meta property="og:url" content="http://www.chenya.site/2016/08/05/002.前端知识体系/003.高级篇/001.高级篇之JavaScript进阶知识/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="一、JavaScript进阶1 内置类型 JS 中分为七种内置类型，七种内置类型又分为两大类型：基本类型和对象（Object）。 基本类型有六种： null，undefined，boolean，number，string，symbol。 其中 JS 的数字类型是浮点类型的，没有整型。并且浮点类型基于 IEEE 754标准实现，在使用中会遇到某些 Bug。NaN 也属于 number 类型，并且 N">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/3/30/16275f89ebf931e9">
+<meta property="og:image" content="https://camo.githubusercontent.com/71cab2efcf6fb8401a2f0ef49443dd94bffc1373/68747470733a2f2f757365722d676f6c642d63646e2e786974752e696f2f323031382f332f31332f313632316538613962636230383732643f773d34383826683d35393026663d706e6726733d313531373232">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.490Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="高级篇-01.JavaScript进阶知识">
+<meta name="twitter:description" content="一、JavaScript进阶1 内置类型 JS 中分为七种内置类型，七种内置类型又分为两大类型：基本类型和对象（Object）。 基本类型有六种： null，undefined，boolean，number，string，symbol。 其中 JS 的数字类型是浮点类型的，没有整型。并且浮点类型基于 IEEE 754标准实现，在使用中会遇到某些 Bug。NaN 也属于 number 类型，并且 N">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/3/30/16275f89ebf931e9">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">高级篇-01.JavaScript进阶知识</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">高级篇-01.JavaScript进阶知识</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2016-08-05T15:44:30.000Z" itemprop="datePublished" class="page-time">
+  2016-08-05
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一、JavaScript进阶"><span class="post-toc-number">1.</span> <span class="post-toc-text">一、JavaScript进阶</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-内置类型"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">1 内置类型</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-Typeof"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">2 Typeof</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-类型转换"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">3 类型转换</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-原型"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">4 原型</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5-new"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">5 new</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#6-instanceof"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">6 instanceof</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#7-this"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">7 this</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#8-执行上下文"><span class="post-toc-number">1.8.</span> <span class="post-toc-text">8 执行上下文</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#9-闭包"><span class="post-toc-number">1.9.</span> <span class="post-toc-text">9 闭包</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#10-深浅拷贝"><span class="post-toc-number">1.10.</span> <span class="post-toc-text">10 深浅拷贝</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#11-模块化"><span class="post-toc-number">1.11.</span> <span class="post-toc-text">11 模块化</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#12-防抖"><span class="post-toc-number">1.12.</span> <span class="post-toc-text">12 防抖</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#13-节流"><span class="post-toc-number">1.13.</span> <span class="post-toc-text">13 节流</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#14-继承"><span class="post-toc-number">1.14.</span> <span class="post-toc-text">14 继承</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#15-call-apply-bind"><span class="post-toc-number">1.15.</span> <span class="post-toc-text">15 call, apply, bind</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#16-Promise-实现"><span class="post-toc-number">1.16.</span> <span class="post-toc-text">16 Promise 实现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#17-Generator-实现"><span class="post-toc-number">1.17.</span> <span class="post-toc-text">17 Generator 实现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#18-Proxy"><span class="post-toc-number">1.18.</span> <span class="post-toc-text">18 Proxy</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-002.前端知识体系/003.高级篇/001.高级篇之JavaScript进阶知识"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">高级篇-01.JavaScript进阶知识</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2016-08-05 23:44:30" datetime="2016-08-05T15:44:30.000Z"  itemprop="datePublished">2016-08-05</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="一、JavaScript进阶"><a href="#一、JavaScript进阶" class="headerlink" title="一、JavaScript进阶"></a>一、JavaScript进阶</h2><h3 id="1-内置类型"><a href="#1-内置类型" class="headerlink" title="1 内置类型"></a>1 内置类型</h3><ul>
+<li><code>JS</code> 中分为七种内置类型，七种内置类型又分为两大类型：基本类型和对象（<code>Object</code>）。</li>
+<li>基本类型有六种： <code>null</code>，<code>undefined</code>，<code>boolea</code>n，<code>number</code>，<code>string</code>，<code>symbol</code>。</li>
+<li>其中 <code>JS</code> 的数字类型是浮点类型的，没有整型。并且浮点类型基于 <code>IEEE 754</code>标准实现，在使用中会遇到某些 Bug。<code>NaN</code> 也属于 <code>number</code> 类型，并且 <code>NaN</code> 不等于自身。</li>
+<li>对于基本类型来说，如果使用字面量的方式，那么这个变量只是个字面量，只有在必要的时候才会转换为对应的类型。</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token number">111</span> <span class="token comment" spellcheck="true">// 这只是字面量，不是 number 类型</span>
+a<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 使用时候才会转换为对象类型</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<blockquote>
+<p>对象（<code>Object</code>）是引用类型，在使用过程中会遇到浅拷贝和深拷贝的问题。</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'FE'</span> <span class="token punctuation">}</span>
+<span class="token keyword">let</span> b <span class="token operator">=</span> a
+b<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'EF'</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>name<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// EF</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-Typeof"><a href="#2-Typeof" class="headerlink" title="2 Typeof"></a>2 Typeof</h3><blockquote>
+<p><code>typeof</code> 对于基本类型，除了 <code>null</code> 都可以显示正确的类型</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">typeof</span> <span class="token number">1</span> <span class="token comment" spellcheck="true">// 'number'</span>
+<span class="token keyword">typeof</span> <span class="token string">'1'</span> <span class="token comment" spellcheck="true">// 'string'</span>
+<span class="token keyword">typeof</span> undefined <span class="token comment" spellcheck="true">// 'undefined'</span>
+<span class="token keyword">typeof</span> <span class="token boolean">true</span> <span class="token comment" spellcheck="true">// 'boolean'</span>
+<span class="token keyword">typeof</span> <span class="token function">Symbol</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 'symbol'</span>
+<span class="token keyword">typeof</span> b <span class="token comment" spellcheck="true">// b 没有声明，但是还会显示 undefined</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p><code>typeof</code> 对于对象，除了函数都会显示 <code>object</code></p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">typeof</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token comment" spellcheck="true">// 'object'</span>
+<span class="token keyword">typeof</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment" spellcheck="true">// 'object'</span>
+<span class="token keyword">typeof</span> console<span class="token punctuation">.</span>log <span class="token comment" spellcheck="true">// 'function'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>对于 <code>null</code>来说，虽然它是基本类型，但是会显示 <code>object</code>，这是一个存在很久了的 <code>Bug</code></p>
+</blockquote>
+<pre><code>typeof null // &#39;object&#39;
+</code></pre><blockquote>
+<p>PS：为什么会出现这种情况呢？因为在 <code>JS</code>的最初版本中，使用的是 <code>32</code> 位系统，为了性能考虑使用低位存储了变量的类型信息，<code>000</code> 开头代表是对象，然而 <code>null</code>表示为全零，所以将它错误的判断为 <code>object</code> 。虽然现在的内部类型判断代码已经改变了，但是对于这个<code>Bug</code>却是一直流传下来。</p>
+</blockquote>
+<ul>
+<li>如果我们想获得一个变量的正确类型，可以通过 <code>Object.prototype.toString.call(xx)</code>。这样我们就可以获得类似 <code>[object Type]</code> 的字符串</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">let</span> a
+<span class="token comment" spellcheck="true">// 我们也可以这样判断 undefined</span>
+a <span class="token operator">===</span> undefined
+<span class="token comment" spellcheck="true">// 但是 undefined 不是保留字，能够在低版本浏览器被赋值</span>
+<span class="token keyword">let</span> undefined <span class="token operator">=</span> <span class="token number">1</span>
+<span class="token comment" spellcheck="true">// 这样判断就会出错</span>
+<span class="token comment" spellcheck="true">// 所以可以用下面的方式来判断，并且代码量更少</span>
+<span class="token comment" spellcheck="true">// 因为 void 后面随便跟上一个组成表达式</span>
+<span class="token comment" spellcheck="true">// 返回就是 undefined</span>
+a <span class="token operator">===</span> <span class="token keyword">void</span> <span class="token number">0</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-类型转换"><a href="#3-类型转换" class="headerlink" title="3 类型转换"></a>3 类型转换</h3><p><strong>转Boolean</strong></p>
+<blockquote>
+<p>在条件判断时，除了 <code>undefined</code>， <code>null</code>， <code>false</code>， <code>NaN</code>， <code>&#39;&#39;</code>， <code>0</code>， <code>-0</code>，其他所有值都转为 <code>true</code>，包括所有对象</p>
+</blockquote>
+<p><strong>对象转基本类型</strong></p>
+<blockquote>
+<p>对象在转换基本类型时，首先会调用 <code>valueOf</code> 然后调用 <code>toString</code>。并且这两个方法你是可以重写的</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token function">valueOf</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token number">0</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>四则运算符</strong></p>
+<blockquote>
+<p>只有当加法运算时，其中一方是字符串类型，就会把另一个也转为字符串类型。其他运算只要其中一方是数字，那么另一方就转为数字。并且加法运算会触发三种类型转换：将值转换为原始值，转换为数字，转换为字符串</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token number">1</span> <span class="token operator">+</span> <span class="token string">'1'</span> <span class="token comment" spellcheck="true">// '11'</span>
+<span class="token number">2</span> <span class="token operator">*</span> <span class="token string">'2'</span> <span class="token comment" spellcheck="true">// 4</span>
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token comment" spellcheck="true">// '1,22,1'</span>
+<span class="token comment" spellcheck="true">// [1, 2].toString() -> '1,2'</span>
+<span class="token comment" spellcheck="true">// [2, 1].toString() -> '2,1'</span>
+<span class="token comment" spellcheck="true">// '1,2' + '2,1' = '1,22,1'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>对于加号需要注意这个表达式 <code>&#39;a&#39; + + &#39;b&#39;</code></p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token string">'a'</span> <span class="token operator">+</span> <span class="token operator">+</span> <span class="token string">'b'</span> <span class="token comment" spellcheck="true">// -> "aNaN"</span>
+<span class="token comment" spellcheck="true">// 因为 + 'b' -> NaN</span>
+<span class="token comment" spellcheck="true">// 你也许在一些代码中看到过 + '1' -> 1</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><strong>== 操作符</strong></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2018/3/30/16275f89ebf931e9" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<blockquote>
+<p>这里来解析一道题目 <code>[] == ![] // -&gt; true</code> ，下面是这个表达式为何为 <code>true</code> 的步骤</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// [] 转成 true，然后取反变成 false</span>
+<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token boolean">false</span>
+<span class="token comment" spellcheck="true">// 根据第 8 条得出</span>
+<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token function">ToNumber</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span>
+<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">0</span>
+<span class="token comment" spellcheck="true">// 根据第 10 条得出</span>
+<span class="token function">ToPrimitive</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span>
+<span class="token comment" spellcheck="true">// [].toString() -> ''</span>
+<span class="token string">''</span> <span class="token operator">==</span> <span class="token number">0</span>
+<span class="token comment" spellcheck="true">// 根据第 6 条得出</span>
+<span class="token number">0</span> <span class="token operator">==</span> <span class="token number">0</span> <span class="token comment" spellcheck="true">// -> true</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>比较运算符</strong></p>
+<ul>
+<li>如果是对象，就通过 <code>toPrimitive</code> 转换对象</li>
+<li>如果是字符串，就通过 <code>unicode</code> 字符索引来比较</li>
+</ul>
+<h3 id="4-原型"><a href="#4-原型" class="headerlink" title="4 原型"></a>4 原型</h3><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://camo.githubusercontent.com/71cab2efcf6fb8401a2f0ef49443dd94bffc1373/68747470733a2f2f757365722d676f6c642d63646e2e786974752e696f2f323031382f332f31332f313632316538613962636230383732643f773d34383826683d35393026663d706e6726733d313531373232" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<ul>
+<li>每个函数都有 <code>prototype</code> 属性，除了 <code>Function.prototype.bind()</code>，该属性指向原型。</li>
+<li>每个对象都有 <code>__proto__</code>属性，指向了创建该对象的构造函数的原型。其实这个属性指向了 <code>[[prototype]]</code>，但是 <code>[[prototype]]</code> 是内部属性，我们并不能访问到，所以使用 <code>_proto_</code> 来访问。</li>
+<li>对象可以通过<code>__proto__</code> 来寻找不属于该对象的属性，<code>__proto__</code> 将对象连接起来组成了原型链</li>
+</ul>
+<h3 id="5-new"><a href="#5-new" class="headerlink" title="5 new"></a>5 new</h3><ul>
+<li>新生成了一个对象</li>
+<li>链接到原型</li>
+<li>绑定 <code>this</code></li>
+<li>返回新对象</li>
+</ul>
+<blockquote>
+<p>在调用 new 的过程中会发生以上四件事情，我们也可以试着来自己实现一个 new</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 创建一个空的对象</span>
+    <span class="token keyword">let</span> obj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true">// 获得构造函数</span>
+    <span class="token keyword">let</span> Con <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">.</span>shift<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>arguments<span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true">// 链接到原型</span>
+    obj<span class="token punctuation">.</span>__proto__ <span class="token operator">=</span> Con<span class="token punctuation">.</span>prototype
+    <span class="token comment" spellcheck="true">// 绑定 this，执行构造函数</span>
+    <span class="token keyword">let</span> result <span class="token operator">=</span> Con<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> arguments<span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true">// 确保 new 出来的是个对象</span>
+    <span class="token keyword">return</span> <span class="token keyword">typeof</span> result <span class="token operator">===</span> <span class="token string">'object'</span> <span class="token operator">?</span> result <span class="token punctuation">:</span> obj
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="6-instanceof"><a href="#6-instanceof" class="headerlink" title="6 instanceof"></a>6 instanceof</h3><blockquote>
+<p><code>instanceof</code> 可以正确的判断对象的类型，因为内部机制是通过判断对象的原型链中是不是能找到类型的 <code>prototype</code></p>
+</blockquote>
+<blockquote>
+<p>我们也可以试着实现一下 <code>instanceof</code></p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token keyword">instanceof</span><span class="token punctuation">(</span>left<span class="token punctuation">,</span> right<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 获得类型的原型</span>
+    <span class="token keyword">let</span> prototype <span class="token operator">=</span> right<span class="token punctuation">.</span>prototype
+    <span class="token comment" spellcheck="true">// 获得对象的原型</span>
+    left <span class="token operator">=</span> left<span class="token punctuation">.</span>__proto__
+    <span class="token comment" spellcheck="true">// 判断对象的类型是否等于类型的原型</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>left <span class="token operator">===</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>prototype <span class="token operator">===</span> left<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> <span class="token boolean">true</span>
+        left <span class="token operator">=</span> left<span class="token punctuation">.</span>__proto__
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="7-this"><a href="#7-this" class="headerlink" title="7 this"></a>7 this</h3><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>a<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token number">1</span>
+<span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">var</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span>
+    a<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    foo<span class="token punctuation">:</span> foo
+<span class="token punctuation">}</span>
+obj<span class="token punctuation">.</span><span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// 以上两者情况 `this` 只依赖于调用函数前的对象，优先级是第二个情况大于第一个情况</span>
+
+<span class="token comment" spellcheck="true">// 以下情况是优先级最高的，`this` 只会绑定在 `c` 上，不会被任何方式修改 `this` 指向</span>
+<span class="token keyword">var</span> c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+c<span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">3</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>a<span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// 还有种就是利用 call，apply，bind 改变 this，这个优先级仅次于 new</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>看看箭头函数中的 <code>this</code></p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">a</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">a</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>箭头函数其实是没有 <code>this</code> 的，这个函数中的 <code>this</code> 只取决于他外面的第一个不是箭头函数的函数的 <code>this</code>。在这个例子中，因为调用 <code>a</code> 符合前面代码中的第一个情况，所以 <code>this</code> 是 <code>window</code>。并且 this 一旦绑定了上下文，就不会被任何代码改变</p>
+</blockquote>
+<h3 id="8-执行上下文"><a href="#8-执行上下文" class="headerlink" title="8 执行上下文"></a>8 执行上下文</h3><blockquote>
+<p>当执行 JS 代码时，会产生三种执行上下文</p>
+</blockquote>
+<ul>
+<li>全局执行上下文</li>
+<li>函数执行上下文</li>
+<li><code>eval</code> 执行上下文</li>
+</ul>
+<blockquote>
+<p>每个执行上下文中都有三个重要的属性</p>
+</blockquote>
+<ul>
+<li>变量对象（<code>VO</code>），包含变量、函数声明和函数的形参，该属性只能在全局上下文中访问</li>
+<li>作用域链（<code>JS</code> 采用词法作用域，也就是说变量的作用域是在定义时就决定了）</li>
+<li><code>this</code></li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token number">10</span>
+<span class="token keyword">function</span> <span class="token function">foo</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> b <span class="token operator">=</span> <span class="token number">20</span>
+<span class="token punctuation">}</span>
+<span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>对于上述代码，执行栈中有两个上下文：全局上下文和函数 foo 上下文。</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js">stack <span class="token operator">=</span> <span class="token punctuation">[</span>
+    globalContext<span class="token punctuation">,</span>
+    fooContext
+<span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>对于全局上下文来说，<code>VO</code>大概是这样的</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js">globalContext<span class="token punctuation">.</span>VO <span class="token operator">===</span> globe
+globalContext<span class="token punctuation">.</span>VO <span class="token operator">=</span> <span class="token punctuation">{</span>
+    a<span class="token punctuation">:</span> undefined<span class="token punctuation">,</span>
+    foo<span class="token punctuation">:</span> <span class="token operator">&lt;</span>Function<span class="token operator">></span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>对于函数 <code>foo</code> 来说，<code>VO</code> 不能访问，只能访问到活动对象（<code>AO</code>）</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js">fooContext<span class="token punctuation">.</span>VO <span class="token operator">===</span> foo<span class="token punctuation">.</span>AO
+fooContext<span class="token punctuation">.</span>AO <span class="token punctuation">{</span>
+    i<span class="token punctuation">:</span> undefined<span class="token punctuation">,</span>
+    b<span class="token punctuation">:</span> undefined<span class="token punctuation">,</span>
+    arguments<span class="token punctuation">:</span> <span class="token operator">&lt;</span><span class="token operator">></span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// arguments 是函数独有的对象(箭头函数没有)</span>
+<span class="token comment" spellcheck="true">// 该对象是一个伪数组，有 `length` 属性且可以通过下标访问元素</span>
+<span class="token comment" spellcheck="true">// 该对象中的 `callee` 属性代表函数本身</span>
+<span class="token comment" spellcheck="true">// `caller` 属性代表函数的调用者</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>对于作用域链，可以把它理解成包含自身变量对象和上级变量对象的列表，通过 <code>[[Scope]]</code>属性查找上级变量</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js">fooContext<span class="token punctuation">.</span><span class="token punctuation">[</span><span class="token punctuation">[</span>Scope<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span>
+    globalContext<span class="token punctuation">.</span>VO
+<span class="token punctuation">]</span>
+fooContext<span class="token punctuation">.</span>Scope <span class="token operator">=</span> fooContext<span class="token punctuation">.</span><span class="token punctuation">[</span><span class="token punctuation">[</span>Scope<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">+</span> fooContext<span class="token punctuation">.</span>VO
+fooContext<span class="token punctuation">.</span>Scope <span class="token operator">=</span> <span class="token punctuation">[</span>
+    fooContext<span class="token punctuation">.</span>VO<span class="token punctuation">,</span>
+    globalContext<span class="token punctuation">.</span>VO
+<span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>接下来让我们看一个老生常谈的例子，<code>var</code></p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token function">b</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// call b</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// undefined</span>
+
+<span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token string">'Hello world'</span>
+
+<span class="token keyword">function</span> <span class="token function">b</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'call b'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>想必以上的输出大家肯定都已经明白了，这是因为函数和变量提升的原因。通常提升的解释是说将声明的代码移动到了顶部，这其实没有什么错误，便于大家理解。但是更准确的解释应该是：在生成执行上下文时，会有两个阶段。第一个阶段是创建的阶段（具体步骤是创建 <code>VO</code>），<code>JS</code> 解释器会找出需要提升的变量和函数，并且给他们提前在内存中开辟好空间，函数的话会将整个函数存入内存中，变量只声明并且赋值为 <code>undefined</code>，所以在第二个阶段，也就是代码执行阶段，我们可以直接提前使用。</p>
+</blockquote>
+<ul>
+<li>在提升的过程中，相同的函数会覆盖上一个函数，并且函数优先于变量提升</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token function">b</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// call b second</span>
+
+<span class="token keyword">function</span> <span class="token function">b</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'call b fist'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">function</span> <span class="token function">b</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'call b second'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">var</span> b <span class="token operator">=</span> <span class="token string">'Hello world'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p><code>var</code>会产生很多错误，所以在 <code>ES6</code>中引入了 <code>let</code>。<code>let</code>不能在声明前使用，但是这并不是常说的 <code>let</code> 不会提升，<code>let</code> 提升了声明但没有赋值，因为临时死区导致了并不能在声明前使用。</p>
+</blockquote>
+<ul>
+<li>对于非匿名的立即执行函数需要注意以下一点</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">var</span> foo <span class="token operator">=</span> <span class="token number">1</span>
+<span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    foo <span class="token operator">=</span> <span class="token number">10</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>foo<span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// -> ƒ foo() { foo = 10 ; console.log(foo) }</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>因为当 <code>JS</code> 解释器在遇到非匿名的立即执行函数时，会创建一个辅助的特定对象，然后将函数名称作为这个对象的属性，因此函数内部才可以访问到 <code>foo</code>，但是这个值又是只读的，所以对它的赋值并不生效，所以打印的结果还是这个函数，并且外部的值也没有发生更改。</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js">specialObject <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+Scope <span class="token operator">=</span> specialObject <span class="token operator">+</span> Scope<span class="token punctuation">;</span>
+
+foo <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FunctionExpression</span><span class="token punctuation">;</span>
+foo<span class="token punctuation">.</span><span class="token punctuation">[</span><span class="token punctuation">[</span>Scope<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> Scope<span class="token punctuation">;</span>
+specialObject<span class="token punctuation">.</span>foo <span class="token operator">=</span> foo<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// {DontDelete}, {ReadOnly}</span>
+
+<span class="token keyword">delete</span> Scope<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// remove specialObject from the front of scope chain</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="9-闭包"><a href="#9-闭包" class="headerlink" title="9 闭包"></a>9 闭包</h3><blockquote>
+<p>闭包的定义很简单：函数 A 返回了一个函数 B，并且函数 B 中使用了函数 A 的变量，函数 B 就被称为闭包。</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">A</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token number">1</span>
+  <span class="token keyword">function</span> <span class="token function">B</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> B
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>你是否会疑惑，为什么函数 <code>A</code>已经弹出调用栈了，为什么函数 <code>B</code> 还能引用到函数 <code>A</code>中的变量。因为函数 <code>A</code> 中的变量这时候是存储在堆上的。现在的 <code>JS</code>引擎可以通过逃逸分析辨别出哪些变量需要存储在堆上，哪些需要存储在栈上。</p>
+</blockquote>
+<p>经典面试题，循环中使用闭包解决 var 定义函数的问题</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">for</span> <span class="token punctuation">(</span> <span class="token keyword">var</span> i<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span> i<span class="token operator">&lt;=</span><span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">setTimeout</span><span class="token punctuation">(</span> <span class="token keyword">function</span> <span class="token function">timer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span> i <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> i<span class="token operator">*</span><span class="token number">1000</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>首先因为 <code>setTimeout</code> 是个异步函数，所有会先把循环全部执行完毕，这时候 <code>i</code> 就是 <code>6</code> 了，所以会输出一堆 <code>6</code>。</li>
+<li>解决办法两种，第一种使用闭包</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>j<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token function">timer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>j<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> j <span class="token operator">*</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>第二种就是使用 <code>setTimeout</code> 的第三个参数</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">for</span> <span class="token punctuation">(</span> <span class="token keyword">var</span> i<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span> i<span class="token operator">&lt;=</span><span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">setTimeout</span><span class="token punctuation">(</span> <span class="token keyword">function</span> <span class="token function">timer</span><span class="token punctuation">(</span>j<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span> j <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> i<span class="token operator">*</span><span class="token number">1000</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>第三种就是使用 <code>let</code> 定义 <code>i</code> 了</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">for</span> <span class="token punctuation">(</span> <span class="token keyword">let</span> i<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span> i<span class="token operator">&lt;=</span><span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">setTimeout</span><span class="token punctuation">(</span> <span class="token keyword">function</span> <span class="token function">timer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span> i <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> i<span class="token operator">*</span><span class="token number">1000</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>因为对于 <code>let</code> 来说，他会创建一个块级作用域，相当于</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// 形成块级作用域</span>
+  <span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span>
+  <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> ii <span class="token operator">=</span> i
+    <span class="token function">setTimeout</span><span class="token punctuation">(</span> <span class="token keyword">function</span> <span class="token function">timer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span> i <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> i<span class="token operator">*</span><span class="token number">1000</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  i<span class="token operator">++</span>
+  <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> ii <span class="token operator">=</span> i
+  <span class="token punctuation">}</span>
+  i<span class="token operator">++</span>
+  <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> ii <span class="token operator">=</span> i
+  <span class="token punctuation">}</span>
+  <span class="token operator">...</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="10-深浅拷贝"><a href="#10-深浅拷贝" class="headerlink" title="10 深浅拷贝"></a>10 深浅拷贝</h3><pre class="line-numbers language-js"><code class="language-js">letet a a <span class="token operator">=</span> <span class="token punctuation">{</span>
+    age     <span class="token punctuation">:</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">let</span> b <span class="token operator">=</span> a
+a<span class="token punctuation">.</span>age <span class="token operator">=</span> <span class="token number">2</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>b<span class="token punctuation">.</span>age<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 2</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>从上述例子中我们可以发现，如果给一个变量赋值一个对象，那么两者的值会是同一个引用，其中一方改变，另一方也会相应改变。</li>
+<li>通常在开发中我们不希望出现这样的问题，我们可以使用浅拷贝来解决这个问题</li>
+</ul>
+<p><strong>浅拷贝</strong></p>
+<blockquote>
+<p>首先可以通过 <code>Object.assign</code> 来解决这个问题</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">{</span>
+    age<span class="token punctuation">:</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">let</span> b <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">assign</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span> a<span class="token punctuation">)</span>
+a<span class="token punctuation">.</span>age <span class="token operator">=</span> <span class="token number">2</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>b<span class="token punctuation">.</span>age<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 1</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>当然我们也可以通过展开运算符<code>（…）</code>来解决</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">{</span>
+    age<span class="token punctuation">:</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">let</span> b <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token operator">...</span>a<span class="token punctuation">}</span>
+a<span class="token punctuation">.</span>age <span class="token operator">=</span> <span class="token number">2</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>b<span class="token punctuation">.</span>age<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 1</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>通常浅拷贝就能解决大部分问题了，但是当我们遇到如下情况就需要使用到深拷贝了</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">{</span>
+    age<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    jobs<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        first<span class="token punctuation">:</span> <span class="token string">'FE'</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">let</span> b <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token operator">...</span>a<span class="token punctuation">}</span>
+a<span class="token punctuation">.</span>jobs<span class="token punctuation">.</span>first <span class="token operator">=</span> <span class="token string">'native'</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>b<span class="token punctuation">.</span>jobs<span class="token punctuation">.</span>first<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// native</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>浅拷贝只解决了第一层的问题，如果接下去的值中还有对象的话，那么就又回到刚开始的话题了，两者享有相同的引用。要解决这个问题，我们需要引入深拷</p>
+</blockquote>
+<p><strong>深拷贝</strong></p>
+<blockquote>
+<p>这个问题通常可以通过 <code>JSON.parse(JSON.stringify(object))</code> 来解决</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">{</span>
+    age<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    jobs<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        first<span class="token punctuation">:</span> <span class="token string">'FE'</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">let</span> b <span class="token operator">=</span> JSON<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>JSON<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">)</span>
+a<span class="token punctuation">.</span>jobs<span class="token punctuation">.</span>first <span class="token operator">=</span> <span class="token string">'native'</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>b<span class="token punctuation">.</span>jobs<span class="token punctuation">.</span>first<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// FE</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>但是该方法也是有局限性的：</p>
+</blockquote>
+<ul>
+<li>会忽略 <code>undefined</code></li>
+<li>不能序列化函数</li>
+<li>不能解决循环引用的对象</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">let</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span>
+  a<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  b<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    c<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    d<span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+obj<span class="token punctuation">.</span>c <span class="token operator">=</span> obj<span class="token punctuation">.</span>b
+obj<span class="token punctuation">.</span>e <span class="token operator">=</span> obj<span class="token punctuation">.</span>a
+obj<span class="token punctuation">.</span>b<span class="token punctuation">.</span>c <span class="token operator">=</span> obj<span class="token punctuation">.</span>c
+obj<span class="token punctuation">.</span>b<span class="token punctuation">.</span>d <span class="token operator">=</span> obj<span class="token punctuation">.</span>b
+obj<span class="token punctuation">.</span>b<span class="token punctuation">.</span>e <span class="token operator">=</span> obj<span class="token punctuation">.</span>b<span class="token punctuation">.</span>c
+<span class="token keyword">let</span> newObj <span class="token operator">=</span> JSON<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>JSON<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>newObj<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>如果你有这么一个循环引用对象，你会发现你不能通过该方法深拷贝</p>
+</blockquote>
+<ul>
+<li>在遇到函数或者 <code>undefined</code> 的时候，该对象也不能正常的序列化</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">{</span>
+    age<span class="token punctuation">:</span> undefined<span class="token punctuation">,</span>
+    jobs<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    name<span class="token punctuation">:</span> <span class="token string">'poetries'</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">let</span> b <span class="token operator">=</span> JSON<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>JSON<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// {name: "poetries"}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>你会发现在上述情况中，该方法会忽略掉函数和`undefined。</li>
+<li>但是在通常情况下，复杂数据都是可以序列化的，所以这个函数可以解决大部分问题，并且该函数是内置函数中处理深拷贝性能最快的。当然如果你的数据中含有以上三种情况下，可以使用 <code>lodash</code> 的深拷贝函数。</li>
+</ul>
+<h3 id="11-模块化"><a href="#11-模块化" class="headerlink" title="11 模块化"></a>11 模块化</h3><blockquote>
+<p>在有 <code>Babel</code> 的情况下，我们可以直接使用 <code>ES6</code>的模块化</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// file a.js</span>
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">a</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">b</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// file b.js</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">import</span> <span class="token punctuation">{</span>a<span class="token punctuation">,</span> b<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./a.js'</span>
+<span class="token keyword">import</span> XXX <span class="token keyword">from</span> <span class="token string">'./b.js'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>CommonJS</strong></p>
+<blockquote>
+<p><code>CommonJs</code> 是 <code>Node</code> 独有的规范，浏览器中使用就需要用到 <code>Browserify</code>解析了。</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// a.js</span>
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+    a<span class="token punctuation">:</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// or</span>
+exports<span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">1</span>
+
+<span class="token comment" spellcheck="true">// b.js</span>
+<span class="token keyword">var</span> module <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./a.js'</span><span class="token punctuation">)</span>
+module<span class="token punctuation">.</span>a <span class="token comment" spellcheck="true">// -> log 1</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>在上述代码中，<code>module.exports</code> 和 <code>exports</code> 很容易混淆，让我们来看看大致内部实现</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">var</span> module <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./a.js'</span><span class="token punctuation">)</span>
+module<span class="token punctuation">.</span>a
+<span class="token comment" spellcheck="true">// 这里其实就是包装了一层立即执行函数，这样就不会污染全局变量了，</span>
+<span class="token comment" spellcheck="true">// 重要的是 module 这里，module 是 Node 独有的一个变量</span>
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+    a<span class="token punctuation">:</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 基本实现</span>
+<span class="token keyword">var</span> module <span class="token operator">=</span> <span class="token punctuation">{</span>
+  exports<span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment" spellcheck="true">// exports 就是个空对象</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 这个是为什么 exports 和 module.exports 用法相似的原因</span>
+<span class="token keyword">var</span> exports <span class="token operator">=</span> module<span class="token punctuation">.</span>exports
+<span class="token keyword">var</span> load <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>module<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 导出的东西</span>
+    <span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token number">1</span>
+    module<span class="token punctuation">.</span>exports <span class="token operator">=</span> a
+    <span class="token keyword">return</span> module<span class="token punctuation">.</span>exports
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>再来说说 <code>module.exports</code> 和<code>exports</code>，用法其实是相似的，但是不能对 <code>exports</code> 直接赋值，不会有任何效果。</p>
+</blockquote>
+<blockquote>
+<p>对于 <code>CommonJS</code> 和 <code>ES6</code> 中的模块化的两者区别是：</p>
+</blockquote>
+<ul>
+<li>前者支持动态导入，也就是 <code>require(${path}/xx.js)</code>，后者目前不支持，但是已有提案,前者是同步导入，因为用于服务端，文件都在本地，同步导入即使卡住主线程影响也不大。</li>
+<li>而后者是异步导入，因为用于浏览器，需要下载文件，如果也采用同步导入会对渲染有很大影响</li>
+<li>前者在导出时都是值拷贝，就算导出的值变了，导入的值也不会改变，所以如果想更新值，必须重新导入一次。</li>
+<li>但是后者采用实时绑定的方式，导入导出的值都指向同一个内存地址，所以导入值会跟随导出值变化</li>
+<li>后者会编译成 <code>require/exports</code> 来执行的</li>
+</ul>
+<p><strong>AMD</strong></p>
+<blockquote>
+<p><code>AMD</code> 是由 <code>RequireJS</code> 提出的</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// AMD</span>
+<span class="token function">define</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'./a'</span><span class="token punctuation">,</span> <span class="token string">'./b'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    a<span class="token punctuation">.</span><span class="token keyword">do</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    b<span class="token punctuation">.</span><span class="token keyword">do</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token function">define</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>require<span class="token punctuation">,</span> exports<span class="token punctuation">,</span> module<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./a'</span><span class="token punctuation">)</span>
+    a<span class="token punctuation">.</span><span class="token function">doSomething</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">var</span> b <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./b'</span><span class="token punctuation">)</span>
+    b<span class="token punctuation">.</span><span class="token function">doSomething</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="12-防抖"><a href="#12-防抖" class="headerlink" title="12 防抖"></a>12 防抖</h3><blockquote>
+<p>你是否在日常开发中遇到一个问题，在滚动事件中需要做个复杂计算或者实现一个按钮的防二次点击操作。</p>
+</blockquote>
+<ul>
+<li>这些需求都可以通过函数防抖动来实现。尤其是第一个需求，如果在频繁的事件回调中做复杂计算，很有可能导致页面卡顿，不如将多次计算合并为一次计算，只在一个精确点做操作</li>
+<li>PS：防抖和节流的作用都是防止函数多次调用。区别在于，假设一个用户一直触发这个函数，且每次触发函数的间隔小于<code>wait</code>，防抖的情况下只会调用一次，而节流的 情况会每隔一定时间（参数<code>wait</code>）调用函数</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// 这个是用来获取当前时间戳的</span>
+<span class="token keyword">function</span> <span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token operator">+</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">/**
+ * 防抖函数，返回函数连续调用时，空闲时间必须大于或等于 wait，func 才会执行
+ *
+ * @param  {function} func        回调函数
+ * @param  {number}   wait        表示时间窗口的间隔
+ * @param  {boolean}  immediate   设置为ture时，是否立即调用函数
+ * @return {function}             返回客户调用函数
+ */</span>
+<span class="token keyword">function</span> debounce <span class="token punctuation">(</span>func<span class="token punctuation">,</span> wait <span class="token operator">=</span> <span class="token number">50</span><span class="token punctuation">,</span> immediate <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> timer<span class="token punctuation">,</span> context<span class="token punctuation">,</span> args
+
+  <span class="token comment" spellcheck="true">// 延迟执行函数</span>
+  <span class="token keyword">const</span> later <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 延迟函数执行完毕，清空缓存的定时器序号</span>
+    timer <span class="token operator">=</span> <span class="token keyword">null</span>
+    <span class="token comment" spellcheck="true">// 延迟执行的情况下，函数会在延迟函数中执行</span>
+    <span class="token comment" spellcheck="true">// 使用到之前缓存的参数和上下文</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>immediate<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      func<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> args<span class="token punctuation">)</span>
+      context <span class="token operator">=</span> args <span class="token operator">=</span> <span class="token keyword">null</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span> wait<span class="token punctuation">)</span>
+
+  <span class="token comment" spellcheck="true">// 这里返回的函数是每次实际调用的函数</span>
+  <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token operator">...</span>params<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 如果没有创建延迟执行函数（later），就创建一个</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>timer<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      timer <span class="token operator">=</span> <span class="token function">later</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token comment" spellcheck="true">// 如果是立即执行，调用函数</span>
+      <span class="token comment" spellcheck="true">// 否则缓存参数和调用上下文</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>immediate<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        func<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> params<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        context <span class="token operator">=</span> <span class="token keyword">this</span>
+        args <span class="token operator">=</span> params
+      <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 如果已有延迟执行函数（later），调用的时候清除原来的并重新设定一个</span>
+    <span class="token comment" spellcheck="true">// 这样做延迟函数会重新计时</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token function">clearTimeout</span><span class="token punctuation">(</span>timer<span class="token punctuation">)</span>
+      timer <span class="token operator">=</span> <span class="token function">later</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>对于按钮防点击来说的实现：如果函数是立即执行的，就立即调用，如果函数是延迟执行的，就缓存上下文和参数，放到延迟函数中去执行。一旦我开始一个定时器，只要我定时器还在，你每次点击我都重新计时。一旦你点累了，定时器时间到，定时器重置为 <code>null</code>，就可以再次点击了。</li>
+<li>对于延时执行函数来说的实现：清除定时器<code>ID</code>，如果是延迟调用就调用函数</li>
+</ul>
+<h3 id="13-节流"><a href="#13-节流" class="headerlink" title="13 节流"></a>13 节流</h3><blockquote>
+<p>防抖动和节流本质是不一样的。防抖动是将多次执行变为最后一次执行，节流是将多次执行变成每隔一段时间执行</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">/**
+ * underscore 节流函数，返回函数连续调用时，func 执行频率限定为 次 / wait
+ *
+ * @param  {function}   func      回调函数
+ * @param  {number}     wait      表示时间窗口的间隔
+ * @param  {object}     options   如果想忽略开始函数的的调用，传入{leading: false}。
+ *                                如果想忽略结尾函数的调用，传入{trailing: false}
+ *                                两者不能共存，否则函数不能执行
+ * @return {function}             返回客户调用函数
+ */</span>
+_<span class="token punctuation">.</span>throttle <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>func<span class="token punctuation">,</span> wait<span class="token punctuation">,</span> options<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> context<span class="token punctuation">,</span> args<span class="token punctuation">,</span> result<span class="token punctuation">;</span>
+    <span class="token keyword">var</span> timeout <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 之前的时间戳</span>
+    <span class="token keyword">var</span> previous <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 如果 options 没传则设为空对象</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>options<span class="token punctuation">)</span> options <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 定时器回调函数</span>
+    <span class="token keyword">var</span> later <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 如果设置了 leading，就将 previous 设为 0</span>
+      <span class="token comment" spellcheck="true">// 用于下面函数的第一个 if 判断</span>
+      previous <span class="token operator">=</span> options<span class="token punctuation">.</span>leading <span class="token operator">===</span> <span class="token boolean">false</span> <span class="token operator">?</span> <span class="token number">0</span> <span class="token punctuation">:</span> _<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token comment" spellcheck="true">// 置空一是为了防止内存泄漏，二是为了下面的定时器判断</span>
+      timeout <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+      result <span class="token operator">=</span> func<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>timeout<span class="token punctuation">)</span> context <span class="token operator">=</span> args <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 获得当前时间戳</span>
+      <span class="token keyword">var</span> now <span class="token operator">=</span> _<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token comment" spellcheck="true">// 首次进入前者肯定为 true</span>
+      <span class="token comment" spellcheck="true">// 如果需要第一次不执行函数</span>
+      <span class="token comment" spellcheck="true">// 就将上次时间戳设为当前的</span>
+      <span class="token comment" spellcheck="true">// 这样在接下来计算 remaining 的值时会大于0</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>previous <span class="token operator">&amp;&amp;</span> options<span class="token punctuation">.</span>leading <span class="token operator">===</span> <span class="token boolean">false</span><span class="token punctuation">)</span> previous <span class="token operator">=</span> now<span class="token punctuation">;</span>
+      <span class="token comment" spellcheck="true">// 计算剩余时间</span>
+      <span class="token keyword">var</span> remaining <span class="token operator">=</span> wait <span class="token operator">-</span> <span class="token punctuation">(</span>now <span class="token operator">-</span> previous<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      context <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+      args <span class="token operator">=</span> arguments<span class="token punctuation">;</span>
+      <span class="token comment" spellcheck="true">// 如果当前调用已经大于上次调用时间 + wait</span>
+      <span class="token comment" spellcheck="true">// 或者用户手动调了时间</span>
+       <span class="token comment" spellcheck="true">// 如果设置了 trailing，只会进入这个条件</span>
+      <span class="token comment" spellcheck="true">// 如果没有设置 leading，那么第一次会进入这个条件</span>
+      <span class="token comment" spellcheck="true">// 还有一点，你可能会觉得开启了定时器那么应该不会进入这个 if 条件了</span>
+      <span class="token comment" spellcheck="true">// 其实还是会进入的，因为定时器的延时</span>
+      <span class="token comment" spellcheck="true">// 并不是准确的时间，很可能你设置了2秒</span>
+      <span class="token comment" spellcheck="true">// 但是他需要2.2秒才触发，这时候就会进入这个条件</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>remaining <span class="token operator">&lt;=</span> <span class="token number">0</span> <span class="token operator">||</span> remaining <span class="token operator">></span> wait<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 如果存在定时器就清理掉否则会调用二次回调</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>timeout<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">clearTimeout</span><span class="token punctuation">(</span>timeout<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          timeout <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        previous <span class="token operator">=</span> now<span class="token punctuation">;</span>
+        result <span class="token operator">=</span> func<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>timeout<span class="token punctuation">)</span> context <span class="token operator">=</span> args <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>timeout <span class="token operator">&amp;&amp;</span> options<span class="token punctuation">.</span>trailing <span class="token operator">!==</span> <span class="token boolean">false</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 判断是否设置了定时器和 trailing</span>
+        <span class="token comment" spellcheck="true">// 没有的话就开启一个定时器</span>
+        <span class="token comment" spellcheck="true">// 并且不能不能同时设置 leading 和 trailing</span>
+        timeout <span class="token operator">=</span> <span class="token function">setTimeout</span><span class="token punctuation">(</span>later<span class="token punctuation">,</span> remaining<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">return</span> result<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="14-继承"><a href="#14-继承" class="headerlink" title="14 继承"></a>14 继承</h3><blockquote>
+<p>在 ES5 中，我们可以使用如下方式解决继承的问题</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">Super</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+Super<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>getNumber <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">Sub</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">let</span> s <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Sub</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+Sub<span class="token punctuation">.</span>prototype <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>Super<span class="token punctuation">.</span>prototype<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+  constructor<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    value<span class="token punctuation">:</span> Sub<span class="token punctuation">,</span>
+    enumerable<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    writable<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    configurable<span class="token punctuation">:</span> <span class="token boolean">true</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>以上继承实现思路就是将子类的原型设置为父类的原型</li>
+<li>在 <code>ES6</code> 中，我们可以通过 <code>class</code> 语法轻松解决这个问题</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">class</span> <span class="token class-name">MyDate</span> <span class="token keyword">extends</span> <span class="token class-name">Date</span> <span class="token punctuation">{</span>
+  <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">let</span> myDate <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyDate</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+myDate<span class="token punctuation">.</span><span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>但是 <code>ES6</code> 不是所有浏览器都兼容，所以我们需要使用 <code>Babel</code> 来编译这段代码。</li>
+<li>如果你使用编译过得代码调用 <code>myDate.test()</code>你会惊奇地发现出现了报错</li>
+</ul>
+<blockquote>
+<p>因为在 <code>JS</code> 底层有限制，如果不是由 <code>Date</code>构造出来的实例的话，是不能调用 <code>Date</code> 里的函数的。所以这也侧面的说明了：<code>ES6</code> 中的 <code>class</code> 继承与 <code>ES5</code> 中的一般继承写法是不同的。</p>
+</blockquote>
+<ul>
+<li>既然底层限制了实例必须由 <code>Date</code> 构造出来，那么我们可以改变下思路实现继承</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">MyData</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+<span class="token punctuation">}</span>
+MyData<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>test <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">let</span> d <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+Object<span class="token punctuation">.</span><span class="token function">setPrototypeOf</span><span class="token punctuation">(</span>d<span class="token punctuation">,</span> MyData<span class="token punctuation">.</span>prototype<span class="token punctuation">)</span>
+Object<span class="token punctuation">.</span><span class="token function">setPrototypeOf</span><span class="token punctuation">(</span>MyData<span class="token punctuation">.</span>prototype<span class="token punctuation">,</span> Date<span class="token punctuation">.</span>prototype<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>以上继承实现思路：先创建父类实例 =&gt; 改变实例原先的 <code>_proto__</code>转而连接到子类的 <code>prototype</code>=&gt; 子类的 <code>prototype</code> 的 <code>__proto__</code> 改为父类的 <code>prototype</code>。</li>
+<li>通过以上方法实现的继承就可以完美解决 <code>JS</code> 底层的这个限制</li>
+</ul>
+<h3 id="15-call-apply-bind"><a href="#15-call-apply-bind" class="headerlink" title="15 call, apply, bind"></a>15 call, apply, bind</h3><ul>
+<li><code>call</code> 和 <code>apply</code> 都是为了解决改变 <code>this</code> 的指向。作用都是相同的，只是传参的方式不同。</li>
+<li>除了第一个参数外，<code>call</code> 可以接收一个参数列表，<code>apply</code> 只接受一个参数数组</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">{</span>
+    value<span class="token punctuation">:</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">function</span> <span class="token function">getValue</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> age<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>age<span class="token punctuation">)</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>value<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+getValue<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> <span class="token string">'yck'</span><span class="token punctuation">,</span> <span class="token string">'24'</span><span class="token punctuation">)</span>
+getValue<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">'yck'</span><span class="token punctuation">,</span> <span class="token string">'24'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="16-Promise-实现"><a href="#16-Promise-实现" class="headerlink" title="16 Promise 实现"></a>16 Promise 实现</h3><ul>
+<li>可以把 <code>Promise</code> 看成一个状态机。初始是 <code>pending</code> 状态，可以通过函数 <code>resolve</code>和 <code>reject</code> ，将状态转变为 <code>resolved</code>或者 <code>rejected</code> 状态，状态一旦改变就不能再次变化。</li>
+<li><code>then</code> 函数会返回一个 <code>Promise</code> 实例，并且该返回值是一个新的实例而不是之前的实例。因为 <code>Promise</code> 规范规定除了 <code>pending</code> 状态，其他状态是不可以改变的，如果返回的是一个相同实例的话，多个 <code>then</code> 调用就失去意义了。</li>
+<li>对于 <code>then</code>来说，本质上可以把它看成是 <code>flatMap</code></li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// 三种状态</span>
+<span class="token keyword">const</span> PENDING <span class="token operator">=</span> <span class="token string">"pending"</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> RESOLVED <span class="token operator">=</span> <span class="token string">"resolved"</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> REJECTED <span class="token operator">=</span> <span class="token string">"rejected"</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// promise 接收一个函数参数，该函数会立即执行</span>
+<span class="token keyword">function</span> <span class="token function">MyPromise</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> _this <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+  _this<span class="token punctuation">.</span>currentState <span class="token operator">=</span> PENDING<span class="token punctuation">;</span>
+  _this<span class="token punctuation">.</span>value <span class="token operator">=</span> undefined<span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 用于保存 then 中的回调，只有当 promise</span>
+  <span class="token comment" spellcheck="true">// 状态为 pending 时才会缓存，并且每个实例至多缓存一个</span>
+  _this<span class="token punctuation">.</span>resolvedCallbacks <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  _this<span class="token punctuation">.</span>rejectedCallbacks <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+  _this<span class="token punctuation">.</span>resolve <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>value <span class="token keyword">instanceof</span> <span class="token class-name">MyPromise</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 如果 value 是个 Promise，递归执行</span>
+      <span class="token keyword">return</span> value<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>_this<span class="token punctuation">.</span>resolve<span class="token punctuation">,</span> _this<span class="token punctuation">.</span>reject<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// 异步执行，保证执行顺序</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>_this<span class="token punctuation">.</span>currentState <span class="token operator">===</span> PENDING<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        _this<span class="token punctuation">.</span>currentState <span class="token operator">=</span> RESOLVED<span class="token punctuation">;</span>
+        _this<span class="token punctuation">.</span>value <span class="token operator">=</span> value<span class="token punctuation">;</span>
+        _this<span class="token punctuation">.</span>resolvedCallbacks<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>cb <span class="token operator">=</span><span class="token operator">></span> <span class="token function">cb</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  _this<span class="token punctuation">.</span>reject <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>reason<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// 异步执行，保证执行顺序</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>_this<span class="token punctuation">.</span>currentState <span class="token operator">===</span> PENDING<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        _this<span class="token punctuation">.</span>currentState <span class="token operator">=</span> REJECTED<span class="token punctuation">;</span>
+        _this<span class="token punctuation">.</span>value <span class="token operator">=</span> reason<span class="token punctuation">;</span>
+        _this<span class="token punctuation">.</span>rejectedCallbacks<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>cb <span class="token operator">=</span><span class="token operator">></span> <span class="token function">cb</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// 用于解决以下问题</span>
+  <span class="token comment" spellcheck="true">// new Promise(() => throw Error('error))</span>
+  <span class="token keyword">try</span> <span class="token punctuation">{</span>
+    <span class="token function">fn</span><span class="token punctuation">(</span>_this<span class="token punctuation">.</span>resolve<span class="token punctuation">,</span> _this<span class="token punctuation">.</span>reject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    _this<span class="token punctuation">.</span><span class="token function">reject</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+MyPromise<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>then <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>onResolved<span class="token punctuation">,</span> onRejected<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> self <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 规范 2.2.7，then 必须返回一个新的 promise</span>
+  <span class="token keyword">var</span> promise2<span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 规范 2.2.onResolved 和 onRejected 都为可选参数</span>
+  <span class="token comment" spellcheck="true">// 如果类型不是函数需要忽略，同时也实现了透传</span>
+  <span class="token comment" spellcheck="true">// Promise.resolve(4).then().then((value) => console.log(value))</span>
+  onResolved <span class="token operator">=</span> <span class="token keyword">typeof</span> onResolved <span class="token operator">===</span> <span class="token string">'function'</span> <span class="token operator">?</span> onResolved <span class="token punctuation">:</span> v <span class="token operator">=</span><span class="token operator">></span> v<span class="token punctuation">;</span>
+  onRejected <span class="token operator">=</span> <span class="token keyword">typeof</span> onRejected <span class="token operator">===</span> <span class="token string">'function'</span> <span class="token operator">?</span> onRejected <span class="token punctuation">:</span> r <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">throw</span> r<span class="token punctuation">;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>currentState <span class="token operator">===</span> RESOLVED<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>promise2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyPromise</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 规范 2.2.4，保证 onFulfilled，onRjected 异步执行</span>
+      <span class="token comment" spellcheck="true">// 所以用了 setTimeout 包裹下</span>
+      <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+          <span class="token keyword">var</span> x <span class="token operator">=</span> <span class="token function">onResolved</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token function">resolutionProcedure</span><span class="token punctuation">(</span>promise2<span class="token punctuation">,</span> x<span class="token punctuation">,</span> resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">reason</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">reject</span><span class="token punctuation">(</span>reason<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>currentState <span class="token operator">===</span> REJECTED<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>promise2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyPromise</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 异步执行onRejected</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+          <span class="token keyword">var</span> x <span class="token operator">=</span> <span class="token function">onRejected</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token function">resolutionProcedure</span><span class="token punctuation">(</span>promise2<span class="token punctuation">,</span> x<span class="token punctuation">,</span> resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">reason</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">reject</span><span class="token punctuation">(</span>reason<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>currentState <span class="token operator">===</span> PENDING<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>promise2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyPromise</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      self<span class="token punctuation">.</span>resolvedCallbacks<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 考虑到可能会有报错，所以使用 try/catch 包裹</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+          <span class="token keyword">var</span> x <span class="token operator">=</span> <span class="token function">onResolved</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token function">resolutionProcedure</span><span class="token punctuation">(</span>promise2<span class="token punctuation">,</span> x<span class="token punctuation">,</span> resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">r</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">reject</span><span class="token punctuation">(</span>r<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      self<span class="token punctuation">.</span>rejectedCallbacks<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+          <span class="token keyword">var</span> x <span class="token operator">=</span> <span class="token function">onRejected</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token function">resolutionProcedure</span><span class="token punctuation">(</span>promise2<span class="token punctuation">,</span> x<span class="token punctuation">,</span> resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">r</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">reject</span><span class="token punctuation">(</span>r<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 规范 2.3</span>
+<span class="token keyword">function</span> <span class="token function">resolutionProcedure</span><span class="token punctuation">(</span>promise2<span class="token punctuation">,</span> x<span class="token punctuation">,</span> resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 规范 2.3.1，x 不能和 promise2 相同，避免循环引用</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>promise2 <span class="token operator">===</span> x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">reject</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">TypeError</span><span class="token punctuation">(</span><span class="token string">"Error"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// 规范 2.3.2</span>
+  <span class="token comment" spellcheck="true">// 如果 x 为 Promise，状态为 pending 需要继续等待否则执行</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>x <span class="token keyword">instanceof</span> <span class="token class-name">MyPromise</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>x<span class="token punctuation">.</span>currentState <span class="token operator">===</span> PENDING<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      x<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 再次调用该函数是为了确认 x resolve 的</span>
+        <span class="token comment" spellcheck="true">// 参数是什么类型，如果是基本类型就再次 resolve</span>
+        <span class="token comment" spellcheck="true">// 把值传给下个 then</span>
+        <span class="token function">resolutionProcedure</span><span class="token punctuation">(</span>promise2<span class="token punctuation">,</span> value<span class="token punctuation">,</span> resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span> reject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      x<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// 规范 2.3.3.3.3</span>
+  <span class="token comment" spellcheck="true">// reject 或者 resolve 其中一个执行过得话，忽略其他的</span>
+  <span class="token keyword">let</span> called <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 规范 2.3.3，判断 x 是否为对象或者函数</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>x <span class="token operator">!==</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> x <span class="token operator">===</span> <span class="token string">"object"</span> <span class="token operator">||</span> <span class="token keyword">typeof</span> x <span class="token operator">===</span> <span class="token string">"function"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 规范 2.3.3.2，如果不能取出 then，就 reject</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 规范 2.3.3.1</span>
+      <span class="token keyword">let</span> then <span class="token operator">=</span> x<span class="token punctuation">.</span>then<span class="token punctuation">;</span>
+      <span class="token comment" spellcheck="true">// 如果 then 是函数，调用 x.then</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> then <span class="token operator">===</span> <span class="token string">"function"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 规范 2.3.3.3</span>
+        then<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>
+          x<span class="token punctuation">,</span>
+          y <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>called<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+            called <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// 规范 2.3.3.3.1</span>
+            <span class="token function">resolutionProcedure</span><span class="token punctuation">(</span>promise2<span class="token punctuation">,</span> y<span class="token punctuation">,</span> resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          e <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>called<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+            called <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+            <span class="token function">reject</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 规范 2.3.3.4</span>
+        <span class="token function">resolve</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>called<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+      called <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+      <span class="token function">reject</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 规范 2.3.4，x 为基本类型</span>
+    <span class="token function">resolve</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="17-Generator-实现"><a href="#17-Generator-实现" class="headerlink" title="17 Generator 实现"></a>17 Generator 实现</h3><blockquote>
+<p><code>Generator</code> 是 <code>ES6</code>中新增的语法，和 <code>Promise</code> 一样，都可以用来异步编程</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// 使用 * 表示这是一个 Generator 函数</span>
+<span class="token comment" spellcheck="true">// 内部可以通过 yield 暂停代码</span>
+<span class="token comment" spellcheck="true">// 通过调用 next 恢复执行</span>
+<span class="token keyword">function</span><span class="token operator">*</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token number">1</span> <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">;</span>
+  <span class="token keyword">yield</span> <span class="token number">2</span><span class="token punctuation">;</span>
+  <span class="token keyword">yield</span> <span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">let</span> b <span class="token operator">=</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>b<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// >  { value: 2, done: false }</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>b<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// >  { value: 3, done: false }</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>b<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// >  { value: undefined, done: true }</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>从以上代码可以发现，加上 <code>*</code> 的函数执行后拥有了 <code>next</code>函数，也就是说函数执行后返回了一个对象。每次调用 <code>next</code>函数可以继续执行被暂停的代码。以下是 <code>Generator</code> 函数的简单实现</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// cb 也就是编译过的 test 函数</span>
+<span class="token keyword">function</span> <span class="token function">generator</span><span class="token punctuation">(</span>cb<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> object <span class="token operator">=</span> <span class="token punctuation">{</span>
+      next<span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+      stop<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+      next<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> ret <span class="token operator">=</span> <span class="token function">cb</span><span class="token punctuation">(</span>object<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>ret <span class="token operator">===</span> undefined<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token punctuation">{</span> value<span class="token punctuation">:</span> undefined<span class="token punctuation">,</span> done<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token punctuation">{</span>
+          value<span class="token punctuation">:</span> ret<span class="token punctuation">,</span>
+          done<span class="token punctuation">:</span> <span class="token boolean">false</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 如果你使用 babel 编译后可以发现 test 函数变成了这样</span>
+<span class="token keyword">function</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> a<span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token function">generator</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>_context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">switch</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>_context<span class="token punctuation">.</span>prev <span class="token operator">=</span> _context<span class="token punctuation">.</span>next<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 可以发现通过 yield 将代码分割成几块</span>
+        <span class="token comment" spellcheck="true">// 每次执行 next 函数就执行一块代码</span>
+        <span class="token comment" spellcheck="true">// 并且表明下次需要执行哪块代码</span>
+        <span class="token keyword">case</span> <span class="token number">0</span><span class="token punctuation">:</span>
+          a <span class="token operator">=</span> <span class="token number">1</span> <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">;</span>
+          _context<span class="token punctuation">.</span>next <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+          <span class="token keyword">return</span> <span class="token number">2</span><span class="token punctuation">;</span>
+        <span class="token keyword">case</span> <span class="token number">4</span><span class="token punctuation">:</span>
+          _context<span class="token punctuation">.</span>next <span class="token operator">=</span> <span class="token number">6</span><span class="token punctuation">;</span>
+          <span class="token keyword">return</span> <span class="token number">3</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 执行完毕</span>
+        <span class="token keyword">case</span> <span class="token number">6</span><span class="token punctuation">:</span>
+        <span class="token keyword">case</span> <span class="token string">"end"</span><span class="token punctuation">:</span>
+          <span class="token keyword">return</span> _context<span class="token punctuation">.</span><span class="token function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="18-Proxy"><a href="#18-Proxy" class="headerlink" title="18 Proxy"></a>18 Proxy</h3><blockquote>
+<p><code>Proxy</code> 是 <code>ES6</code> 中新增的功能，可以用来自定义对象中的操作</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">let</span> p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Proxy</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> handler<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// `target` 代表需要添加代理的对象</span>
+<span class="token comment" spellcheck="true">// `handler` 用来自定义对象中的操作</span>
+可以很方便的使用 Proxy 来实现一个数据绑定和监听
+
+<span class="token keyword">let</span> onWatch <span class="token operator">=</span> <span class="token punctuation">(</span>obj<span class="token punctuation">,</span> setBind<span class="token punctuation">,</span> getLogger<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> handler <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token keyword">get</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> property<span class="token punctuation">,</span> receiver<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">getLogger</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> property<span class="token punctuation">)</span>
+      <span class="token keyword">return</span> Reflect<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> property<span class="token punctuation">,</span> receiver<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token keyword">set</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> property<span class="token punctuation">,</span> value<span class="token punctuation">,</span> receiver<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">setBind</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span> Reflect<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> property<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Proxy</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> handler<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span> a<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token punctuation">}</span>
+<span class="token keyword">let</span> value
+<span class="token keyword">let</span> p <span class="token operator">=</span> <span class="token function">onWatch</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> <span class="token punctuation">(</span>v<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  value <span class="token operator">=</span> v
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>target<span class="token punctuation">,</span> property<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Get '</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>property<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">' = </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>target<span class="token punctuation">[</span>property<span class="token punctuation">]</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+p<span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">2</span> <span class="token comment" spellcheck="true">// bind `value` to `2`</span>
+p<span class="token punctuation">.</span>a <span class="token comment" spellcheck="true">// -> Get 'a' = 2</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2016/08/05/002.前端知识体系/003.高级篇/001.高级篇之JavaScript进阶知识/" target="_blank" rel="external">http://www.chenya.site/2016/08/05/002.前端知识体系/003.高级篇/001.高级篇之JavaScript进阶知识/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端知识体系/">前端知识体系</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/高级篇/">高级篇</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2016/08/05/002.前端知识体系/003.高级篇/001.高级篇之JavaScript进阶知识/&title=《高级篇-01.JavaScript进阶知识》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2016/08/05/002.前端知识体系/003.高级篇/001.高级篇之JavaScript进阶知识/&title=《高级篇-01.JavaScript进阶知识》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2016/08/05/002.前端知识体系/003.高级篇/001.高级篇之JavaScript进阶知识/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《高级篇-01.JavaScript进阶知识》 — 陈亚的个人主页&url=http://www.chenya.site/2016/08/05/002.前端知识体系/003.高级篇/001.高级篇之JavaScript进阶知识/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2016/08/05/002.前端知识体系/003.高级篇/001.高级篇之JavaScript进阶知识/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2016/08/08/前端工程与模块化框架/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">前端工程与模块化框架</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2016/07/25/002.前端知识体系/002.进阶篇/003.进阶篇之Webpack进阶知识/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">进阶篇-03.Webpack进阶知识</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2016/08/05/002.前端知识体系/003.高级篇/001.高级篇之JavaScript进阶知识/&title=《高级篇-01.JavaScript进阶知识》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2016/08/05/002.前端知识体系/003.高级篇/001.高级篇之JavaScript进阶知识/&title=《高级篇-01.JavaScript进阶知识》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2016/08/05/002.前端知识体系/003.高级篇/001.高级篇之JavaScript进阶知识/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《高级篇-01.JavaScript进阶知识》 — 陈亚的个人主页&url=http://www.chenya.site/2016/08/05/002.前端知识体系/003.高级篇/001.高级篇之JavaScript进阶知识/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2016/08/05/002.前端知识体系/003.高级篇/001.高级篇之JavaScript进阶知识/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAEOCAAAAABd2qZ5AAAD3klEQVR42u3aS7KbQBAEQO5/6eetFwZVdQ+2HJGsFBKCmWTR9Oe64uPnt+P51/acu89339z9+nzlwwcOHDhw4Ii3+rzo5w0nZ7Yos1UlZ97uBQcOHDhwHOJIwlgbdJMt5ee0ITYJujhw4MCB4xs42rQt31KSNOb3woEDBw4c/wvHLJVKwmcCkZf/cODAgQPHv+VIynCnyDZlxHzlr9dKceDAgQNHGumudtvf//mV+Q4cOHDgwDEKVLMA2aZkeVBvg2ixOxw4cODAsebIA1JbsGsLefnm8+GG4b5w4MCBA8dRjllZbTam1i60DfztSAQOHDhw4DjLkQezTWFxNuhwKml8Ph8HDhw4cJzi2DSZ8sCc0yf32qedxXpw4MCBA0fJkadb7Q1mC3qvHRUFYxw4cODAseBolz4rLLb3SradJ3tFUwoHDhw4cBziyEtmSUq2Sdg22Wf7ivCHzzhw4MCB4xDHHqVtPs3uOxuYqHNZHDhw4MDxGscmWcoHCHLWY8Nwd9fEgQMHDhxrjiQU5bdPSoHvpXwtwe2/cODAgQPHguO9pbwRsNu7twMQOHDgwIFjzzEbCJiV5Db1t81j26wWBw4cOHDMVjtrI50qFLbnzMbsikCLAwcOHDgWHG1ylQS/nGNz/uwhXaeeAw4cOHDgKIPWcwqUl96S6+RM7fhCey8cOHDgwHGKI2nezAJhG54T1tmYRf3egQMHDhw4Rhxnj3zpm1JjOwAxS19x4MCBA8eeow14eXBtq3BJ4G9fFJLAjwMHDhw43uNI0qRN6jUrLJ4CjYIuDhw4cOAYccyC6PPRhvB8tGIWbgtuHDhw4MCx5mjLZ3nJb/bfegRh3e5aVRNx4MCBA8dj2jZrICXB9VQgzEfl8lV9eO/AgQMHDhwjjryFk3+zL9ttUrVZQRMHDhw4cOw52pLf7MyzxO3LQf3AcODAgQPHgmMWaNuRhaRQOKtftnf5sFocOHDgwLHm2IwOtB2tD2Nq64GDzSjG6qI4cODAgSOog23GAtpF/Bw69k0vHDhw4MBxiqPFaot07bhDG7yH7aW7hhMOHDhw4FhPkc0aOXuUWcqXJ4TD6+PAgQMHjgXHLE2afZ61hdqWWHL9D+8dOHDgwIFjwdGGveTS+Y3bTbbFvs2jwoEDBw4cG45NcG2bWLMksC35rR4hDhw4cOA4xDELVHkBro3wOeU1Om6vgAMHDhw4/jpHXtrLhxLakJ+MVuSlSRw4cODA8T0cbStolpK1g3qzx4ADBw4cOM5yzEp7bRjOS4ptS2m22lWtFAcOHDhwrAcaZoMLbWtq/6/948SBAwcOHCOOX6SI9knA1wg4AAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

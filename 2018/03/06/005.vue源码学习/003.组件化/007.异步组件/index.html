@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Vue源码学习 - 异步组件 | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="日常学习,前端资源,Vue源码学习">
+    <meta name="description" content="异步组件在我们平时的开发工作中，为了减少首屏代码体积，往往会把一些非首屏的组件设计成异步组件，按需加载。Vue 也原生支持了异步组件的能力，如下： Vue.component(&apos;async-example&apos;, function (resolve, reject) {    // 这个特殊的 require 语法告诉 webpack    // 自动将编译后的代码分割成不同的块，    // 这些块">
+<meta name="keywords" content="日常学习,前端资源,Vue源码学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue源码学习 - 异步组件">
+<meta property="og:url" content="http://www.chenya.site/2018/03/06/005.vue源码学习/003.组件化/007.异步组件/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="异步组件在我们平时的开发工作中，为了减少首屏代码体积，往往会把一些非首屏的组件设计成异步组件，按需加载。Vue 也原生支持了异步组件的能力，如下： Vue.component(&apos;async-example&apos;, function (resolve, reject) {    // 这个特殊的 require 语法告诉 webpack    // 自动将编译后的代码分割成不同的块，    // 这些块">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.504Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue源码学习 - 异步组件">
+<meta name="twitter:description" content="异步组件在我们平时的开发工作中，为了减少首屏代码体积，往往会把一些非首屏的组件设计成异步组件，按需加载。Vue 也原生支持了异步组件的能力，如下： Vue.component(&apos;async-example&apos;, function (resolve, reject) {    // 这个特殊的 require 语法告诉 webpack    // 自动将编译后的代码分割成不同的块，    // 这些块">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">Vue源码学习 - 异步组件</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Vue源码学习 - 异步组件</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-03-06T07:23:11.000Z" itemprop="datePublished" class="page-time">
+  2018-03-06
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#异步组件"><span class="post-toc-number">1.</span> <span class="post-toc-text">异步组件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#普通函数异步组件"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">普通函数异步组件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Promise-异步组件"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Promise 异步组件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#高级异步组件"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">高级异步组件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#异步组件加载失败"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">异步组件加载失败</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#异步组件加载成功"><span class="post-toc-number">1.3.2.</span> <span class="post-toc-text">异步组件加载成功</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#异步组件加载中"><span class="post-toc-number">1.3.3.</span> <span class="post-toc-text">异步组件加载中</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#异步组件加载超时"><span class="post-toc-number">1.3.4.</span> <span class="post-toc-text">异步组件加载超时</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#异步组件-patch"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">异步组件 patch</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">总结</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-005.vue源码学习/003.组件化/007.异步组件"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Vue源码学习 - 异步组件</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-03-06 15:23:11" datetime="2018-03-06T07:23:11.000Z"  itemprop="datePublished">2018-03-06</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="异步组件"><a href="#异步组件" class="headerlink" title="异步组件"></a>异步组件</h1><p>在我们平时的开发工作中，为了减少首屏代码体积，往往会把一些非首屏的组件设计成异步组件，按需加载。Vue 也原生支持了异步组件的能力，如下：</p>
+<pre class="line-numbers language-js"><code class="language-js">Vue<span class="token punctuation">.</span><span class="token function">component</span><span class="token punctuation">(</span><span class="token string">'async-example'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token comment" spellcheck="true">// 这个特殊的 require 语法告诉 webpack</span>
+   <span class="token comment" spellcheck="true">// 自动将编译后的代码分割成不同的块，</span>
+   <span class="token comment" spellcheck="true">// 这些块将通过 Ajax 请求自动下载。</span>
+   <span class="token function">require</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'./my-async-component'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> resolve<span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>示例中可以看到，Vue 注册的组件不再是一个对象，而是一个工厂函数，函数有两个参数 <code>resolve</code> 和 <code>reject</code>，函数内部用 <code>setTimout</code> 模拟了异步，实际使用可能是通过动态请求异步组件的 JS 地址，最终通过执行 <code>resolve</code> 方法，它的参数就是我们的异步组件对象。</p>
+<p>在了解了异步组件如何注册后，我们从源码的角度来分析一下它的实现。</p>
+<p>上一节我们分析了组件的注册逻辑，由于组件的定义并不是一个普通对象，所以不会执行 <code>Vue.extend</code> 的逻辑把它变成一个组件的构造函数，但是它仍然可以执行到 <code>createComponent</code> 函数，我们再来对这个函数做回顾，它的定义在 <code>src/core/vdom/create-component/js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> createComponent <span class="token punctuation">(</span>
+  Ctor<span class="token punctuation">:</span> Class<span class="token operator">&lt;</span>Component<span class="token operator">></span> <span class="token operator">|</span> Function <span class="token operator">|</span> Object <span class="token operator">|</span> <span class="token keyword">void</span><span class="token punctuation">,</span>
+  data<span class="token punctuation">:</span> <span class="token operator">?</span>VNodeData<span class="token punctuation">,</span>
+  context<span class="token punctuation">:</span> Component<span class="token punctuation">,</span>
+  children<span class="token punctuation">:</span> <span class="token operator">?</span>Array<span class="token operator">&lt;</span>VNode<span class="token operator">></span><span class="token punctuation">,</span>
+  tag<span class="token operator">?</span><span class="token punctuation">:</span> string
+<span class="token punctuation">)</span><span class="token punctuation">:</span> VNode <span class="token operator">|</span> Array<span class="token operator">&lt;</span>VNode<span class="token operator">></span> <span class="token operator">|</span> <span class="token keyword">void</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isUndef</span><span class="token punctuation">(</span>Ctor<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">const</span> baseCtor <span class="token operator">=</span> context<span class="token punctuation">.</span>$options<span class="token punctuation">.</span>_base
+
+  <span class="token comment" spellcheck="true">// plain options object: turn it into a constructor</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isObject</span><span class="token punctuation">(</span>Ctor<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Ctor <span class="token operator">=</span> baseCtor<span class="token punctuation">.</span><span class="token function">extend</span><span class="token punctuation">(</span>Ctor<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment" spellcheck="true">// ...</span>
+
+  <span class="token comment" spellcheck="true">// async component</span>
+  <span class="token keyword">let</span> asyncFactory
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isUndef</span><span class="token punctuation">(</span>Ctor<span class="token punctuation">.</span>cid<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    asyncFactory <span class="token operator">=</span> Ctor
+    Ctor <span class="token operator">=</span> <span class="token function">resolveAsyncComponent</span><span class="token punctuation">(</span>asyncFactory<span class="token punctuation">,</span> baseCtor<span class="token punctuation">,</span> context<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>Ctor <span class="token operator">===</span> undefined<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// return a placeholder node for async component, which is rendered</span>
+      <span class="token comment" spellcheck="true">// as a comment node but preserves all the raw information for the node.</span>
+      <span class="token comment" spellcheck="true">// the information will be used for async server-rendering and hydration.</span>
+      <span class="token keyword">return</span> <span class="token function">createAsyncPlaceholder</span><span class="token punctuation">(</span>
+        asyncFactory<span class="token punctuation">,</span>
+        data<span class="token punctuation">,</span>
+        context<span class="token punctuation">,</span>
+        children<span class="token punctuation">,</span>
+        tag
+      <span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们省略了不必要的逻辑，只保留关键逻辑，由于我们这个时候传入的 <code>Ctor</code> 是一个函数，那么它也并不会执行 <code>Vue.extend</code> 逻辑，因此它的 <code>cid</code> 是 <code>undefiend</code>，进入了异步组件创建的逻辑。这里首先执行了 <code>Ctor = resolveAsyncComponent(asyncFactory, baseCtor, context)</code> 方法，它的定义在 <code>src/core/vdom/helpers/resolve-async-component.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> resolveAsyncComponent <span class="token punctuation">(</span>
+  factory<span class="token punctuation">:</span> Function<span class="token punctuation">,</span>
+  baseCtor<span class="token punctuation">:</span> Class<span class="token operator">&lt;</span>Component<span class="token operator">></span><span class="token punctuation">,</span>
+  context<span class="token punctuation">:</span> Component
+<span class="token punctuation">)</span><span class="token punctuation">:</span> Class<span class="token operator">&lt;</span>Component<span class="token operator">></span> <span class="token operator">|</span> <span class="token keyword">void</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isTrue</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>error<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token function">isDef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>errorComp<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> factory<span class="token punctuation">.</span>errorComp
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isDef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>resolved<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> factory<span class="token punctuation">.</span>resolved
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isTrue</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>loading<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token function">isDef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>loadingComp<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> factory<span class="token punctuation">.</span>loadingComp
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isDef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>contexts<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// already pending</span>
+    factory<span class="token punctuation">.</span>contexts<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> contexts <span class="token operator">=</span> factory<span class="token punctuation">.</span>contexts <span class="token operator">=</span> <span class="token punctuation">[</span>context<span class="token punctuation">]</span>
+    <span class="token keyword">let</span> sync <span class="token operator">=</span> <span class="token boolean">true</span>
+
+    <span class="token keyword">const</span> forceRender <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> l <span class="token operator">=</span> contexts<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i <span class="token operator">&lt;</span> l<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        contexts<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">$forceUpdate</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">const</span> resolve <span class="token operator">=</span> <span class="token function">once</span><span class="token punctuation">(</span><span class="token punctuation">(</span>res<span class="token punctuation">:</span> Object <span class="token operator">|</span> Class<span class="token operator">&lt;</span>Component<span class="token operator">></span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// cache resolved</span>
+      factory<span class="token punctuation">.</span>resolved <span class="token operator">=</span> <span class="token function">ensureCtor</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span> baseCtor<span class="token punctuation">)</span>
+      <span class="token comment" spellcheck="true">// invoke callbacks only if this is not a synchronous resolve</span>
+      <span class="token comment" spellcheck="true">// (async resolves are shimmed as synchronous during SSR)</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>sync<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">forceRender</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">const</span> reject <span class="token operator">=</span> <span class="token function">once</span><span class="token punctuation">(</span>reason <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>NODE_ENV <span class="token operator">!==</span> <span class="token string">'production'</span> <span class="token operator">&amp;&amp;</span> <span class="token function">warn</span><span class="token punctuation">(</span>
+        <span class="token template-string"><span class="token string">`Failed to resolve async component: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">String</span><span class="token punctuation">(</span>factory<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span> <span class="token operator">+</span>
+        <span class="token punctuation">(</span>reason <span class="token operator">?</span> <span class="token template-string"><span class="token string">`\nReason: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>reason<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span> <span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">)</span>
+      <span class="token punctuation">)</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isDef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>errorComp<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        factory<span class="token punctuation">.</span>error <span class="token operator">=</span> <span class="token boolean">true</span>
+        <span class="token function">forceRender</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">const</span> res <span class="token operator">=</span> <span class="token function">factory</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isObject</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> res<span class="token punctuation">.</span>then <span class="token operator">===</span> <span class="token string">'function'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// () => Promise</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isUndef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>resolved<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          res<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isDef</span><span class="token punctuation">(</span>res<span class="token punctuation">.</span>component<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token keyword">typeof</span> res<span class="token punctuation">.</span>component<span class="token punctuation">.</span>then <span class="token operator">===</span> <span class="token string">'function'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        res<span class="token punctuation">.</span>component<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isDef</span><span class="token punctuation">(</span>res<span class="token punctuation">.</span>error<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          factory<span class="token punctuation">.</span>errorComp <span class="token operator">=</span> <span class="token function">ensureCtor</span><span class="token punctuation">(</span>res<span class="token punctuation">.</span>error<span class="token punctuation">,</span> baseCtor<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isDef</span><span class="token punctuation">(</span>res<span class="token punctuation">.</span>loading<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          factory<span class="token punctuation">.</span>loadingComp <span class="token operator">=</span> <span class="token function">ensureCtor</span><span class="token punctuation">(</span>res<span class="token punctuation">.</span>loading<span class="token punctuation">,</span> baseCtor<span class="token punctuation">)</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>res<span class="token punctuation">.</span>delay <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            factory<span class="token punctuation">.</span>loading <span class="token operator">=</span> <span class="token boolean">true</span>
+          <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+              <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isUndef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>resolved<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token function">isUndef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>error<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                factory<span class="token punctuation">.</span>loading <span class="token operator">=</span> <span class="token boolean">true</span>
+                <span class="token function">forceRender</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+              <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span> res<span class="token punctuation">.</span>delay <span class="token operator">||</span> <span class="token number">200</span><span class="token punctuation">)</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isDef</span><span class="token punctuation">(</span>res<span class="token punctuation">.</span>timeout<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isUndef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>resolved<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+              <span class="token function">reject</span><span class="token punctuation">(</span>
+                process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>NODE_ENV <span class="token operator">!==</span> <span class="token string">'production'</span>
+                  <span class="token operator">?</span> <span class="token template-string"><span class="token string">`timeout (</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>res<span class="token punctuation">.</span>timeout<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">ms)`</span></span>
+                  <span class="token punctuation">:</span> <span class="token keyword">null</span>
+              <span class="token punctuation">)</span>
+            <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span> res<span class="token punctuation">.</span>timeout<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    sync <span class="token operator">=</span> <span class="token boolean">false</span>
+    <span class="token comment" spellcheck="true">// return in case resolved synchronously</span>
+    <span class="token keyword">return</span> factory<span class="token punctuation">.</span>loading
+      <span class="token operator">?</span> factory<span class="token punctuation">.</span>loadingComp
+      <span class="token punctuation">:</span> factory<span class="token punctuation">.</span>resolved
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>resolveAsyncComponent</code> 函数的逻辑略复杂，因为它实际上处理了 3 种异步组件的创建方式，除了刚才示例的组件注册方式，还支持 2 种，一种是支持 <code>Promise</code> 创建组件的方式，如下：</p>
+<pre class="line-numbers language-js"><code class="language-js">Vue<span class="token punctuation">.</span><span class="token function">component</span><span class="token punctuation">(</span>
+  <span class="token string">'async-webpack-example'</span><span class="token punctuation">,</span>
+  <span class="token comment" spellcheck="true">// 该 `import` 函数返回一个 `Promise` 对象。</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token string">'./my-async-component'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>另一种是高级异步组件，如下：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> AsyncComp <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 需要加载的组件。应当是一个 Promise</span>
+  component<span class="token punctuation">:</span> <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token string">'./MyComp.vue'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token comment" spellcheck="true">// 加载中应当渲染的组件</span>
+  loading<span class="token punctuation">:</span> LoadingComp<span class="token punctuation">,</span>
+  <span class="token comment" spellcheck="true">// 出错时渲染的组件</span>
+  error<span class="token punctuation">:</span> ErrorComp<span class="token punctuation">,</span>
+  <span class="token comment" spellcheck="true">// 渲染加载中组件前的等待时间。默认：200ms。</span>
+  delay<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+  <span class="token comment" spellcheck="true">// 最长等待时间。超出此时间则渲染错误组件。默认：Infinity</span>
+  timeout<span class="token punctuation">:</span> <span class="token number">3000</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+Vue<span class="token punctuation">.</span><span class="token function">component</span><span class="token punctuation">(</span><span class="token string">'async-example'</span><span class="token punctuation">,</span> AsyncComp<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>那么解下来，我们就根据这 3 种异步组件的情况，来分别去分析 <code>resolveAsyncComponent</code> 的逻辑。</p>
+<h2 id="普通函数异步组件"><a href="#普通函数异步组件" class="headerlink" title="普通函数异步组件"></a>普通函数异步组件</h2><p>针对普通函数的情况，前面几个 if 判断可以忽略，它们是为高级组件所用，对于 <code>factory.contexts</code> 的判断，是考虑到多个地方同时初始化一个异步组件，那么它的实际加载应该只有一次。接着进入实际加载逻辑，定义了 <code>forceRender</code>、<code>resolve</code> 和 <code>reject</code> 函数，注意 <code>resolve</code> 和 <code>reject</code> 函数用 <code>once</code> 函数做了一层包装，它的定义在 <code>src/shared/util.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">/**
+ * Ensure a function is called only once.
+ */</span>
+<span class="token keyword">export</span> <span class="token keyword">function</span> once <span class="token punctuation">(</span>fn<span class="token punctuation">:</span> Function<span class="token punctuation">)</span><span class="token punctuation">:</span> Function <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> called <span class="token operator">=</span> <span class="token boolean">false</span>
+  <span class="token keyword">return</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>called<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      called <span class="token operator">=</span> <span class="token boolean">true</span>
+      fn<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> arguments<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>once</code> 逻辑非常简单，传入一个函数，并返回一个新函数，它非常巧妙地利用闭包和一个标志位保证了它包装的函数只会执行一次，也就是确保 <code>resolve</code> 和 <code>reject</code> 函数只执行一次。</p>
+<p>接下来执行 <code>const res = factory(resolve, reject)</code> 逻辑，这块儿就是执行我们组件的工厂函数，同时把 <code>resolve</code> 和 <code>reject</code> 函数作为参数传入，组件的工厂函数通常会先发送请求去加载我们的异步组件的 JS 文件，拿到组件定义的对象 <code>res</code> 后，执行 <code>resolve(res)</code> 逻辑，它会先执行 <code>factory.resolved = ensureCtor(res, baseCtor)</code>：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> ensureCtor <span class="token punctuation">(</span>comp<span class="token punctuation">:</span> any<span class="token punctuation">,</span> base<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>
+    comp<span class="token punctuation">.</span>__esModule <span class="token operator">||</span>
+    <span class="token punctuation">(</span>hasSymbol <span class="token operator">&amp;&amp;</span> comp<span class="token punctuation">[</span>Symbol<span class="token punctuation">.</span>toStringTag<span class="token punctuation">]</span> <span class="token operator">===</span> <span class="token string">'Module'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    comp <span class="token operator">=</span> comp<span class="token punctuation">.</span><span class="token keyword">default</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> <span class="token function">isObject</span><span class="token punctuation">(</span>comp<span class="token punctuation">)</span>
+    <span class="token operator">?</span> base<span class="token punctuation">.</span><span class="token function">extend</span><span class="token punctuation">(</span>comp<span class="token punctuation">)</span>
+    <span class="token punctuation">:</span> comp
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个函数目的是为了保证能找到异步组件 JS 定义的组件对象，并且如果它是一个普通对象，则调用 <code>Vue.extend</code> 把它转换成一个组件的构造函数。</p>
+<p><code>resolve</code> 逻辑最后判断了 <code>sync</code>，显然我们这个场景下 <code>sync</code> 为 false，那么就会执行 <code>forceRender</code> 函数，它会遍历 <code>factory.contexts</code>，拿到每一个调用异步组件的实例 <code>vm</code>, 执行 <code>vm.$forceUpdate()</code> 方法，它的定义在 <code>src/core/instance/lifecycle.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js">Vue<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$forceUpdate <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> vm<span class="token punctuation">:</span> Component <span class="token operator">=</span> <span class="token keyword">this</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>vm<span class="token punctuation">.</span>_watcher<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    vm<span class="token punctuation">.</span>_watcher<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>$forceUpdate</code> 的逻辑非常简单，就是调用渲染 <code>watcher</code> 的 <code>update</code> 方法，让渲染 <code>watcher</code> 对应的回调函数执行，也就是触发了组件的重新渲染。之所以这么做是因为 Vue 通常是数据驱动视图重新渲染，但是在整个异步组件加载过程中是没有数据发生变化的，所以通过执行 <code>$forceUpdate</code> 可以强制组件重新渲染一次。</p>
+<h2 id="Promise-异步组件"><a href="#Promise-异步组件" class="headerlink" title="Promise 异步组件"></a><code>Promise</code> 异步组件</h2><pre class="line-numbers language-js"><code class="language-js">Vue<span class="token punctuation">.</span><span class="token function">component</span><span class="token punctuation">(</span>
+  <span class="token string">'async-webpack-example'</span><span class="token punctuation">,</span>
+  <span class="token comment" spellcheck="true">// 该 `import` 函数返回一个 `Promise` 对象。</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token string">'./my-async-component'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>webpack 2+ 支持了异步加载的语法糖：<code>() =&gt; import(&#39;./my-async-component&#39;)</code>，当执行完 <code>res = factory(resolve, reject)</code>，返回的值就是 <code>import(&#39;./my-async-component&#39;)</code> 的返回值，它是一个 <code>Promise</code> 对象。接着进入 if 条件，又判断了 <code>typeof res.then === &#39;function&#39;)</code>，条件满足，执行：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isUndef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>resolved<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  res<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>当组件异步加载成功后，执行 <code>resolve</code>，加载失败则执行 <code>reject</code>，这样就非常巧妙地实现了配合 webpack 2+ 的异步加载组件的方式（<code>Promise</code>）加载异步组件。</p>
+<h2 id="高级异步组件"><a href="#高级异步组件" class="headerlink" title="高级异步组件"></a>高级异步组件</h2><p>由于异步加载组件需要动态加载 JS，有一定网络延时，而且有加载失败的情况，所以通常我们在开发异步组件相关逻辑的时候需要设计 loading 组件和 error 组件，并在适当的时机渲染它们。Vue.js 2.3+ 支持了一种高级异步组件的方式，它通过一个简单的对象配置，帮你搞定 loading 组件和 error 组件的渲染时机，你完全不用关心细节，非常方便。接下来我们就从源码的角度来分析高级异步组件是怎么实现的。</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> AsyncComp <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 需要加载的组件。应当是一个 Promise</span>
+  component<span class="token punctuation">:</span> <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token string">'./MyComp.vue'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token comment" spellcheck="true">// 加载中应当渲染的组件</span>
+  loading<span class="token punctuation">:</span> LoadingComp<span class="token punctuation">,</span>
+  <span class="token comment" spellcheck="true">// 出错时渲染的组件</span>
+  error<span class="token punctuation">:</span> ErrorComp<span class="token punctuation">,</span>
+  <span class="token comment" spellcheck="true">// 渲染加载中组件前的等待时间。默认：200ms。</span>
+  delay<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+  <span class="token comment" spellcheck="true">// 最长等待时间。超出此时间则渲染错误组件。默认：Infinity</span>
+  timeout<span class="token punctuation">:</span> <span class="token number">3000</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+Vue<span class="token punctuation">.</span><span class="token function">component</span><span class="token punctuation">(</span><span class="token string">'async-example'</span><span class="token punctuation">,</span> AsyncComp<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>高级异步组件的初始化逻辑和普通异步组件一样，也是执行 <code>resolveAsyncComponent</code>，当执行完 <code>res = factory(resolve, reject)</code>，返回值就是定义的组件对象，显然满足 <code>else if (isDef(res.component) &amp;&amp; typeof res.component.then === &#39;function&#39;)</code> 的逻辑，接着执行 <code>res.component.then(resolve, reject)</code>，当异步组件加载成功后，执行 <code>resolve</code>，失败执行 <code>reject</code>。</p>
+<p>因为异步组件加载是一个异步过程，它接着又同步执行了如下逻辑：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isDef</span><span class="token punctuation">(</span>res<span class="token punctuation">.</span>error<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  factory<span class="token punctuation">.</span>errorComp <span class="token operator">=</span> <span class="token function">ensureCtor</span><span class="token punctuation">(</span>res<span class="token punctuation">.</span>error<span class="token punctuation">,</span> baseCtor<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isDef</span><span class="token punctuation">(</span>res<span class="token punctuation">.</span>loading<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  factory<span class="token punctuation">.</span>loadingComp <span class="token operator">=</span> <span class="token function">ensureCtor</span><span class="token punctuation">(</span>res<span class="token punctuation">.</span>loading<span class="token punctuation">,</span> baseCtor<span class="token punctuation">)</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>res<span class="token punctuation">.</span>delay <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    factory<span class="token punctuation">.</span>loading <span class="token operator">=</span> <span class="token boolean">true</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isUndef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>resolved<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token function">isUndef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>error<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        factory<span class="token punctuation">.</span>loading <span class="token operator">=</span> <span class="token boolean">true</span>
+        <span class="token function">forceRender</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> res<span class="token punctuation">.</span>delay <span class="token operator">||</span> <span class="token number">200</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isDef</span><span class="token punctuation">(</span>res<span class="token punctuation">.</span>timeout<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isUndef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>resolved<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">reject</span><span class="token punctuation">(</span>
+        process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>NODE_ENV <span class="token operator">!==</span> <span class="token string">'production'</span>
+          <span class="token operator">?</span> <span class="token template-string"><span class="token string">`timeout (</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>res<span class="token punctuation">.</span>timeout<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">ms)`</span></span>
+          <span class="token punctuation">:</span> <span class="token keyword">null</span>
+      <span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span> res<span class="token punctuation">.</span>timeout<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>先判断 <code>res.error</code> 是否定义了 error 组件，如果有的话则赋值给 <code>factory.errorComp</code>。<br>接着判断 <code>res.loading</code> 是否定义了 loading 组件，如果有的话则赋值给 <code>factory.loadingComp</code>，如果设置了 <code>res.delay</code> 且为 0，则设置 <code>factory.loading = true</code>，否则延时 <code>delay</code> 的时间执行：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isUndef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>resolved<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token function">isUndef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>error<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    factory<span class="token punctuation">.</span>loading <span class="token operator">=</span> <span class="token boolean">true</span>
+    <span class="token function">forceRender</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>最后判断 <code>res.timeout</code>，如果配置了该项，则在 <code>res.timout</code> 时间后，如果组件没有成功加载，执行 <code>reject</code>。</p>
+<p>在 <code>resolveAsyncComponent</code> 的最后有一段逻辑：</p>
+<pre class="line-numbers language-js"><code class="language-js">sync <span class="token operator">=</span> <span class="token boolean">false</span>
+<span class="token keyword">return</span> factory<span class="token punctuation">.</span>loading
+  <span class="token operator">?</span> factory<span class="token punctuation">.</span>loadingComp
+  <span class="token punctuation">:</span> factory<span class="token punctuation">.</span>resolved
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果 <code>delay</code> 配置为 0，则这次直接渲染 loading 组件，否则则延时 <code>delay</code> 执行 <code>forceRender</code>，那么又会再一次执行到 <code>resolveAsyncComponent</code>。</p>
+<p>那么这时候我们有几种情况，按逻辑的执行顺序，对不同的情况做判断。</p>
+<h3 id="异步组件加载失败"><a href="#异步组件加载失败" class="headerlink" title="异步组件加载失败"></a>异步组件加载失败</h3><p>当异步组件加载失败，会执行 <code>reject</code> 函数：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> reject <span class="token operator">=</span> <span class="token function">once</span><span class="token punctuation">(</span>reason <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>NODE_ENV <span class="token operator">!==</span> <span class="token string">'production'</span> <span class="token operator">&amp;&amp;</span> <span class="token function">warn</span><span class="token punctuation">(</span>
+    <span class="token template-string"><span class="token string">`Failed to resolve async component: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">String</span><span class="token punctuation">(</span>factory<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span> <span class="token operator">+</span>
+    <span class="token punctuation">(</span>reason <span class="token operator">?</span> <span class="token template-string"><span class="token string">`\nReason: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>reason<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span> <span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isDef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>errorComp<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    factory<span class="token punctuation">.</span>error <span class="token operator">=</span> <span class="token boolean">true</span>
+    <span class="token function">forceRender</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个时候会把 <code>factory.error</code> 设置为 <code>true</code>，同时执行 <code>forceRender()</code> 再次执行到 <code>resolveAsyncComponent</code>：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isTrue</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>error<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token function">isDef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>errorComp<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> factory<span class="token punctuation">.</span>errorComp
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>那么这个时候就返回 <code>factory.errorComp</code>，直接渲染 error 组件。</p>
+<h3 id="异步组件加载成功"><a href="#异步组件加载成功" class="headerlink" title="异步组件加载成功"></a>异步组件加载成功</h3><p>当异步组件加载成功，会执行 <code>resolve</code> 函数：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> resolve <span class="token operator">=</span> <span class="token function">once</span><span class="token punctuation">(</span><span class="token punctuation">(</span>res<span class="token punctuation">:</span> Object <span class="token operator">|</span> Class<span class="token operator">&lt;</span>Component<span class="token operator">></span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  factory<span class="token punctuation">.</span>resolved <span class="token operator">=</span> <span class="token function">ensureCtor</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span> baseCtor<span class="token punctuation">)</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>sync<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">forceRender</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>首先把加载结果缓存到 <code>factory.resolved</code> 中，这个时候因为 <code>sync</code> 已经为 false，则执行 <code>forceRender()</code> 再次执行到 <code>resolveAsyncComponent</code>：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isDef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>resolved<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> factory<span class="token punctuation">.</span>resolved
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>那么这个时候直接返回 <code>factory.resolved</code>，渲染成功加载的组件。</p>
+<h3 id="异步组件加载中"><a href="#异步组件加载中" class="headerlink" title="异步组件加载中"></a>异步组件加载中</h3><p>如果异步组件加载中并未返回，这时候会走到这个逻辑：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isTrue</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>loading<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token function">isDef</span><span class="token punctuation">(</span>factory<span class="token punctuation">.</span>loadingComp<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> factory<span class="token punctuation">.</span>loadingComp
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>那么则会返回 <code>factory.loadingComp</code>，渲染 loading 组件。</p>
+<h3 id="异步组件加载超时"><a href="#异步组件加载超时" class="headerlink" title="异步组件加载超时"></a>异步组件加载超时</h3><p>如果超时，则走到了 <code>reject</code> 逻辑，之后逻辑和加载失败一样，渲染 error 组件。</p>
+<h2 id="异步组件-patch"><a href="#异步组件-patch" class="headerlink" title="异步组件 patch"></a>异步组件 patch</h2><p>回到 <code>createComponent</code> 的逻辑：</p>
+<pre class="line-numbers language-js"><code class="language-js">Ctor <span class="token operator">=</span> <span class="token function">resolveAsyncComponent</span><span class="token punctuation">(</span>asyncFactory<span class="token punctuation">,</span> baseCtor<span class="token punctuation">,</span> context<span class="token punctuation">)</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>Ctor <span class="token operator">===</span> undefined<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">createAsyncPlaceholder</span><span class="token punctuation">(</span>
+    asyncFactory<span class="token punctuation">,</span>
+    data<span class="token punctuation">,</span>
+    context<span class="token punctuation">,</span>
+    children<span class="token punctuation">,</span>
+    tag
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果是第一次执行 <code>resolveAsyncComponent</code>，除非使用高级异步组件 <code>0 delay</code> 去创建了一个 loading 组件，否则返回是 <code>undefiend</code>，接着通过 <code>createAsyncPlaceholder</code> 创建一个注释节点作为占位符。它的定义在 <code>src/core/vdom/helpers/resolve-async-components.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> createAsyncPlaceholder <span class="token punctuation">(</span>
+  factory<span class="token punctuation">:</span> Function<span class="token punctuation">,</span>
+  data<span class="token punctuation">:</span> <span class="token operator">?</span>VNodeData<span class="token punctuation">,</span>
+  context<span class="token punctuation">:</span> Component<span class="token punctuation">,</span>
+  children<span class="token punctuation">:</span> <span class="token operator">?</span>Array<span class="token operator">&lt;</span>VNode<span class="token operator">></span><span class="token punctuation">,</span>
+  tag<span class="token punctuation">:</span> <span class="token operator">?</span>string
+<span class="token punctuation">)</span><span class="token punctuation">:</span> VNode <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> node <span class="token operator">=</span> <span class="token function">createEmptyVNode</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  node<span class="token punctuation">.</span>asyncFactory <span class="token operator">=</span> factory
+  node<span class="token punctuation">.</span>asyncMeta <span class="token operator">=</span> <span class="token punctuation">{</span> data<span class="token punctuation">,</span> context<span class="token punctuation">,</span> children<span class="token punctuation">,</span> tag <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> node
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>实际上就是就是创建了一个占位的注释 VNode，同时把 <code>asyncFactory</code> 和 <code>asyncMeta</code> 赋值给当前 <code>vnode</code>。</p>
+<p>当执行 <code>forceRender</code> 的时候，会触发组件的重新渲染，那么会再一次执行 <code>resolveAsyncComponent</code>，这时候就会根据不同的情况，可能返回 loading、error 或成功加载的异步组件，返回值不为 <code>undefined</code>，因此就走正常的组件 <code>render</code>、<code>patch</code> 过程，与组件第一次渲染流程不一样，这个时候是存在新旧 <code>vnode</code> 的，下一章我会分析组件更新的 <code>patch</code> 过程。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过以上代码分析，我们对 Vue 的异步组件的实现有了深入的了解，知道了 3 种异步组件的实现方式，并且看到高级异步组件的实现是非常巧妙的，它实现了 loading、resolve、reject、timeout 4 种状态。异步组件实现的本质是 2 次渲染，除了 0 delay 的高级异步组件第一次直接渲染成 loading 组件外，其它都是第一次渲染生成一个注释节点，当异步获取组件成功后，再通过 <code>forceRender</code> 强制重新渲染，这样就能正确渲染出我们异步加载的组件了。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/03/06/005.vue源码学习/003.组件化/007.异步组件/" target="_blank" rel="external">http://www.chenya.site/2018/03/06/005.vue源码学习/003.组件化/007.异步组件/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue源码学习/">Vue源码学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端资源/">前端资源</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/日常学习/">日常学习</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2018/03/06/005.vue源码学习/003.组件化/007.异步组件/&title=《Vue源码学习 - 异步组件》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2018/03/06/005.vue源码学习/003.组件化/007.异步组件/&title=《Vue源码学习 - 异步组件》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2018/03/06/005.vue源码学习/003.组件化/007.异步组件/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Vue源码学习 - 异步组件》 — 陈亚的个人主页&url=http://www.chenya.site/2018/03/06/005.vue源码学习/003.组件化/007.异步组件/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2018/03/06/005.vue源码学习/003.组件化/007.异步组件/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/03/07/005.vue源码学习/004.响应式原理/001.响应式原理介绍/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Vue源码学习 - 响应式原理介绍</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/03/03/004.koa学习/001.基础篇/004.静态资源加载/001.原生koa2实现静态资源服务器/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">原生koa2实现静态资源服务器</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2018/03/06/005.vue源码学习/003.组件化/007.异步组件/&title=《Vue源码学习 - 异步组件》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2018/03/06/005.vue源码学习/003.组件化/007.异步组件/&title=《Vue源码学习 - 异步组件》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2018/03/06/005.vue源码学习/003.组件化/007.异步组件/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Vue源码学习 - 异步组件》 — 陈亚的个人主页&url=http://www.chenya.site/2018/03/06/005.vue源码学习/003.组件化/007.异步组件/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2018/03/06/005.vue源码学习/003.组件化/007.异步组件/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADMUlEQVR42u3aQW6DUAwE0N7/0um2UhM0tkEC57GKGgK8z8L1+P/8xMfrw/H32/9nJtc8/sunZ8h/NTqwsbGxH8J+HR7HsE9nJtdJzj/r7m+WBhsbG3sd+7jAHJel6pn5oiSY/ArY2NjY2Melovr/f36dpARiY2NjY+c3q8ZJSftx1vnY2NjY38yuhjV5wcuP3jjh8iwNGxsb+/bsvIW4/+dL5tvY2NjYN2a/xkd1WFtoFS57fmxsbOxN7F5gVI2EeuOBZPnyl/Hm2bCxsbHXsXvbYnrBU5WXF7xCIcTGxsZewa42APnN5kuZn1Nth7CxsbE3sXvNQ76ZJm82juP+vMFodmDY2NjYj2Xnm1qq23SSX+V3TBYi/xYbGxt7E3v+b31yZo+UBE+jF4CNjY29gp1HMPlYd7SNZlBc84YEGxsbexN7Ev00Q/li09JrcgptDzY2NvYidjWsSX5VbSfm8VP+PNjY2Ng72PMBbd6oJFt28nHCZLSAjY2NvYk9KVTVWCcpUddV6Y/vHBsbG3sFu9dm9IayeVxVbUtOe+fY2NjYj2L3wvS88chjpnxxqy3NmzOxsbGxF7F77UfO6G3Z7C1BEoc1WxFsbGzsG7PPje8nDUy1TI7eMzY2NvYidh7ZJ1twqvj8NVQjpNEWTGxsbOxHsfMIplcqJqF/tcjlT46NjY39DexqKJ8XoSoyHy0XCjA2Njb2OnZebHrFIy+Q1UWvtknY2NjY+9iTtmSeYPXGwMlLysstNjY29tPZebjfa05616zy8pcU1W1sbGzsdezk0pMx8HwYnH9u7ifCxsbGvjE7PylpNs4th1dvJ8LGxsbewa6OePOhbP55EvE3nwQbGxt7EXvy42rhqW7uqW7WLJ+PjY2NvYL9Kh6T7ZLVhmRyBWxsbOzvYVeLTXVgMF+OvGlpDgmwsbGxV7CTopXw8nYlGUL0mo1CecPGxsZex65ujsn/Uh3NnhVaRVkaNjY29pexqy1BrwRW75WER6MCho2Njb2InQRAeZx01jAgb5BOqNvY2NjYN2bnoVIvTppEQvki5i8SGxsbexM7j2byhmFe/PKmolnAsLGxsTewfwH0oNSY7JJVJgAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

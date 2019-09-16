@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Vue源码学习 - codegen | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="日常学习,前端资源,Vue源码学习">
+    <meta name="description" content="codegen编译的最后一步就是把优化后的 AST 树转换成可执行的代码，这部分内容也比较多，我并不打算把所有的细节都讲了，了解整体流程即可。部分细节我们会在之后的章节配合一个具体 case 去详细讲。 为了方便理解，我们还是用之前的例子： &amp;lt;ul :class=&quot;bindCls&quot; class=&quot;list&quot; v-if=&quot;isShow&quot;&amp;gt;     &amp;lt;li v-for=&quot;(item,ind">
+<meta name="keywords" content="日常学习,前端资源,Vue源码学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue源码学习 - codegen">
+<meta property="og:url" content="http://www.chenya.site/2018/05/26/005.vue源码学习/005.编译/005.codegen/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="codegen编译的最后一步就是把优化后的 AST 树转换成可执行的代码，这部分内容也比较多，我并不打算把所有的细节都讲了，了解整体流程即可。部分细节我们会在之后的章节配合一个具体 case 去详细讲。 为了方便理解，我们还是用之前的例子： &amp;lt;ul :class=&quot;bindCls&quot; class=&quot;list&quot; v-if=&quot;isShow&quot;&amp;gt;     &amp;lt;li v-for=&quot;(item,ind">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.507Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue源码学习 - codegen">
+<meta name="twitter:description" content="codegen编译的最后一步就是把优化后的 AST 树转换成可执行的代码，这部分内容也比较多，我并不打算把所有的细节都讲了，了解整体流程即可。部分细节我们会在之后的章节配合一个具体 case 去详细讲。 为了方便理解，我们还是用之前的例子： &amp;lt;ul :class=&quot;bindCls&quot; class=&quot;list&quot; v-if=&quot;isShow&quot;&amp;gt;     &amp;lt;li v-for=&quot;(item,ind">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">Vue源码学习 - codegen</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Vue源码学习 - codegen</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-05-26T12:24:09.000Z" itemprop="datePublished" class="page-time">
+  2018-05-26
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#codegen"><span class="post-toc-number">1.</span> <span class="post-toc-text">codegen</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#generate"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">generate</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#genIf"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">genIf</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#genFor"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">genFor</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#genData-amp-genChildren"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">genData &amp; genChildren</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">总结</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-005.vue源码学习/005.编译/005.codegen"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Vue源码学习 - codegen</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-05-26 20:24:09" datetime="2018-05-26T12:24:09.000Z"  itemprop="datePublished">2018-05-26</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="codegen"><a href="#codegen" class="headerlink" title="codegen"></a>codegen</h1><p>编译的最后一步就是把优化后的 AST 树转换成可执行的代码，这部分内容也比较多，我并不打算把所有的细节都讲了，了解整体流程即可。部分细节我们会在之后的章节配合一个具体 case 去详细讲。</p>
+<p>为了方便理解，我们还是用之前的例子：</p>
+<pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span> <span class="token attr-name">:class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>bindCls<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>list<span class="token punctuation">"</span></span> <span class="token attr-name">v-if</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>isShow<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(item,index) in data<span class="token punctuation">"</span></span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>clickItem(index)<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{item}}:{{index}}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>它经过编译，执行 <code>const code = generate(ast, options)</code>，生成的 <code>render</code> 代码串如下：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">with</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>isShow<span class="token punctuation">)</span> <span class="token operator">?</span>
+    <span class="token function">_c</span><span class="token punctuation">(</span><span class="token string">'ul'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+        staticClass<span class="token punctuation">:</span> <span class="token string">"list"</span><span class="token punctuation">,</span>
+        <span class="token keyword">class</span><span class="token punctuation">:</span> bindCls
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token function">_l</span><span class="token punctuation">(</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>item<span class="token punctuation">,</span> index<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">_c</span><span class="token punctuation">(</span><span class="token string">'li'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+          on<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+            <span class="token string">"click"</span><span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>$event<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+              <span class="token function">clickItem</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span>
+            <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">[</span><span class="token function">_v</span><span class="token punctuation">(</span><span class="token function">_s</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">":"</span> <span class="token operator">+</span> <span class="token function">_s</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token function">_e</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这里的 <code>_c</code> 函数定义在 <code>src/core/instance/render.js</code> 中。</p>
+<pre class="line-numbers language-js"><code class="language-js">vm<span class="token punctuation">.</span>_c <span class="token operator">=</span> <span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">,</span> c<span class="token punctuation">,</span> d<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">createElement</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> a<span class="token punctuation">,</span> b<span class="token punctuation">,</span> c<span class="token punctuation">,</span> d<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>而 <code>_l</code>、<code>_v</code> 定义在 <code>src/core/instance/render-helpers/index.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> installRenderHelpers <span class="token punctuation">(</span>target<span class="token punctuation">:</span> any<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  target<span class="token punctuation">.</span>_o <span class="token operator">=</span> markOnce
+  target<span class="token punctuation">.</span>_n <span class="token operator">=</span> toNumber
+  target<span class="token punctuation">.</span>_s <span class="token operator">=</span> toString
+  target<span class="token punctuation">.</span>_l <span class="token operator">=</span> renderList
+  target<span class="token punctuation">.</span>_t <span class="token operator">=</span> renderSlot
+  target<span class="token punctuation">.</span>_q <span class="token operator">=</span> looseEqual
+  target<span class="token punctuation">.</span>_i <span class="token operator">=</span> looseIndexOf
+  target<span class="token punctuation">.</span>_m <span class="token operator">=</span> renderStatic
+  target<span class="token punctuation">.</span>_f <span class="token operator">=</span> resolveFilter
+  target<span class="token punctuation">.</span>_k <span class="token operator">=</span> checkKeyCodes
+  target<span class="token punctuation">.</span>_b <span class="token operator">=</span> bindObjectProps
+  target<span class="token punctuation">.</span>_v <span class="token operator">=</span> createTextVNode
+  target<span class="token punctuation">.</span>_e <span class="token operator">=</span> createEmptyVNode
+  target<span class="token punctuation">.</span>_u <span class="token operator">=</span> resolveScopedSlots
+  target<span class="token punctuation">.</span>_g <span class="token operator">=</span> bindObjectListeners
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>顾名思义，<code>_c</code> 就是执行 <code>createElement</code> 去创建 VNode，而 <code>_l</code> 对应 <code>renderList</code> 渲染列表；<code>_v</code> 对应 <code>createTextVNode</code> 创建文本 VNode；<code>_e</code> 对于 <code>createEmptyVNode</code>创建空的 VNode。 </p>
+<p>在 <code>compileToFunctions</code> 中，会把这个 <code>render</code> 代码串转换成函数，它的定义在 <code>src/compler/to-function.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> compiled <span class="token operator">=</span> <span class="token function">compile</span><span class="token punctuation">(</span>template<span class="token punctuation">,</span> options<span class="token punctuation">)</span>
+res<span class="token punctuation">.</span>render <span class="token operator">=</span> <span class="token function">createFunction</span><span class="token punctuation">(</span>compiled<span class="token punctuation">.</span>render<span class="token punctuation">,</span> fnGenErrors<span class="token punctuation">)</span>
+
+<span class="token keyword">function</span> createFunction <span class="token punctuation">(</span>code<span class="token punctuation">,</span> errors<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">try</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Function</span><span class="token punctuation">(</span>code<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">err</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    errors<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">{</span> err<span class="token punctuation">,</span> code <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> noop
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>实际上就是把 <code>render</code> 代码串通过 <code>new Function</code> 的方式转换成可执行的函数，赋值给 <code>vm.options.render</code>，这样当组件通过 <code>vm._render</code> 的时候，就会执行这个 <code>render</code> 函数。那么接下来我们就重点关注一下这个 <code>render</code> 代码串的生成过程。</p>
+<h2 id="generate"><a href="#generate" class="headerlink" title="generate"></a>generate</h2><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> code <span class="token operator">=</span> <span class="token function">generate</span><span class="token punctuation">(</span>ast<span class="token punctuation">,</span> options<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>generate</code> 函数的定义在 <code>src/compiler/codegen/index.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> generate <span class="token punctuation">(</span>
+  ast<span class="token punctuation">:</span> ASTElement <span class="token operator">|</span> <span class="token keyword">void</span><span class="token punctuation">,</span>
+  options<span class="token punctuation">:</span> CompilerOptions
+<span class="token punctuation">)</span><span class="token punctuation">:</span> CodegenResult <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> state <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CodegenState</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span>
+  <span class="token keyword">const</span> code <span class="token operator">=</span> ast <span class="token operator">?</span> <span class="token function">genElement</span><span class="token punctuation">(</span>ast<span class="token punctuation">,</span> state<span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token string">'_c("div")'</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span>
+    render<span class="token punctuation">:</span> <span class="token template-string"><span class="token string">`with(this){return </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>code<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">}`</span></span><span class="token punctuation">,</span>
+    staticRenderFns<span class="token punctuation">:</span> state<span class="token punctuation">.</span>staticRenderFns
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>generate</code> 函数首先通过 <code>genElement(ast, state)</code> 生成 <code>code</code>，再把 <code>code</code> 用 <code>with(this){return ${code}}}</code> 包裹起来。这里的 <code>state</code> 是 <code>CodegenState</code> 的一个实例，稍后我们在用到它的时候会介绍它。先来看一下 <code>genElement</code>：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> genElement <span class="token punctuation">(</span>el<span class="token punctuation">:</span> ASTElement<span class="token punctuation">,</span> state<span class="token punctuation">:</span> CodegenState<span class="token punctuation">)</span><span class="token punctuation">:</span> string <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>staticRoot <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>el<span class="token punctuation">.</span>staticProcessed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">genStatic</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>once <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>el<span class="token punctuation">.</span>onceProcessed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">genOnce</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span><span class="token keyword">for</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>el<span class="token punctuation">.</span>forProcessed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">genFor</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span><span class="token keyword">if</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>el<span class="token punctuation">.</span>ifProcessed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">genIf</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>tag <span class="token operator">===</span> <span class="token string">'template'</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>el<span class="token punctuation">.</span>slotTarget<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">genChildren</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token string">'void 0'</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>tag <span class="token operator">===</span> <span class="token string">'slot'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">genSlot</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// component or element</span>
+    <span class="token keyword">let</span> code
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>component<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      code <span class="token operator">=</span> <span class="token function">genComponent</span><span class="token punctuation">(</span>el<span class="token punctuation">.</span>component<span class="token punctuation">,</span> el<span class="token punctuation">,</span> state<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> data <span class="token operator">=</span> el<span class="token punctuation">.</span>plain <span class="token operator">?</span> undefined <span class="token punctuation">:</span> <span class="token function">genData</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">)</span>
+
+      <span class="token keyword">const</span> children <span class="token operator">=</span> el<span class="token punctuation">.</span>inlineTemplate <span class="token operator">?</span> <span class="token keyword">null</span> <span class="token punctuation">:</span> <span class="token function">genChildren</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+      code <span class="token operator">=</span> <span class="token template-string"><span class="token string">`_c('</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>el<span class="token punctuation">.</span>tag<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">'${
+        data ? `</span></span><span class="token punctuation">,</span>$<span class="token punctuation">{</span>data<span class="token punctuation">}</span><span class="token template-string"><span class="token string">` : '' // data
+      }${
+        children ? `</span></span><span class="token punctuation">,</span>$<span class="token punctuation">{</span>children<span class="token punctuation">}</span><span class="token template-string"><span class="token string">` : '' // children
+      })`</span></span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// module transforms</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> state<span class="token punctuation">.</span>transforms<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      code <span class="token operator">=</span> state<span class="token punctuation">.</span>transforms<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> code<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> code
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>基本就是判断当前 AST 元素节点的属性执行不同的代码生成函数，在我们的例子中，我们先了解一下 <code>genFor</code> 和 <code>genIf</code>。</p>
+<h2 id="genIf"><a href="#genIf" class="headerlink" title="genIf"></a><code>genIf</code></h2><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> genIf <span class="token punctuation">(</span>
+  el<span class="token punctuation">:</span> any<span class="token punctuation">,</span>
+  state<span class="token punctuation">:</span> CodegenState<span class="token punctuation">,</span>
+  altGen<span class="token operator">?</span><span class="token punctuation">:</span> Function<span class="token punctuation">,</span>
+  altEmpty<span class="token operator">?</span><span class="token punctuation">:</span> string
+<span class="token punctuation">)</span><span class="token punctuation">:</span> string <span class="token punctuation">{</span>
+  el<span class="token punctuation">.</span>ifProcessed <span class="token operator">=</span> <span class="token boolean">true</span> <span class="token comment" spellcheck="true">// avoid recursion</span>
+  <span class="token keyword">return</span> <span class="token function">genIfConditions</span><span class="token punctuation">(</span>el<span class="token punctuation">.</span>ifConditions<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> state<span class="token punctuation">,</span> altGen<span class="token punctuation">,</span> altEmpty<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> genIfConditions <span class="token punctuation">(</span>
+  conditions<span class="token punctuation">:</span> ASTIfConditions<span class="token punctuation">,</span>
+  state<span class="token punctuation">:</span> CodegenState<span class="token punctuation">,</span>
+  altGen<span class="token operator">?</span><span class="token punctuation">:</span> Function<span class="token punctuation">,</span>
+  altEmpty<span class="token operator">?</span><span class="token punctuation">:</span> string
+<span class="token punctuation">)</span><span class="token punctuation">:</span> string <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>conditions<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> altEmpty <span class="token operator">||</span> <span class="token string">'_e()'</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">const</span> condition <span class="token operator">=</span> conditions<span class="token punctuation">.</span><span class="token function">shift</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>condition<span class="token punctuation">.</span>exp<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`(</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>condition<span class="token punctuation">.</span>exp<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">)?</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>
+      <span class="token function">genTernaryExp</span><span class="token punctuation">(</span>condition<span class="token punctuation">.</span>block<span class="token punctuation">)</span>
+    <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>
+      <span class="token function">genIfConditions</span><span class="token punctuation">(</span>conditions<span class="token punctuation">,</span> state<span class="token punctuation">,</span> altGen<span class="token punctuation">,</span> altEmpty<span class="token punctuation">)</span>
+    <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">genTernaryExp</span><span class="token punctuation">(</span>condition<span class="token punctuation">.</span>block<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment" spellcheck="true">// v-if with v-once should generate code like (a)?_m(0):_m(1)</span>
+  <span class="token keyword">function</span> genTernaryExp <span class="token punctuation">(</span>el<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> altGen
+      <span class="token operator">?</span> <span class="token function">altGen</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">)</span>
+      <span class="token punctuation">:</span> el<span class="token punctuation">.</span>once
+        <span class="token operator">?</span> <span class="token function">genOnce</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">)</span>
+        <span class="token punctuation">:</span> <span class="token function">genElement</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>genIf</code> 主要是通过执行 <code>genIfConditions</code>，它是依次从 <code>conditions</code> 获取第一个 <code>condition</code>，然后通过对 <code>condition.exp</code> 去生成一段三元运算符的代码，<code>:</code> 后是递归调用 <code>genIfConditions</code>，这样如果有多个 <code>conditions</code>，就生成多层三元运算逻辑。这里我们暂时不考虑 <code>v-once</code> 的情况，所以<br><code>genTernaryExp</code> 最终是调用了 <code>genElement</code>。</p>
+<p>在我们的例子中，只有一个 <code>condition</code>，<code>exp</code> 为 <code>isShow</code>，因此生成如下伪代码：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">return</span> <span class="token punctuation">(</span>isShow<span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token function">genElement</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token function">_e</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="genFor"><a href="#genFor" class="headerlink" title="genFor"></a><code>genFor</code></h2><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> genFor <span class="token punctuation">(</span>
+  el<span class="token punctuation">:</span> any<span class="token punctuation">,</span>
+  state<span class="token punctuation">:</span> CodegenState<span class="token punctuation">,</span>
+  altGen<span class="token operator">?</span><span class="token punctuation">:</span> Function<span class="token punctuation">,</span>
+  altHelper<span class="token operator">?</span><span class="token punctuation">:</span> string
+<span class="token punctuation">)</span><span class="token punctuation">:</span> string <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> exp <span class="token operator">=</span> el<span class="token punctuation">.</span><span class="token keyword">for</span>
+  <span class="token keyword">const</span> alias <span class="token operator">=</span> el<span class="token punctuation">.</span>alias
+  <span class="token keyword">const</span> iterator1 <span class="token operator">=</span> el<span class="token punctuation">.</span>iterator1 <span class="token operator">?</span> <span class="token template-string"><span class="token string">`,</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>el<span class="token punctuation">.</span>iterator1<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span> <span class="token punctuation">:</span> <span class="token string">''</span>
+  <span class="token keyword">const</span> iterator2 <span class="token operator">=</span> el<span class="token punctuation">.</span>iterator2 <span class="token operator">?</span> <span class="token template-string"><span class="token string">`,</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>el<span class="token punctuation">.</span>iterator2<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span> <span class="token punctuation">:</span> <span class="token string">''</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>NODE_ENV <span class="token operator">!==</span> <span class="token string">'production'</span> <span class="token operator">&amp;&amp;</span>
+    state<span class="token punctuation">.</span><span class="token function">maybeComponent</span><span class="token punctuation">(</span>el<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span>
+    el<span class="token punctuation">.</span>tag <span class="token operator">!==</span> <span class="token string">'slot'</span> <span class="token operator">&amp;&amp;</span>
+    el<span class="token punctuation">.</span>tag <span class="token operator">!==</span> <span class="token string">'template'</span> <span class="token operator">&amp;&amp;</span>
+    <span class="token operator">!</span>el<span class="token punctuation">.</span>key
+  <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    state<span class="token punctuation">.</span><span class="token function">warn</span><span class="token punctuation">(</span>
+      <span class="token template-string"><span class="token string">`&lt;</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>el<span class="token punctuation">.</span>tag<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> v-for="</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>alias<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> in </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>exp<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">">: component lists rendered with `</span></span> <span class="token operator">+</span>
+      <span class="token template-string"><span class="token string">`v-for should have explicit keys. `</span></span> <span class="token operator">+</span>
+      <span class="token template-string"><span class="token string">`See https://vuejs.org/guide/list.html#key for more info.`</span></span><span class="token punctuation">,</span>
+      <span class="token boolean">true</span> <span class="token comment" spellcheck="true">/* tip */</span>
+    <span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+
+  el<span class="token punctuation">.</span>forProcessed <span class="token operator">=</span> <span class="token boolean">true</span> <span class="token comment" spellcheck="true">// avoid recursion</span>
+  <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>altHelper <span class="token operator">||</span> <span class="token string">'_l'</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">((</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>exp<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">),`</span></span> <span class="token operator">+</span>
+    <span class="token template-string"><span class="token string">`function(</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>alias<span class="token interpolation-punctuation punctuation">}</span></span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>iterator1<span class="token interpolation-punctuation punctuation">}</span></span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>iterator2<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">){`</span></span> <span class="token operator">+</span>
+      <span class="token template-string"><span class="token string">`return </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token punctuation">(</span>altGen <span class="token operator">||</span> genElement<span class="token punctuation">)</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span> <span class="token operator">+</span>
+    <span class="token string">'})'</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>genFor</code> 的逻辑很简单，首先 AST 元素节点中获取了和 <code>for</code> 相关的一些属性，然后返回了一个代码字符串。</p>
+<p>在我们的例子中，<code>exp</code> 是 <code>data</code>，<code>alias</code> 是 <code>item</code>，<code>iterator1</code> ，因此生成如下伪代码：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token function">_l</span><span class="token punctuation">(</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>item<span class="token punctuation">,</span> index<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">genElememt</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="genData-amp-genChildren"><a href="#genData-amp-genChildren" class="headerlink" title="genData &amp; genChildren"></a><code>genData</code> &amp; <code>genChildren</code></h2><p>再次回顾我们的例子，它的最外层是 <code>ul</code>，首先执行 <code>genIf</code>，它最终调用了 <code>genElement(el, state)</code> 去生成子节点，注意，这里的 <code>el</code> 仍然指向的是 <code>ul</code> 对应的 AST 节点，但是此时的 <code>el.ifProcessed</code> 为 true，所以命中最后一个 else 逻辑：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// component or element</span>
+<span class="token keyword">let</span> code
+<span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>component<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  code <span class="token operator">=</span> <span class="token function">genComponent</span><span class="token punctuation">(</span>el<span class="token punctuation">.</span>component<span class="token punctuation">,</span> el<span class="token punctuation">,</span> state<span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> data <span class="token operator">=</span> el<span class="token punctuation">.</span>plain <span class="token operator">?</span> undefined <span class="token punctuation">:</span> <span class="token function">genData</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">)</span>
+
+  <span class="token keyword">const</span> children <span class="token operator">=</span> el<span class="token punctuation">.</span>inlineTemplate <span class="token operator">?</span> <span class="token keyword">null</span> <span class="token punctuation">:</span> <span class="token function">genChildren</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+  code <span class="token operator">=</span> <span class="token template-string"><span class="token string">`_c('</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>el<span class="token punctuation">.</span>tag<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">'${
+    data ? `</span></span><span class="token punctuation">,</span>$<span class="token punctuation">{</span>data<span class="token punctuation">}</span><span class="token template-string"><span class="token string">` : '' // data
+  }${
+    children ? `</span></span><span class="token punctuation">,</span>$<span class="token punctuation">{</span>children<span class="token punctuation">}</span><span class="token template-string"><span class="token string">` : '' // children
+  })`</span></span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// module transforms</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> state<span class="token punctuation">.</span>transforms<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  code <span class="token operator">=</span> state<span class="token punctuation">.</span>transforms<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> code<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">return</span> code
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这里我们只关注 2 个逻辑，<code>genData</code> 和 <code>genChildren</code>：</p>
+<ul>
+<li>genData</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> genData <span class="token punctuation">(</span>el<span class="token punctuation">:</span> ASTElement<span class="token punctuation">,</span> state<span class="token punctuation">:</span> CodegenState<span class="token punctuation">)</span><span class="token punctuation">:</span> string <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'{'</span>
+
+  <span class="token comment" spellcheck="true">// directives first.</span>
+  <span class="token comment" spellcheck="true">// directives may mutate the el's other properties before they are generated.</span>
+  <span class="token keyword">const</span> dirs <span class="token operator">=</span> <span class="token function">genDirectives</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">)</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>dirs<span class="token punctuation">)</span> data <span class="token operator">+</span><span class="token operator">=</span> dirs <span class="token operator">+</span> <span class="token string">','</span>
+
+  <span class="token comment" spellcheck="true">// key</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>key<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    data <span class="token operator">+</span><span class="token operator">=</span> <span class="token template-string"><span class="token string">`key:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>el<span class="token punctuation">.</span>key<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">,`</span></span>
+  <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// ref</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>ref<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    data <span class="token operator">+</span><span class="token operator">=</span> <span class="token template-string"><span class="token string">`ref:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>el<span class="token punctuation">.</span>ref<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">,`</span></span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>refInFor<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    data <span class="token operator">+</span><span class="token operator">=</span> <span class="token template-string"><span class="token string">`refInFor:true,`</span></span>
+  <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// pre</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>pre<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    data <span class="token operator">+</span><span class="token operator">=</span> <span class="token template-string"><span class="token string">`pre:true,`</span></span>
+  <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// record original tag name for components using "is" attribute</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>component<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    data <span class="token operator">+</span><span class="token operator">=</span> <span class="token template-string"><span class="token string">`tag:"</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>el<span class="token punctuation">.</span>tag<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">",`</span></span>
+  <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// module data generation functions</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> state<span class="token punctuation">.</span>dataGenFns<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    data <span class="token operator">+</span><span class="token operator">=</span> state<span class="token punctuation">.</span>dataGenFns<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">(</span>el<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// attributes</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>attrs<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    data <span class="token operator">+</span><span class="token operator">=</span> <span class="token template-string"><span class="token string">`attrs:{</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">genProps</span><span class="token punctuation">(</span>el<span class="token punctuation">.</span>attrs<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">},`</span></span>
+  <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// DOM props</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>props<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    data <span class="token operator">+</span><span class="token operator">=</span> <span class="token template-string"><span class="token string">`domProps:{</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">genProps</span><span class="token punctuation">(</span>el<span class="token punctuation">.</span>props<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">},`</span></span>
+  <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// event handlers</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>events<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    data <span class="token operator">+</span><span class="token operator">=</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">genHandlers</span><span class="token punctuation">(</span>el<span class="token punctuation">.</span>events<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> state<span class="token punctuation">.</span>warn<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">,`</span></span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>nativeEvents<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    data <span class="token operator">+</span><span class="token operator">=</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">genHandlers</span><span class="token punctuation">(</span>el<span class="token punctuation">.</span>nativeEvents<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> state<span class="token punctuation">.</span>warn<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">,`</span></span>
+  <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// slot target</span>
+  <span class="token comment" spellcheck="true">// only for non-scoped slots</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>slotTarget <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>el<span class="token punctuation">.</span>slotScope<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    data <span class="token operator">+</span><span class="token operator">=</span> <span class="token template-string"><span class="token string">`slot:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>el<span class="token punctuation">.</span>slotTarget<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">,`</span></span>
+  <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// scoped slots</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>scopedSlots<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    data <span class="token operator">+</span><span class="token operator">=</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">genScopedSlots</span><span class="token punctuation">(</span>el<span class="token punctuation">.</span>scopedSlots<span class="token punctuation">,</span> state<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">,`</span></span>
+  <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// component v-model</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>model<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    data <span class="token operator">+</span><span class="token operator">=</span> <span class="token template-string"><span class="token string">`model:{value:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>
+      el<span class="token punctuation">.</span>model<span class="token punctuation">.</span>value
+    <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">,callback:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>
+      el<span class="token punctuation">.</span>model<span class="token punctuation">.</span>callback
+    <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">,expression:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>
+      el<span class="token punctuation">.</span>model<span class="token punctuation">.</span>expression
+    <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">},`</span></span>
+  <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// inline-template</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>inlineTemplate<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> inlineTemplate <span class="token operator">=</span> <span class="token function">genInlineTemplate</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>inlineTemplate<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      data <span class="token operator">+</span><span class="token operator">=</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>inlineTemplate<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">,`</span></span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  data <span class="token operator">=</span> data<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token regex">/,$/</span><span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">'}'</span>
+  <span class="token comment" spellcheck="true">// v-bind data wrap</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>wrapData<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    data <span class="token operator">=</span> el<span class="token punctuation">.</span><span class="token function">wrapData</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// v-on data wrap</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>wrapListeners<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    data <span class="token operator">=</span> el<span class="token punctuation">.</span><span class="token function">wrapListeners</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> data
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>genData</code> 函数就是根据 AST 元素节点的属性构造出一个 <code>data</code> 对象字符串，这个在后面创建 VNode 的时候的时候会作为参数传入。</p>
+<p>之前我们提到了 <code>CodegenState</code> 的实例 <code>state</code>，这里有一段关于 <code>state</code> 的逻辑：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> state<span class="token punctuation">.</span>dataGenFns<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  data <span class="token operator">+</span><span class="token operator">=</span> state<span class="token punctuation">.</span>dataGenFns<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">(</span>el<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><code>state.dataGenFns</code> 的初始化在它的构造器中。</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">CodegenState</span> <span class="token punctuation">{</span>
+  constructor <span class="token punctuation">(</span>options<span class="token punctuation">:</span> CompilerOptions<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// ...</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>dataGenFns <span class="token operator">=</span> <span class="token function">pluckModuleFunction</span><span class="token punctuation">(</span>options<span class="token punctuation">.</span>modules<span class="token punctuation">,</span> <span class="token string">'genData'</span><span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true">// ...</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>实际上就是获取所有 <code>modules</code> 中的 <code>genData</code> 函数，其中，<code>class module</code> 和 <code>style module</code> 定义了 <code>genData</code> 函数。比如定义在 <code>src/platforms/web/compiler/modules/class.js</code> 中的 <code>genData</code> 方法：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> genData <span class="token punctuation">(</span>el<span class="token punctuation">:</span> ASTElement<span class="token punctuation">)</span><span class="token punctuation">:</span> string <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">''</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>staticClass<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    data <span class="token operator">+</span><span class="token operator">=</span> <span class="token template-string"><span class="token string">`staticClass:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>el<span class="token punctuation">.</span>staticClass<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">,`</span></span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>classBinding<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    data <span class="token operator">+</span><span class="token operator">=</span> <span class="token template-string"><span class="token string">`class:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>el<span class="token punctuation">.</span>classBinding<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">,`</span></span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> data
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在我们的例子中，<code>ul</code> AST 元素节点定义了 <code>el.staticClass</code> 和 <code>el.classBinding</code>，因此最终生成的 <code>data</code> 字符串如下：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span>
+  staticClass<span class="token punctuation">:</span> <span class="token string">"list"</span><span class="token punctuation">,</span>
+  <span class="token keyword">class</span><span class="token punctuation">:</span> bindCls
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>genChildren</li>
+</ul>
+<p>接下来我们再来看一下 <code>genChildren</code>，它的定义在 <code>src/compiler/codegen/index.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> genChildren <span class="token punctuation">(</span>
+  el<span class="token punctuation">:</span> ASTElement<span class="token punctuation">,</span>
+  state<span class="token punctuation">:</span> CodegenState<span class="token punctuation">,</span>
+  checkSkip<span class="token operator">?</span><span class="token punctuation">:</span> boolean<span class="token punctuation">,</span>
+  altGenElement<span class="token operator">?</span><span class="token punctuation">:</span> Function<span class="token punctuation">,</span>
+  altGenNode<span class="token operator">?</span><span class="token punctuation">:</span> Function
+<span class="token punctuation">)</span><span class="token punctuation">:</span> string <span class="token operator">|</span> <span class="token keyword">void</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> children <span class="token operator">=</span> el<span class="token punctuation">.</span>children
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>children<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> el<span class="token punctuation">:</span> any <span class="token operator">=</span> children<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>children<span class="token punctuation">.</span>length <span class="token operator">===</span> <span class="token number">1</span> <span class="token operator">&amp;&amp;</span>
+      el<span class="token punctuation">.</span><span class="token keyword">for</span> <span class="token operator">&amp;&amp;</span>
+      el<span class="token punctuation">.</span>tag <span class="token operator">!==</span> <span class="token string">'template'</span> <span class="token operator">&amp;&amp;</span>
+      el<span class="token punctuation">.</span>tag <span class="token operator">!==</span> <span class="token string">'slot'</span>
+    <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token punctuation">(</span>altGenElement <span class="token operator">||</span> genElement<span class="token punctuation">)</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">const</span> normalizationType <span class="token operator">=</span> checkSkip
+      <span class="token operator">?</span> <span class="token function">getNormalizationType</span><span class="token punctuation">(</span>children<span class="token punctuation">,</span> state<span class="token punctuation">.</span>maybeComponent<span class="token punctuation">)</span>
+      <span class="token punctuation">:</span> <span class="token number">0</span>
+    <span class="token keyword">const</span> gen <span class="token operator">=</span> altGenNode <span class="token operator">||</span> genNode
+    <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`[</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>children<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>c <span class="token operator">=</span><span class="token operator">></span> <span class="token function">gen</span><span class="token punctuation">(</span>c<span class="token punctuation">,</span> state<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">]${
+      normalizationType ? `</span></span><span class="token punctuation">,</span>$<span class="token punctuation">{</span>normalizationType<span class="token punctuation">}</span><span class="token template-string"><span class="token string">` : ''
+    }`</span></span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在我们的例子中，<code>li</code> AST 元素节点是 <code>ul</code> AST 元素节点的 <code>children</code> 之一，满足 <code>(children.length === 1 &amp;&amp; el.for &amp;&amp; el.tag !== &#39;template&#39; &amp;&amp; el.tag !== &#39;slot&#39;)</code> 条件，因此通过 <code>genElement(el, state)</code> 生成 <code>li</code> AST元素节点的代码，也就回到了我们之前调用 <code>genFor</code> 生成的代码，把它们拼在一起生成的伪代码如下：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">return</span> <span class="token punctuation">(</span>isShow<span class="token punctuation">)</span> <span class="token operator">?</span>
+    <span class="token function">_c</span><span class="token punctuation">(</span><span class="token string">'ul'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+        staticClass<span class="token punctuation">:</span> <span class="token string">"list"</span><span class="token punctuation">,</span>
+        <span class="token keyword">class</span><span class="token punctuation">:</span> bindCls
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token function">_l</span><span class="token punctuation">(</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>item<span class="token punctuation">,</span> index<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">genElememt</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> state<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token function">_e</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在我们的例子中，在执行 <code>genElememt(el, state)</code> 的时候，<code>el</code> 还是 <code>li</code> AST 元素节点，<code>el.forProcessed</code> 已为 true，所以会继续执行 <code>genData</code> 和 <code>genChildren</code> 的逻辑。由于 <code>el.events</code> 不为空，在执行 <code>genData</code> 的时候，会执行 如下逻辑：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span>el<span class="token punctuation">.</span>events<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  data <span class="token operator">+</span><span class="token operator">=</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">genHandlers</span><span class="token punctuation">(</span>el<span class="token punctuation">.</span>events<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> state<span class="token punctuation">.</span>warn<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">,`</span></span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><code>genHandlers</code> 的定义在 <code>src/compiler/codegen/events.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> genHandlers <span class="token punctuation">(</span>
+  events<span class="token punctuation">:</span> ASTElementHandlers<span class="token punctuation">,</span>
+  isNative<span class="token punctuation">:</span> boolean<span class="token punctuation">,</span>
+  warn<span class="token punctuation">:</span> Function
+<span class="token punctuation">)</span><span class="token punctuation">:</span> string <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> res <span class="token operator">=</span> isNative <span class="token operator">?</span> <span class="token string">'nativeOn:{'</span> <span class="token punctuation">:</span> <span class="token string">'on:{'</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> name <span class="token keyword">in</span> events<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    res <span class="token operator">+</span><span class="token operator">=</span> <span class="token template-string"><span class="token string">`"</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">":</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">genHandler</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> events<span class="token punctuation">[</span>name<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">,`</span></span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> res<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">'}'</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>genHandler</code> 的逻辑就不介绍了，很大部分都是对修饰符 <code>modifier</code> 的处理，感兴趣同学可以自己看，对于我们的例子，它最终 <code>genData</code> 生成的 <code>data</code> 字符串如下：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span>
+  on<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token string">"click"</span><span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>$event<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">clickItem</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>genChildren</code> 的时候，会执行到如下逻辑：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> genChildren <span class="token punctuation">(</span>
+  el<span class="token punctuation">:</span> ASTElement<span class="token punctuation">,</span>
+  state<span class="token punctuation">:</span> CodegenState<span class="token punctuation">,</span>
+  checkSkip<span class="token operator">?</span><span class="token punctuation">:</span> boolean<span class="token punctuation">,</span>
+  altGenElement<span class="token operator">?</span><span class="token punctuation">:</span> Function<span class="token punctuation">,</span>
+  altGenNode<span class="token operator">?</span><span class="token punctuation">:</span> Function
+<span class="token punctuation">)</span><span class="token punctuation">:</span> string <span class="token operator">|</span> <span class="token keyword">void</span> <span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// ...</span>
+  <span class="token keyword">const</span> normalizationType <span class="token operator">=</span> checkSkip
+    <span class="token operator">?</span> <span class="token function">getNormalizationType</span><span class="token punctuation">(</span>children<span class="token punctuation">,</span> state<span class="token punctuation">.</span>maybeComponent<span class="token punctuation">)</span>
+    <span class="token punctuation">:</span> <span class="token number">0</span>
+  <span class="token keyword">const</span> gen <span class="token operator">=</span> altGenNode <span class="token operator">||</span> genNode
+  <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`[</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>children<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>c <span class="token operator">=</span><span class="token operator">></span> <span class="token function">gen</span><span class="token punctuation">(</span>c<span class="token punctuation">,</span> state<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">]${
+    normalizationType ? `</span></span><span class="token punctuation">,</span>$<span class="token punctuation">{</span>normalizationType<span class="token punctuation">}</span><span class="token template-string"><span class="token string">` : ''
+  }`</span></span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> genNode <span class="token punctuation">(</span>node<span class="token punctuation">:</span> ASTNode<span class="token punctuation">,</span> state<span class="token punctuation">:</span> CodegenState<span class="token punctuation">)</span><span class="token punctuation">:</span> string <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span>type <span class="token operator">===</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">genElement</span><span class="token punctuation">(</span>node<span class="token punctuation">,</span> state<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span>type <span class="token operator">===</span> <span class="token number">3</span> <span class="token operator">&amp;&amp;</span> node<span class="token punctuation">.</span>isComment<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">genComment</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">genText</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>genChildren</code> 的就是遍历 <code>children</code>，然后执行 <code>genNode</code> 方法，根据不同的 <code>type</code> 执行具体的方法。在我们的例子中，<code>li</code> AST 元素节点的 <code>children</code> 是 type 为 2 的表达式 AST 元素节点，那么会执行到 <code>genText(node)</code> 逻辑。</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> genText <span class="token punctuation">(</span>text<span class="token punctuation">:</span> ASTText <span class="token operator">|</span> ASTExpression<span class="token punctuation">)</span><span class="token punctuation">:</span> string <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`_v(</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>text<span class="token punctuation">.</span>type <span class="token operator">===</span> <span class="token number">2</span>
+    <span class="token operator">?</span> text<span class="token punctuation">.</span>expression
+    <span class="token punctuation">:</span> <span class="token function">transformSpecialNewlines</span><span class="token punctuation">(</span>JSON<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>text<span class="token punctuation">.</span>text<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">)`</span></span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>因此在我们的例子中，<code>genChildren</code> 生成的代码串如下：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">[</span><span class="token function">_v</span><span class="token punctuation">(</span><span class="token function">_s</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">":"</span> <span class="token operator">+</span> <span class="token function">_s</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>和之前拼在一起，最终生成的 <code>code</code> 如下：</p>
+<pre class="line-numbers language-js"><code class="language-js"> <span class="token keyword">return</span> <span class="token punctuation">(</span>isShow<span class="token punctuation">)</span> <span class="token operator">?</span>
+    <span class="token function">_c</span><span class="token punctuation">(</span><span class="token string">'ul'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+        staticClass<span class="token punctuation">:</span> <span class="token string">"list"</span><span class="token punctuation">,</span>
+        <span class="token keyword">class</span><span class="token punctuation">:</span> bindCls
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token function">_l</span><span class="token punctuation">(</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>item<span class="token punctuation">,</span> index<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">_c</span><span class="token punctuation">(</span><span class="token string">'li'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+          on<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+            <span class="token string">"click"</span><span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>$event<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+              <span class="token function">clickItem</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span>
+            <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">[</span><span class="token function">_v</span><span class="token punctuation">(</span><span class="token function">_s</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">":"</span> <span class="token operator">+</span> <span class="token function">_s</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token function">_e</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一节通过例子配合解析，我们对从 <code>ast -&gt; code</code> 这一步有了一些了解，编译后生成的代码就是在运行时执行的代码。由于 <code>genCode</code> 的内容有很多，所以我对大家的建议是没必要把所有的细节都一次性看完，我们应该根据具体一个 case，走完一条主线即可。</p>
+<p>在之后的章节我们会对 <code>slot</code> 的实现做解析，我们会重新复习编译的章节，针对具体问题做具体分析，有利于我们排除干扰，对编译过程的学习有更深入的理解。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/05/26/005.vue源码学习/005.编译/005.codegen/" target="_blank" rel="external">http://www.chenya.site/2018/05/26/005.vue源码学习/005.编译/005.codegen/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue源码学习/">Vue源码学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端资源/">前端资源</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/日常学习/">日常学习</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2018/05/26/005.vue源码学习/005.编译/005.codegen/&title=《Vue源码学习 - codegen》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2018/05/26/005.vue源码学习/005.编译/005.codegen/&title=《Vue源码学习 - codegen》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2018/05/26/005.vue源码学习/005.编译/005.codegen/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Vue源码学习 - codegen》 — 陈亚的个人主页&url=http://www.chenya.site/2018/05/26/005.vue源码学习/005.编译/005.codegen/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2018/05/26/005.vue源码学习/005.编译/005.codegen/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/06/05/005.vue源码学习/006.扩展/001.介绍/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Vue源码学习 - 扩展介绍</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/05/24/005.vue源码学习/005.编译/004.optimize/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Vue源码学习 - optimize</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2018/05/26/005.vue源码学习/005.编译/005.codegen/&title=《Vue源码学习 - codegen》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2018/05/26/005.vue源码学习/005.编译/005.codegen/&title=《Vue源码学习 - codegen》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2018/05/26/005.vue源码学习/005.编译/005.codegen/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Vue源码学习 - codegen》 — 陈亚的个人主页&url=http://www.chenya.site/2018/05/26/005.vue源码学习/005.编译/005.codegen/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2018/05/26/005.vue源码学习/005.编译/005.codegen/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACrUlEQVR42u3awW7bMBAE0Pz/T6fXFq3lGa5WMYqnU+AoIp8CkOtZfn3F1/eL6/ff/n3n9dPyEfO/Orzw8PDwbpr69aRfDZawkyfn83l1Dx4eHt42L5/o9ScJIN8Akp/fWPDw8PA+kndNPaty8fDw8P5XXh465LFCHnng4eHh/SzvLKiN4oDLSbfgxawFDw8Prxs96iJ9zs8r/T08PDy8cVd9XtrOl+x2Q/pjLDw8PLwF3tkRqDZsPSvHz14QHh4e3jO89tazGCJZ+tsXlBw+wMPDw7uXd70Q5xvDWRMrn267UUX1OB4eHt6Ad/glf63lf3Yc4R+f4OHh4S3wkgU6BySLex433NzZw8PDw7uJ18ayObuNGCZzi/p7eHh4eAu8ZGlug938njwOLopyPDw8vDVe3uZvh2kDhbaMfvNa8fDw8BZ487I4L8HPNo+7YmI8PDy8PV4b7M63kLapdthCw8PDw7uVlwzTHjVoQ+G2TB8dGsDDw8Mb8yZtraS8bg9R5UVz/T/Ew8PDW+Dd1ehKhj/bkPJNCw8PD2+blwQQ0SPi1lr+Cs6eg4eHh7fHi9yXC/R8uhuBLx4eHt4GL29oTbaKdnKTUAMPDw/vSV6+TOfRahJqJIcSDkfEw8PDW+DlxwLyb/cJJv+8nRUeHh7eM7w547u8JhFtHSvj4eHhPcg7O1IwCSzy419FhwsPDw9vjTeZbj5kXiJPrjf9PTw8PLwBb1IK5wv9vUcQiogZDw8Pb4HXLrXzxtgkYsgbZnh4eHjbvDZyPWzel9NqN6SoAYaHh4d3K6+NVvPitS3TD8vitr7Gw8PDe5DXLu45vm3LReU+Hh4e3gfw7toe2hgiD5rx8PDwnuGdlbz5ga081Mjvj140Hh4e3gKv/UbfltptUDvZom4ILPDw8PCurl84NFS50ERcWwAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

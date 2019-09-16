@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>通识篇-03.计算机基础算法知识 | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="前端知识体系,通识篇,算法">
+    <meta name="description" content="三、算法3.1 时间复杂度 通常使用最差的时间复杂度来衡量一个算法的好坏。 常数时间 O(1) 代表这个操作和数据量没关系，是一个固定时间的操作，比如说四则运算。 对于一个算法来说，可能会计算出如下操作次数 aN +1，N 代表数据量。那么该算法的时间复杂度就是 O(N)。因为我们在计算时间复杂度的时候，数据量通常是非常大的，这时候低阶项和常数项可以忽略不计。 当然可能会出现两个算法都是 O(N)">
+<meta name="keywords" content="前端知识体系,通识篇,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通识篇-03.计算机基础算法知识">
+<meta property="og:url" content="http://www.chenya.site/2017/05/26/002.前端知识体系/004.通识篇/003.通识篇之计算机基础算法知识/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="三、算法3.1 时间复杂度 通常使用最差的时间复杂度来衡量一个算法的好坏。 常数时间 O(1) 代表这个操作和数据量没关系，是一个固定时间的操作，比如说四则运算。 对于一个算法来说，可能会计算出如下操作次数 aN +1，N 代表数据量。那么该算法的时间复杂度就是 O(N)。因为我们在计算时间复杂度的时候，数据量通常是非常大的，这时候低阶项和常数项可以忽略不计。 当然可能会出现两个算法都是 O(N)">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/4/12/162b895b452b306c?w=670&h=508&f=gif&s=282307">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/4/12/162b895c7e59dcd1?w=670&h=508&f=gif&s=609549">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/4/13/162bc8ea14567e2e?w=670&h=508&f=gif&s=965636">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/4/13/162be13c7e30bd86?w=896&h=1008&f=gif&s=937952">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/4/16/162cd23e69ca9ea3?w=824&h=506&f=gif&s=867744">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/4/24/162f61ad8e8588b7?w=682&h=486&f=png&s=41027">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.493Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="通识篇-03.计算机基础算法知识">
+<meta name="twitter:description" content="三、算法3.1 时间复杂度 通常使用最差的时间复杂度来衡量一个算法的好坏。 常数时间 O(1) 代表这个操作和数据量没关系，是一个固定时间的操作，比如说四则运算。 对于一个算法来说，可能会计算出如下操作次数 aN +1，N 代表数据量。那么该算法的时间复杂度就是 O(N)。因为我们在计算时间复杂度的时候，数据量通常是非常大的，这时候低阶项和常数项可以忽略不计。 当然可能会出现两个算法都是 O(N)">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/4/12/162b895b452b306c?w=670&h=508&f=gif&s=282307">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">通识篇-03.计算机基础算法知识</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">通识篇-03.计算机基础算法知识</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-05-26T12:42:05.000Z" itemprop="datePublished" class="page-time">
+  2017-05-26
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#三、算法"><span class="post-toc-number">1.</span> <span class="post-toc-text">三、算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-1-时间复杂度"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">3.1 时间复杂度</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-2-位运算"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">3.2 位运算</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-3-排序"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">3.3 排序</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-4-链表"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">3.4 链表</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-5-树"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">3.5 树</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-002.前端知识体系/004.通识篇/003.通识篇之计算机基础算法知识"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">通识篇-03.计算机基础算法知识</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-05-26 20:42:05" datetime="2017-05-26T12:42:05.000Z"  itemprop="datePublished">2017-05-26</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="三、算法"><a href="#三、算法" class="headerlink" title="三、算法"></a>三、算法</h2><h3 id="3-1-时间复杂度"><a href="#3-1-时间复杂度" class="headerlink" title="3.1 时间复杂度"></a>3.1 时间复杂度</h3><ul>
+<li>通常使用最差的时间复杂度来衡量一个算法的好坏。</li>
+<li>常数时间 <code>O(1)</code> 代表这个操作和数据量没关系，是一个固定时间的操作，比如说四则运算。</li>
+<li>对于一个算法来说，可能会计算出如下操作次数 <code>aN +</code>1，<code>N</code> 代表数据量。那么该算法的时间复杂度就是 <code>O(N)</code>。因为我们在计算时间复杂度的时候，数据量通常是非常大的，这时候低阶项和常数项可以忽略不计。</li>
+<li>当然可能会出现两个算法都是 <code>O(N)</code> 的时间复杂度，那么对比两个算法的好坏就要通过对比低阶项和常数项了</li>
+</ul>
+<h3 id="3-2-位运算"><a href="#3-2-位运算" class="headerlink" title="3.2 位运算"></a>3.2 位运算</h3><ul>
+<li>位运算在算法中很有用，速度可以比四则运算快很多。</li>
+<li>在学习位运算之前应该知道十进制如何转二进制，二进制如何转十进制。这里说明下简单的计算方式</li>
+<li>十进制 <code>33</code> 可以看成是 <code>32 + 1</code> ，并且 <code>33</code> 应该是六位二进制的（因为 <code>33</code>近似 <code>32</code>，而 <code>32</code> 是 <code>2</code>的五次方，所以是六位），那么 十进制 <code>33</code> 就是 <code>100001</code> ，只要是 2 的次方，那么就是 <code>1</code>否则都为 <code>0</code><br>那么二进制 <code>100001</code> 同理，首位是 <code>2^5</code>，末位是 <code>2^0</code> ，相加得出 <code>33</code></li>
+</ul>
+<p><strong>左移 &lt;&lt;</strong></p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token number">10</span> <span class="token operator">&lt;</span><span class="token operator">&lt;</span> <span class="token number">1</span> <span class="token comment" spellcheck="true">// -> 20</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<blockquote>
+<p>左移就是将二进制全部往左移动，<code>10</code>在二进制中表示为 <code>1010</code> ，左移一位后变成 <code>10100</code> ，转换为十进制也就是 <code>20</code>，所以基本可以把左移看成以下公式 <code>a * (2 ^ b)</code></p>
+</blockquote>
+<p><strong>算数右移 &gt;&gt;</strong></p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token number">10</span> <span class="token operator">></span><span class="token operator">></span> <span class="token number">1</span> <span class="token comment" spellcheck="true">// -> 5</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>算数右移就是将二进制全部往右移动并去除多余的右边，10 在二进制中表示为 <code>1010</code> ，右移一位后变成 <code>101</code> ，转换为十进制也就是 <code>5</code>，所以基本可以把右移看成以下公式 <code>int v = a / (2 ^ b)</code></li>
+<li>右移很好用，比如可以用在二分算法中取中间值</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token number">13</span> <span class="token operator">></span><span class="token operator">></span> <span class="token number">1</span> <span class="token comment" spellcheck="true">// -> 6</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><strong>按位操作</strong></p>
+<ul>
+<li><strong>按位与</strong></li>
+</ul>
+<blockquote>
+<p>每一位都为 1，结果才为 1</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token number">8</span> <span class="token operator">&amp;</span> <span class="token number">7</span> <span class="token comment" spellcheck="true">// -> 0</span>
+<span class="token comment" spellcheck="true">// 1000 &amp; 0111 -> 0000 -> 0</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li><strong>按位或</strong></li>
+</ul>
+<blockquote>
+<p>其中一位为 1，结果就是 1</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token number">8</span> <span class="token operator">|</span> <span class="token number">7</span> <span class="token comment" spellcheck="true">// -> 15</span>
+<span class="token comment" spellcheck="true">// 1000 | 0111 -> 1111 -> 15</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li><strong>按位异或</strong></li>
+</ul>
+<blockquote>
+<p>每一位都不同，结果才为 1</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token number">8</span> <span class="token operator">^</span> <span class="token number">7</span> <span class="token comment" spellcheck="true">// -> 15</span>
+<span class="token number">8</span> <span class="token operator">^</span> <span class="token number">8</span> <span class="token comment" spellcheck="true">// -> 0</span>
+<span class="token comment" spellcheck="true">// 1000 ^ 0111 -> 1111 -> 15</span>
+<span class="token comment" spellcheck="true">// 1000 ^ 1000 -> 0000 -> 0</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>面试题：两个数不使用四则运算得出和</strong></p>
+<blockquote>
+<p>这道题中可以按位异或，因为按位异或就是不进位加法，<code>8 ^ 8 = 0</code> 如果进位了，就是 <code>16</code> 了，所以我们只需要将两个数进行异或操作，然后进位。那么也就是说两个二进制都是 1 的位置，左边应该有一个进位 <code>1</code>，所以可以得出以下公式 <code>a + b = (a ^ b) + ((a &amp; b) &lt;&lt; 1)</code> ，然后通过迭代的方式模拟加法</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">sum</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>a <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> b
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>b <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> a
+    <span class="token keyword">let</span> newA <span class="token operator">=</span> a <span class="token operator">^</span> b
+    <span class="token keyword">let</span> newB <span class="token operator">=</span> <span class="token punctuation">(</span>a <span class="token operator">&amp;</span> b<span class="token punctuation">)</span> <span class="token operator">&lt;</span><span class="token operator">&lt;</span> <span class="token number">1</span>
+    <span class="token keyword">return</span> <span class="token function">sum</span><span class="token punctuation">(</span>newA<span class="token punctuation">,</span> newB<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-3-排序"><a href="#3-3-排序" class="headerlink" title="3.3 排序"></a>3.3 排序</h3><p><strong>冒泡排序</strong></p>
+<blockquote>
+<p>冒泡排序的原理如下，从第一个元素开始，把当前元素和下一个索引元素进行比较。如果当前元素大，那么就交换位置，重复操作直到比较到最后一个元素，那么此时最后一个元素就是该数组中最大的数。下一轮重复以上操作，但是此时最后一个元素已经是最大数了，所以不需要再比较最后一个元素，只需要比较到 <code>length - 1</code> 的位置</p>
+</blockquote>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2018/4/12/162b895b452b306c?w=670&h=508&f=gif&s=282307" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<blockquote>
+<p>以下是实现该算法的代码</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">bubble</span><span class="token punctuation">(</span>array<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">checkArray</span><span class="token punctuation">(</span>array<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> array<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 从 0 到 `length - 1` 遍历</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> i<span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>array<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">></span> array<span class="token punctuation">[</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token function">swap</span><span class="token punctuation">(</span>array<span class="token punctuation">,</span> j<span class="token punctuation">,</span> j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> array<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>该算法的操作次数是一个等差数列 <code>n + (n - 1) + (n - 2) + 1</code> ，去掉常数项以后得出时间复杂度是<code>O(n * n)</code></p>
+</blockquote>
+<p><strong>插入排序</strong></p>
+<blockquote>
+<p>入排序的原理如下。第一个元素默认是已排序元素，取出下一个元素和当前元素比较，如果当前元素大就交换位置。那么此时第一个元素就是当前的最小数，所以下次取出操作从第三个元素开始，向前对比，重复之前的操作</p>
+</blockquote>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2018/4/12/162b895c7e59dcd1?w=670&h=508&f=gif&s=609549" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>以下是实现该算法的代码</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">insertion</span><span class="token punctuation">(</span>array<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">checkArray</span><span class="token punctuation">(</span>array<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> array<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> j <span class="token operator">=</span> i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> j <span class="token operator">>=</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> array<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">></span> array<span class="token punctuation">[</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span> j<span class="token operator">--</span><span class="token punctuation">)</span>
+      <span class="token function">swap</span><span class="token punctuation">(</span>array<span class="token punctuation">,</span> j<span class="token punctuation">,</span> j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> array<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>该算法的操作次数是一个等差数列 <code>n + (n - 1) + (n - 2) + 1</code> ，去掉常数项以后得出时间复杂度是 <code>O(n * n)</code></p>
+</blockquote>
+<p><strong>选择排序</strong></p>
+<blockquote>
+<p>选择排序的原理如下。遍历数组，设置最小值的索引为 0，如果取出的值比当前最小值小，就替换最小值索引，遍历完成后，将第一个元素和最小值索引上的值交换。如上操作后，第一个元素就是数组中的最小值，下次遍历就可以从索引 1 开始重复上述操作</p>
+</blockquote>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2018/4/13/162bc8ea14567e2e?w=670&h=508&f=gif&s=965636" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>以下是实现该算法的代码</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">selection</span><span class="token punctuation">(</span>array<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">checkArray</span><span class="token punctuation">(</span>array<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> array<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> minIndex <span class="token operator">=</span> i<span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> j <span class="token operator">=</span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> array<span class="token punctuation">.</span>length<span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      minIndex <span class="token operator">=</span> array<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">&lt;</span> array<span class="token punctuation">[</span>minIndex<span class="token punctuation">]</span> <span class="token operator">?</span> j <span class="token punctuation">:</span> minIndex<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">swap</span><span class="token punctuation">(</span>array<span class="token punctuation">,</span> i<span class="token punctuation">,</span> minIndex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> array<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>该算法的操作次数是一个等差数列 <code>n + (n - 1) + (n - 2) + 1</code> ，去掉常数项以后得出时间复杂度是 <code>O(n * n)</code></p>
+</blockquote>
+<p><strong>归并排序</strong></p>
+<blockquote>
+<p>归并排序的原理如下。递归的将数组两两分开直到最多包含两个元素，然后将数组排序合并，最终合并为排序好的数组。假设我有一组数组 <code>[3, 1, 2, 8, 9, 7, 6]</code>，中间数索引是 3，先排序数组 <code>[3, 1, 2, 8]</code> 。在这个左边数组上，继续拆分直到变成数组包含两个元素（如果数组长度是奇数的话，会有一个拆分数组只包含一个元素）。然后排序数组 <code>[3, 1]</code> 和 <code>[2, 8]</code> ，然后再排序数组 <code>[1, 3, 2, 8]</code> ，这样左边数组就排序完成，然后按照以上思路排序右边数组，最后将数组 <code>[1, 2, 3, 8]</code> 和 <code>[6, 7, 9]</code> 排序</p>
+</blockquote>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2018/4/13/162be13c7e30bd86?w=896&h=1008&f=gif&s=937952" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>以下是实现该算法的代码</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">sort</span><span class="token punctuation">(</span>array<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">checkArray</span><span class="token punctuation">(</span>array<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">mergeSort</span><span class="token punctuation">(</span>array<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> array<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> array<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">mergeSort</span><span class="token punctuation">(</span>array<span class="token punctuation">,</span> left<span class="token punctuation">,</span> right<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 左右索引相同说明已经只有一个数</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>left <span class="token operator">===</span> right<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 等同于 `left + (right - left) / 2`</span>
+  <span class="token comment" spellcheck="true">// 相比 `(left + right) / 2` 来说更加安全，不会溢出</span>
+  <span class="token comment" spellcheck="true">// 使用位运算是因为位运算比四则运算快</span>
+  <span class="token keyword">let</span> mid <span class="token operator">=</span> <span class="token function">parseInt</span><span class="token punctuation">(</span>left <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>right <span class="token operator">-</span> left<span class="token punctuation">)</span> <span class="token operator">></span><span class="token operator">></span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">mergeSort</span><span class="token punctuation">(</span>array<span class="token punctuation">,</span> left<span class="token punctuation">,</span> mid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">mergeSort</span><span class="token punctuation">(</span>array<span class="token punctuation">,</span> mid <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">let</span> help <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">let</span> p1 <span class="token operator">=</span> left<span class="token punctuation">;</span>
+  <span class="token keyword">let</span> p2 <span class="token operator">=</span> mid <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+  <span class="token keyword">while</span> <span class="token punctuation">(</span>p1 <span class="token operator">&lt;=</span> mid <span class="token operator">&amp;&amp;</span> p2 <span class="token operator">&lt;=</span> right<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    help<span class="token punctuation">[</span>i<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> array<span class="token punctuation">[</span>p1<span class="token punctuation">]</span> <span class="token operator">&lt;</span> array<span class="token punctuation">[</span>p2<span class="token punctuation">]</span> <span class="token operator">?</span> array<span class="token punctuation">[</span>p1<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token punctuation">:</span> array<span class="token punctuation">[</span>p2<span class="token operator">++</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">while</span> <span class="token punctuation">(</span>p1 <span class="token operator">&lt;=</span> mid<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    help<span class="token punctuation">[</span>i<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> array<span class="token punctuation">[</span>p1<span class="token operator">++</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">while</span> <span class="token punctuation">(</span>p2 <span class="token operator">&lt;=</span> right<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    help<span class="token punctuation">[</span>i<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> array<span class="token punctuation">[</span>p2<span class="token operator">++</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> help<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    array<span class="token punctuation">[</span>left <span class="token operator">+</span> i<span class="token punctuation">]</span> <span class="token operator">=</span> help<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> array<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>以上算法使用了递归的思想。递归的本质就是压栈，每递归执行一次函数，就将该函数的信息（比如参数，内部的变量，执行到的行数）压栈，直到遇到终止条件，然后出栈并继续执行函数。对于以上递归函数的调用轨迹如下</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token function">mergeSort</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// mid = 3</span>
+  <span class="token function">mergeSort</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// mid = 1</span>
+    <span class="token function">mergeSort</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// mid = 0</span>
+      <span class="token function">mergeSort</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 遇到终止，回退到上一步</span>
+    <span class="token function">mergeSort</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 遇到终止，回退到上一步</span>
+    <span class="token comment" spellcheck="true">// 排序 p1 = 0, p2 = mid + 1 = 1</span>
+    <span class="token comment" spellcheck="true">// 回退到 `mergeSort(data, 0, 3)` 执行下一个递归</span>
+  <span class="token function">mergeSort</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// mid = 2</span>
+    <span class="token function">mergeSort</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 遇到终止，回退到上一步</span>
+  <span class="token comment" spellcheck="true">// 排序 p1 = 2, p2 = mid + 1 = 3</span>
+  <span class="token comment" spellcheck="true">// 回退到 `mergeSort(data, 0, 3)` 执行合并逻辑</span>
+  <span class="token comment" spellcheck="true">// 排序 p1 = 0, p2 = mid + 1 = 2</span>
+  <span class="token comment" spellcheck="true">// 执行完毕回退</span>
+  <span class="token comment" spellcheck="true">// 左边数组排序完毕，右边也是如上轨迹</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>该算法的操作次数是可以这样计算：递归了两次，每次数据量是数组的一半，并且最后把整个数组迭代了一次，所以得出表达式 <code>2T(N / 2) + T(N)</code> （<code>T</code> 代表时间，<code>N</code> 代表数据量）。根据该表达式可以套用 该公式 得出时间复杂度为 <code>O(N * logN)</code></p>
+</blockquote>
+<p><strong>快排</strong></p>
+<blockquote>
+<p>快排的原理如下。随机选取一个数组中的值作为基准值，从左至右取值与基准值对比大小。比基准值小的放数组左边，大的放右边，对比完成后将基准值和第一个比基准值大的值交换位置。然后将数组以基准值的位置分为两部分，继续递归以上操作。</p>
+</blockquote>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2018/4/16/162cd23e69ca9ea3?w=824&h=506&f=gif&s=867744" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>以下是实现该算法的代码</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">sort</span><span class="token punctuation">(</span>array<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">checkArray</span><span class="token punctuation">(</span>array<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">quickSort</span><span class="token punctuation">(</span>array<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> array<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> array<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">quickSort</span><span class="token punctuation">(</span>array<span class="token punctuation">,</span> left<span class="token punctuation">,</span> right<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>left <span class="token operator">&lt;</span> right<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">swap</span><span class="token punctuation">(</span>array<span class="token punctuation">,</span> <span class="token punctuation">,</span> right<span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true">// 随机取值，然后和末尾交换，这样做比固定取一个位置的复杂度略低</span>
+    <span class="token keyword">let</span> indexs <span class="token operator">=</span> <span class="token function">part</span><span class="token punctuation">(</span>array<span class="token punctuation">,</span> <span class="token function">parseInt</span><span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token punctuation">(</span>right <span class="token operator">-</span> left <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> left<span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">quickSort</span><span class="token punctuation">(</span>array<span class="token punctuation">,</span> left<span class="token punctuation">,</span> indexs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">quickSort</span><span class="token punctuation">(</span>array<span class="token punctuation">,</span> indexs<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">function</span> <span class="token function">part</span><span class="token punctuation">(</span>array<span class="token punctuation">,</span> left<span class="token punctuation">,</span> right<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> less <span class="token operator">=</span> left <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
+  <span class="token keyword">let</span> more <span class="token operator">=</span> right<span class="token punctuation">;</span>
+  <span class="token keyword">while</span> <span class="token punctuation">(</span>left <span class="token operator">&lt;</span> more<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>array<span class="token punctuation">[</span>left<span class="token punctuation">]</span> <span class="token operator">&lt;</span> array<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 当前值比基准值小，`less` 和 `left` 都加一</span>
+       <span class="token operator">++</span>less<span class="token punctuation">;</span>
+       <span class="token operator">++</span>left<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>array<span class="token punctuation">[</span>left<span class="token punctuation">]</span> <span class="token operator">></span> array<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 当前值比基准值大，将当前值和右边的值交换</span>
+      <span class="token comment" spellcheck="true">// 并且不改变 `left`，因为当前换过来的值还没有判断过大小</span>
+      <span class="token function">swap</span><span class="token punctuation">(</span>array<span class="token punctuation">,</span> <span class="token operator">--</span>more<span class="token punctuation">,</span> left<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 和基准值相同，只移动下标</span>
+      left<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment" spellcheck="true">// 将基准值和比基准值大的第一个值交换位置</span>
+  <span class="token comment" spellcheck="true">// 这样数组就变成 `[比基准值小, 基准值, 比基准值大]`</span>
+  <span class="token function">swap</span><span class="token punctuation">(</span>array<span class="token punctuation">,</span> right<span class="token punctuation">,</span> more<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token punctuation">[</span>less<span class="token punctuation">,</span> more<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>该算法的复杂度和归并排序是相同的，但是额外空间复杂度比归并排序少，只需 <code>O(logN)</code>，并且相比归并排序来说，所需的常数时间也更少</p>
+</blockquote>
+<p><strong>面试题</strong></p>
+<blockquote>
+<p>Sort Colors：该题目来自 LeetCode，题目需要我们将 <code>[2,0,2,1,1,0]</code> 排序成 <code>[0,0,1,1,2,2]</code>，这个问题就可以使用三路快排的思想</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">var</span> sortColors <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> left <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+  <span class="token keyword">let</span> right <span class="token operator">=</span> nums<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+  <span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// 下标如果遇到 right，说明已经排序完成</span>
+  <span class="token keyword">while</span> <span class="token punctuation">(</span>i <span class="token operator">&lt;</span> right<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">swap</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> i<span class="token operator">++</span><span class="token punctuation">,</span> <span class="token operator">++</span>left<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      i<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token function">swap</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> i<span class="token punctuation">,</span> <span class="token operator">--</span>right<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-4-链表"><a href="#3-4-链表" class="headerlink" title="3.4 链表"></a>3.4 链表</h3><p><strong>反转单向链表</strong></p>
+<blockquote>
+<p>该题目来自 LeetCode，题目需要将一个单向链表反转。思路很简单，使用三个变量分别表示当前节点和当前节点的前后节点，虽然这题很简单，但是却是一道面试常考题</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">var</span> reverseList <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>head<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 判断下变量边界问题</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>head <span class="token operator">||</span> <span class="token operator">!</span>head<span class="token punctuation">.</span>next<span class="token punctuation">)</span> <span class="token keyword">return</span> head
+    <span class="token comment" spellcheck="true">// 初始设置为空，因为第一个节点反转后就是尾部，尾部节点指向 null</span>
+    <span class="token keyword">let</span> pre <span class="token operator">=</span> <span class="token keyword">null</span>
+    <span class="token keyword">let</span> current <span class="token operator">=</span> head
+    <span class="token keyword">let</span> next
+    <span class="token comment" spellcheck="true">// 判断当前节点是否为空</span>
+    <span class="token comment" spellcheck="true">// 不为空就先获取当前节点的下一节点</span>
+    <span class="token comment" spellcheck="true">// 然后把当前节点的 next 设为上一个节点</span>
+    <span class="token comment" spellcheck="true">// 然后把 current 设为下一个节点，pre 设为当前节点</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span>current<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        next <span class="token operator">=</span> current<span class="token punctuation">.</span>next
+        current<span class="token punctuation">.</span>next <span class="token operator">=</span> pre
+        pre <span class="token operator">=</span> current
+        current <span class="token operator">=</span> next
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> pre
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-5-树"><a href="#3-5-树" class="headerlink" title="3.5 树"></a>3.5 树</h3><p><strong>二叉树的先序，中序，后序遍历</strong></p>
+<ul>
+<li>先序遍历表示先访问根节点，然后访问左节点，最后访问右节点。</li>
+<li>中序遍历表示先访问左节点，然后访问根节点，最后访问右节点。</li>
+<li>后序遍历表示先访问左节点，然后访问右节点，最后访问根节点</li>
+</ul>
+<p><strong>递归实现</strong></p>
+<p>递归实现相当简单，代码如下</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">TreeNode</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>val <span class="token operator">=</span> val<span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>left <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>right <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">var</span> traversal <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>root<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 先序</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">traversal</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span>left<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 中序</span>
+    <span class="token comment" spellcheck="true">// console.log(root);</span>
+    <span class="token function">traversal</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span>right<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 后序</span>
+    <span class="token comment" spellcheck="true">// console.log(root);</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>对于递归的实现来说，只需要理解每个节点都会被访问三次就明白为什么这样实现了</p>
+</blockquote>
+<p><strong>非递归实现</strong></p>
+<blockquote>
+<p>非递归实现使用了栈的结构，通过栈的先进后出模拟递归实现。</p>
+</blockquote>
+<p>以下是先序遍历代码实现</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">pre</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>root<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> stack <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 先将根节点 push</span>
+    stack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 判断栈中是否为空</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>stack<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 弹出栈顶元素</span>
+      root <span class="token operator">=</span> stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token comment" spellcheck="true">// 因为先序遍历是先左后右，栈是先进后出结构</span>
+      <span class="token comment" spellcheck="true">// 所以先 push 右边再 push 左边</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>root<span class="token punctuation">.</span>right<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        stack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span>right<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>root<span class="token punctuation">.</span>left<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        stack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span>left<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>以下是中序遍历代码实现</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">mid</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>root<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> stack <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 中序遍历是先左再根最后右</span>
+    <span class="token comment" spellcheck="true">// 所以首先应该先把最左边节点遍历到底依次 push 进栈</span>
+    <span class="token comment" spellcheck="true">// 当左边没有节点时，就打印栈顶元素，然后寻找右节点</span>
+    <span class="token comment" spellcheck="true">// 对于最左边的叶节点来说，可以把它看成是两个 null 节点的父节点</span>
+    <span class="token comment" spellcheck="true">// 左边打印不出东西就把父节点拿出来打印，然后再看右节点</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>stack<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span> <span class="token operator">||</span> root<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>root<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        stack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        root <span class="token operator">=</span> root<span class="token punctuation">.</span>left<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        root <span class="token operator">=</span> stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        root <span class="token operator">=</span> root<span class="token punctuation">.</span>right<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>以下是后序遍历代码实现，该代码使用了两个栈来实现遍历，相比一个栈的遍历来说要容易理解很多</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">pos</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>root<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> stack1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> stack2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 后序遍历是先左再右最后根</span>
+    <span class="token comment" spellcheck="true">// 所以对于一个栈来说，应该先 push 根节点</span>
+    <span class="token comment" spellcheck="true">// 然后 push 右节点，最后 push 左节点</span>
+    stack1<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>stack1<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      root <span class="token operator">=</span> stack1<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      stack2<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>root<span class="token punctuation">.</span>left<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        stack1<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span>left<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>root<span class="token punctuation">.</span>right<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        stack1<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span>right<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>stack2<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>s2<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>中序遍历的前驱后继节点</strong></p>
+<blockquote>
+<p>实现这个算法的前提是节点有一个 <code>parent</code> 的指针指向父节点，根节点指向 <code>null</code></p>
+</blockquote>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2018/4/24/162f61ad8e8588b7?w=682&h=486&f=png&s=41027" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<blockquote>
+<p>如图所示，该树的中序遍历结果是 <code>4, 2, 5, 1, 6, 3, 7</code></p>
+</blockquote>
+<p><strong>前驱节点</strong></p>
+<blockquote>
+<p>对于节点 2 来说，他的前驱节点就是 4 ，按照中序遍历原则，可以得出以下结论</p>
+</blockquote>
+<ul>
+<li>如果选取的节点的左节点不为空，就找该左节点最右的节点。对于节点 1 来说，他有左节点 2 ，那么节点 2 的最右节点就是 5</li>
+<li>如果左节点为空，且目标节点是父节点的右节点，那么前驱节点为父节点。对于节点 5 来说，没有左节点，且是节点 2 的右节点，所以节点 2 是前驱节点</li>
+<li>如果左节点为空，且目标节点是父节点的左节点，向上寻找到第一个是父节点的右节点的节点。对于节点 6 来说，没有左节点，且是节点 3 的左节点，所以向上寻找到节点 1 ，发现节点 3 是节点 1 的右节点，所以节点 1 是节点 6 的前驱节点</li>
+</ul>
+<p>以下是算法实现</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">predecessor</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>node<span class="token punctuation">)</span> <span class="token keyword">return</span>
+  <span class="token comment" spellcheck="true">// 结论 1</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span>left<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">getRight</span><span class="token punctuation">(</span>node<span class="token punctuation">.</span>left<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> parent <span class="token operator">=</span> node<span class="token punctuation">.</span>parent
+    <span class="token comment" spellcheck="true">// 结论 2 3 的判断</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span>parent <span class="token operator">&amp;&amp;</span> parent<span class="token punctuation">.</span>right <span class="token operator">===</span> node<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      node <span class="token operator">=</span> parent
+      parent <span class="token operator">=</span> node<span class="token punctuation">.</span>parent
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> parent
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">function</span> <span class="token function">getRight</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>node<span class="token punctuation">)</span> <span class="token keyword">return</span>
+  node <span class="token operator">=</span> node<span class="token punctuation">.</span>right
+  <span class="token keyword">while</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span> node <span class="token operator">=</span> node<span class="token punctuation">.</span>right
+  <span class="token keyword">return</span> node
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>后继节点</strong></p>
+<blockquote>
+<p>对于节点 2 来说，他的后继节点就是 5 ，按照中序遍历原则，可以得出以下结论</p>
+</blockquote>
+<ul>
+<li>如果有右节点，就找到该右节点的最左节点。对于节点 1 来说，他有右节点 3 ，那么节点 3 的最左节点就是 6</li>
+<li>如果没有右节点，就向上遍历直到找到一个节点是父节点的左节点。对于节点 5 来说，没有右节点，就向上寻找到节点 2 ，该节点是父节点 1 的左节点，所以节点 1 是后继节点<br>以下是算法实现</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">successor</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>node<span class="token punctuation">)</span> <span class="token keyword">return</span>
+  <span class="token comment" spellcheck="true">// 结论 1</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span>right<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">getLeft</span><span class="token punctuation">(</span>node<span class="token punctuation">.</span>right<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 结论 2</span>
+    <span class="token keyword">let</span> parent <span class="token operator">=</span> node<span class="token punctuation">.</span>parent
+    <span class="token comment" spellcheck="true">// 判断 parent 为空</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span>parent <span class="token operator">&amp;&amp;</span> parent<span class="token punctuation">.</span>left <span class="token operator">===</span> node<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      node <span class="token operator">=</span> parent
+      parent <span class="token operator">=</span> node<span class="token punctuation">.</span>parent
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> parent
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">function</span> <span class="token function">getLeft</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>node<span class="token punctuation">)</span> <span class="token keyword">return</span>
+  node <span class="token operator">=</span> node<span class="token punctuation">.</span>left
+  <span class="token keyword">while</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span> node <span class="token operator">=</span> node<span class="token punctuation">.</span>left
+  <span class="token keyword">return</span> node
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>树的深度</strong></p>
+<blockquote>
+<p>树的最大深度：该题目来自 Leetcode，题目需要求出一颗二叉树的最大深度</p>
+</blockquote>
+<p>以下是算法实现</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">var</span> maxDepth <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>root<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token number">0</span>
+    <span class="token keyword">return</span> Math<span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span><span class="token function">maxDepth</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span>left<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">maxDepth</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span>right<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>对于该递归函数可以这样理解：一旦没有找到节点就会返回 0，每弹出一次递归函数就会加一，树有三层就会得到3</p>
+</blockquote>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2017/05/26/002.前端知识体系/004.通识篇/003.通识篇之计算机基础算法知识/" target="_blank" rel="external">http://www.chenya.site/2017/05/26/002.前端知识体系/004.通识篇/003.通识篇之计算机基础算法知识/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端知识体系/">前端知识体系</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/通识篇/">通识篇</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2017/05/26/002.前端知识体系/004.通识篇/003.通识篇之计算机基础算法知识/&title=《通识篇-03.计算机基础算法知识》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2017/05/26/002.前端知识体系/004.通识篇/003.通识篇之计算机基础算法知识/&title=《通识篇-03.计算机基础算法知识》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2017/05/26/002.前端知识体系/004.通识篇/003.通识篇之计算机基础算法知识/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《通识篇-03.计算机基础算法知识》 — 陈亚的个人主页&url=http://www.chenya.site/2017/05/26/002.前端知识体系/004.通识篇/003.通识篇之计算机基础算法知识/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2017/05/26/002.前端知识体系/004.通识篇/003.通识篇之计算机基础算法知识/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/06/04/002.前端知识体系/005.精华篇/001.精华篇之高频考点知识/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">精华篇-01.高频考点知识</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/05/14/002.前端知识体系/004.通识篇/002.通识篇之计算机基础数据结构知识/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">通识篇-02.计算机基础数据结构知识</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2017/05/26/002.前端知识体系/004.通识篇/003.通识篇之计算机基础算法知识/&title=《通识篇-03.计算机基础算法知识》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2017/05/26/002.前端知识体系/004.通识篇/003.通识篇之计算机基础算法知识/&title=《通识篇-03.计算机基础算法知识》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2017/05/26/002.前端知识体系/004.通识篇/003.通识篇之计算机基础算法知识/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《通识篇-03.计算机基础算法知识》 — 陈亚的个人主页&url=http://www.chenya.site/2017/05/26/002.前端知识体系/004.通识篇/003.通识篇之计算机基础算法知识/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2017/05/26/002.前端知识体系/004.通识篇/003.通识篇之计算机基础算法知识/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAEOCAAAAABd2qZ5AAAD5ElEQVR42u3aS07DQBAFwNz/0kGwRTjvdY8JSOUVCvHMuIzU9OfxiK/n1/XT59+v73fl35md6nrlwxcOHDhw4AgWbR9ss0t+knzHhOb6GXHgwIEDx1mOdoP28+RwCeL1jm3QxYEDBw4c7+WYBc7rFfJkL+fI/znAgQMHDhzv5UgCXr19nMjNvoMDBw4cON7FkRQHkysvCyb3tl2h2flx4MCBA8dZjtnowP/6+cb5Dhw4cODAsQ5aeWsnXyEvDm7aWi+eDgcOHDhwrDmShs1sxGGTqu0Tws2IAw4cOHDg2HDkQwlta2dW8kseb/Z51PrCgQMHDhxrjlmgzbfPD9cmeMnJh+0lHDhw4MCx4JiV2PLj7gPkvkxZfB8HDhw4cPwKR95Aaoch2hew4Y5SUxw4cODAseaYpXPJI7Xp2axjlhcuhwkeDhw4cOAYcbQFu03TaBaM25XzEPvjWAMOHDhw4Bhx5CW52ajBrFTXBu8WOvq7wIEDBw4cC459OMwfadZ8esTXamUcOHDgwHGUY9POyUcQcvpTxcd8HRw4cODAseeYlQI3dyWluuGgW/ydOpHDgQMHDhyjUYYkyM1GCjbjd3nil4OuLhw4cODAMUqNNnD3FfjqZKx9zThw4MCB4yhH27ZpOdqG04wm7yJFQjhw4MCBY1T1yo8yS97a9TeBOf83opgfxIEDBw4cRznaxGwfCPOQ3Da0cODAgQPH3RzDpn7ZHGr3yptJm/MXkx04cODAgaPLdOqH3CdpSWGxvasdjChAceDAgQPHiCNZdNZ2mpUXZ0nmbAACBw4cOHCc4sgbNrPELOHYt5r24bzuX+HAgQMHjlH1bx+98+G59sXkzbAECAcOHDhw3MHRjhe0oTpPF2dDEu3LG2a0OHDgwIEj4NiMwW0iVPIwmyGGPMwX+SsOHDhw4LjkSDZrE61TCVWyYztO9+Il4cCBAweOQxx52tYesW0a5U2vdnwhGezDgQMHDhx7jn2LKN9gNmzXpo75qaJZDxw4cODAUXLkQahtHRUhbQGX3xs1pXDgwIEDxyGOtm3T/nZDuW8+FXfhwIEDB441R5445cW1ugy3GJvIA3OxCw4cOHDgWOzyLK/9IEIL14bb2b0vMlocOHDgwDGZAajD0izEtgGyfew8GM/CMw4cOHDgSDjywYU2rG7KfPlExtnRPRw4cODAcYpjlpidGpLb94BmhcXi1zhw4MCB4waOdgyiBd00n5LiYLQ7Dhw4cOD4Axyb1s6s7NiuWYR/HDhw4MBxiCMv5M2KgHnZbsaR3/XiiXDgwIEDx5pjNtCwWfTuwbu2yHhgvgMHDhw4cHxeH/l3PhDVG/fMAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

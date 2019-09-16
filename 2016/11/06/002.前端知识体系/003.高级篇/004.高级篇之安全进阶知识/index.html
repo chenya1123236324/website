@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>高级篇-04.安全进阶知识 | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="前端知识体系,高级篇,安全">
+    <meta name="description" content="四、安全1 XSS 跨网站指令码（英语：Cross-site scripting，通常简称为：XSS）是一种网站应用程式的安全漏洞攻击，是代码注入的一种。它允许恶意使用者将程式码注入到网页上，其他使用者在观看网页时就会受到影响。这类攻击通常包含了 HTML 以及使用者端脚本语言   XSS 分为三种：反射型，存储型和 DOM-based  如何攻击  XSS 通过修改 HTML节点或者执行 JS代">
+<meta name="keywords" content="前端知识体系,高级篇,安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高级篇-04.安全进阶知识">
+<meta property="og:url" content="http://www.chenya.site/2016/11/06/002.前端知识体系/003.高级篇/004.高级篇之安全进阶知识/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="四、安全1 XSS 跨网站指令码（英语：Cross-site scripting，通常简称为：XSS）是一种网站应用程式的安全漏洞攻击，是代码注入的一种。它允许恶意使用者将程式码注入到网页上，其他使用者在观看网页时就会受到影响。这类攻击通常包含了 HTML 以及使用者端脚本语言   XSS 分为三种：反射型，存储型和 DOM-based  如何攻击  XSS 通过修改 HTML节点或者执行 JS代">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.491Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="高级篇-04.安全进阶知识">
+<meta name="twitter:description" content="四、安全1 XSS 跨网站指令码（英语：Cross-site scripting，通常简称为：XSS）是一种网站应用程式的安全漏洞攻击，是代码注入的一种。它允许恶意使用者将程式码注入到网页上，其他使用者在观看网页时就会受到影响。这类攻击通常包含了 HTML 以及使用者端脚本语言   XSS 分为三种：反射型，存储型和 DOM-based  如何攻击  XSS 通过修改 HTML节点或者执行 JS代">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">高级篇-04.安全进阶知识</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">高级篇-04.安全进阶知识</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2016-11-06T03:06:38.000Z" itemprop="datePublished" class="page-time">
+  2016-11-06
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#四、安全"><span class="post-toc-number">1.</span> <span class="post-toc-text">四、安全</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-XSS"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">1 XSS</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-CSRF"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">2 CSRF</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-密码安全"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">3 密码安全</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-002.前端知识体系/003.高级篇/004.高级篇之安全进阶知识"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">高级篇-04.安全进阶知识</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2016-11-06 11:06:38" datetime="2016-11-06T03:06:38.000Z"  itemprop="datePublished">2016-11-06</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="四、安全"><a href="#四、安全" class="headerlink" title="四、安全"></a>四、安全</h2><h3 id="1-XSS"><a href="#1-XSS" class="headerlink" title="1 XSS"></a>1 XSS</h3><blockquote>
+<p>跨网站指令码（英语：<code>Cross-site scripting</code>，通常简称为：<code>XSS</code>）是一种网站应用程式的安全漏洞攻击，是代码注入的一种。它允许恶意使用者将程式码注入到网页上，其他使用者在观看网页时就会受到影响。这类攻击通常包含了 <code>HTML</code> 以及使用者端脚本语言</p>
+</blockquote>
+<blockquote>
+<p><code>XSS</code> 分为三种：反射型，存储型和 <code>DOM-based</code></p>
+</blockquote>
+<p><strong>如何攻击</strong></p>
+<ul>
+<li><code>XSS</code> 通过修改 <code>HTML</code>节点或者执行 <code>JS</code>代码来攻击网站。</li>
+<li>例如通过 <code>URL</code> 获取某些参数</li>
+</ul>
+<pre class="line-numbers language-html"><code class="language-html"><span class="token comment" spellcheck="true">&lt;!-- http://www.domain.com?name=&lt;script>alert(1)&lt;/script> --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>{{name}}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<blockquote>
+<p>上述 <code>URL</code> 输入可能会将 <code>HTML</code> 改为 <code>&lt;div&gt;&lt;script&gt;alert(1)&lt;/script&gt;&lt;/div&gt;</code> ，这样页面中就凭空多了一段可执行脚本。这种攻击类型是反射型攻击，也可以说是 <code>DOM-based</code> 攻击</p>
+</blockquote>
+<p><strong>如何防御</strong></p>
+<blockquote>
+<p>最普遍的做法是转义输入输出的内容，对于引号，尖括号，斜杠进行转义</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">escape</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    str <span class="token operator">=</span> str<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token regex">/&amp;/g</span><span class="token punctuation">,</span> <span class="token string">"&amp;amp;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    str <span class="token operator">=</span> str<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token regex">/&lt;/g</span><span class="token punctuation">,</span> <span class="token string">"&amp;lt;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    str <span class="token operator">=</span> str<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token regex">/>/g</span><span class="token punctuation">,</span> <span class="token string">"&amp;gt;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    str <span class="token operator">=</span> str<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token operator">/</span><span class="token string">"/g, "</span><span class="token operator">&amp;</span>quto<span class="token punctuation">;</span>"<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    str <span class="token operator">=</span> str<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token regex">/'/g</span><span class="token punctuation">,</span> <span class="token string">"&amp;##39;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    str <span class="token operator">=</span> str<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token regex">/`/g</span><span class="token punctuation">,</span> <span class="token string">"&amp;##96;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    str <span class="token operator">=</span> str<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token regex">/\//g</span><span class="token punctuation">,</span> <span class="token string">"&amp;##x2F;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> str
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>通过转义可以将攻击代码 <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> 变成</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// -> &amp;lt;script&amp;gt;alert(1)&amp;lt;&amp;##x2F;script&amp;gt;</span>
+<span class="token function">escape</span><span class="token punctuation">(</span><span class="token string">'&lt;script>alert(1)&lt;/script>'</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<blockquote>
+<p>对于显示富文本来说，不能通过上面的办法来转义所有字符，因为这样会把需要的格式也过滤掉。这种情况通常采用白名单过滤的办法，当然也可以通过黑名单过滤，但是考虑到需要过滤的标签和标签属性实在太多，更加推荐使用白名单的方式</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">var</span> xss <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"xss"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> html <span class="token operator">=</span> <span class="token function">xss</span><span class="token punctuation">(</span><span class="token string">'&lt;h1 id="title">XSS Demo&lt;/h1>&lt;script>alert("xss");&lt;/script>'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// -> &lt;h1>XSS Demo&lt;/h1>&amp;lt;script&amp;gt;alert("xss");&amp;lt;/script&amp;gt;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>html<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>以上示例使用了 <code>js-xss</code>来实现。可以看到在输出中保留了 <code>h1</code> 标签且过滤了 <code>script</code> 标签</p>
+</blockquote>
+<h3 id="2-CSRF"><a href="#2-CSRF" class="headerlink" title="2 CSRF"></a>2 CSRF</h3><blockquote>
+<p>跨站请求伪造（英语：<code>Cross-site request forgery</code>），也被称为 <code>one-click attack</code>或者 <code>session riding</code>，通常缩写为 <code>CSRF</code> 或者 <code>XSRF</code>， 是一种挟制用户在当前已登录的<code>Web</code>应用程序上执行非本意的操作的攻击方法</p>
+</blockquote>
+<blockquote>
+<p><code>CSRF</code> 就是利用用户的登录态发起恶意请求</p>
+</blockquote>
+<p><strong>如何攻击</strong></p>
+<blockquote>
+<p>假设网站中有一个通过 Get 请求提交用户评论的接口，那么攻击者就可以在钓鱼网站中加入一个图片，图片的地址就是评论接口</p>
+</blockquote>
+<pre><code>&lt;img src=&quot;http://www.domain.com/xxx?comment=&#39;attack&#39;&quot;/&gt;
+</code></pre><p><strong>如何防御</strong></p>
+<ul>
+<li><code>Get</code> 请求不对数据进行修改</li>
+<li>不让第三方网站访问到用户 <code>Cookie</code></li>
+<li>阻止第三方网站请求接口</li>
+<li>请求时附带验证信息，比如验证码或者 <code>token</code></li>
+</ul>
+<h3 id="3-密码安全"><a href="#3-密码安全" class="headerlink" title="3 密码安全"></a>3 密码安全</h3><p><strong>加盐</strong></p>
+<blockquote>
+<p>对于密码存储来说，必然是不能明文存储在数据库中的，否则一旦数据库泄露，会对用户造成很大的损失。并且不建议只对密码单纯通过加密算法加密，因为存在彩虹表的关系</p>
+</blockquote>
+<ul>
+<li>通常需要对密码加盐，然后进行几次不同加密算法的加密</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// 加盐也就是给原密码添加字符串，增加原密码长度</span>
+<span class="token function">sha256</span><span class="token punctuation">(</span><span class="token function">sha1</span><span class="token punctuation">(</span><span class="token function">md5</span><span class="token punctuation">(</span>salt <span class="token operator">+</span> password <span class="token operator">+</span> salt<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<blockquote>
+<p>但是加盐并不能阻止别人盗取账号，只能确保即使数据库泄露，也不会暴露用户的真实密码。一旦攻击者得到了用户的账号，可以通过暴力破解的方式破解密码。对于这种情况，通常使用验证码增加延时或者限制尝试次数的方式。并且一旦用户输入了错误的密码，也不能直接提示用户输错密码，而应该提示账号或密码错误</p>
+</blockquote>
+<p><strong>前端加密</strong></p>
+<blockquote>
+<p>虽然前端加密对于安全防护来说意义不大，但是在遇到中间人攻击的情况下，可以避免明文密码被第三方获取</p>
+</blockquote>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2016/11/06/002.前端知识体系/003.高级篇/004.高级篇之安全进阶知识/" target="_blank" rel="external">http://www.chenya.site/2016/11/06/002.前端知识体系/003.高级篇/004.高级篇之安全进阶知识/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端知识体系/">前端知识体系</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/高级篇/">高级篇</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2016/11/06/002.前端知识体系/003.高级篇/004.高级篇之安全进阶知识/&title=《高级篇-04.安全进阶知识》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2016/11/06/002.前端知识体系/003.高级篇/004.高级篇之安全进阶知识/&title=《高级篇-04.安全进阶知识》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2016/11/06/002.前端知识体系/003.高级篇/004.高级篇之安全进阶知识/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《高级篇-04.安全进阶知识》 — 陈亚的个人主页&url=http://www.chenya.site/2016/11/06/002.前端知识体系/003.高级篇/004.高级篇之安全进阶知识/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2016/11/06/002.前端知识体系/003.高级篇/004.高级篇之安全进阶知识/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/03/09/002.前端知识体系/003.高级篇/005.高级篇之小程序进阶知识/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">高级篇-05.小程序进阶知识</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2016/09/18/002.前端知识体系/003.高级篇/003.高级篇之性能进阶知识/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">高级篇-03.性能进阶知识</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2016/11/06/002.前端知识体系/003.高级篇/004.高级篇之安全进阶知识/&title=《高级篇-04.安全进阶知识》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2016/11/06/002.前端知识体系/003.高级篇/004.高级篇之安全进阶知识/&title=《高级篇-04.安全进阶知识》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2016/11/06/002.前端知识体系/003.高级篇/004.高级篇之安全进阶知识/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《高级篇-04.安全进阶知识》 — 陈亚的个人主页&url=http://www.chenya.site/2016/11/06/002.前端知识体系/003.高级篇/004.高级篇之安全进阶知识/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2016/11/06/002.前端知识体系/003.高级篇/004.高级篇之安全进阶知识/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADKUlEQVR42u3awW4iQQwE0Pz/T7PXlVYMVTZZMc2b02hCoF8jpWK7f37i6/HXdf3k39/K3+H602c/XV3Y2NjYN2E/Lq9rUvI8uc+3Kbm/tmBjY2Ofyr4OhnYR16R9ROVb+fQ5NjY29tez2+IhCpV4i7GxsbGxZ+z2YzblSlIOYWNjY2O3TaW8JMjfPwmzvLH1K700bGxs7I9nt6XFJ9//ynwbGxsb+4PZj9GVx1XyfDM8GK4fGxsb+yD2/ihMPo7Ni4c9NWldYWNjY5/BzgeuSSy1Q9xkuZtmU1SKYGNjY9+cvY+f/HkbM+3BneF2YGNjYx/Bno1481DMGclyc/Bwvo2NjY19K3Y7Os0Lj9nMOR/f5j2zF1mNjY2NfXN2+6d/82QWb/m4IglRbGxs7FPZeVN+c5rxXcd0kjUXwwZsbGzsI9izptKmDTRr+ucbEf0uNjY29hHsuhGzCKHZomctsDf30rCxsbE/mD1rA+2P9bSHe4omETY2NvbXs/cHYmb3CSzZ+rdVYNjY2Ni3Ym9a7W2wbdpMbyg/sLGxsQ9ltwdoNqVLG0j5apMNxcbGxj6P3RYhbduoPYLZht/wC8DGxsY+jt3+K98WJO3GtcXJf5pvY2NjY9+EvTkKOduCdhiQxOqLQggbGxv7IPbs4E67xE1rKY/S/AAQNjY29kns2UGZJLqSMUNbnOQDgNU3jI2NjX0r9mzI2gZGe+WRmW/uiy3AxsbGvi17HwPDBv0oCN8VltjY2NgnsdtltSPY/eYmhcQwCLGxsbGPYOcjgf3gNmlRzYqW+vgRNjY29kHsTVDlr99H3abgeSrFxsbGPoL924D82E0bmW2Yrb5nbGxs7A9mz47L5O2hTZMoP6CTt5ywsbGxz2NvmjizxtO+hbQZSGNjY2Ofx97EQBtOeYHRvibfFGxsbOxT2Xls5NTNOHY2lrj+xLogwcbGxr4hux0SzMa3ebzlY+AkdJ8GGDY2NvaXsWdLyaOxfWVbLGFjY2Nj56/fDA+S5lR70AcbGxv7G9izmHnXJs6ODbXRteqlYWNjY38wOx/0zt50v02zABvOtLGxsbHvxP4DPCMRJJIvJD4AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

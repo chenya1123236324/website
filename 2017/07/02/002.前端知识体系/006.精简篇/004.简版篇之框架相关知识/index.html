@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>简版篇-04.框架相关知识 | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="前端知识体系,简版篇,框架">
+    <meta name="description" content="四、框架相关4.1 数据双向绑定原理：常见数据绑定的方案 Object.defineProperty（vue）：劫持数据的 getter 和 setter 脏值检测（angularjs）：通过特定事件进行轮循发布/订阅模式：通过消息发布并将消息进行订阅  4.2 VDOM：三个 part 虚拟节点类，将真实 DOM节点用 js 对象的形式进行展示，并提供 render 方法，将虚拟节点渲染成真实">
+<meta name="keywords" content="前端知识体系,简版篇,框架">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简版篇-04.框架相关知识">
+<meta property="og:url" content="http://www.chenya.site/2017/07/02/002.前端知识体系/006.精简篇/004.简版篇之框架相关知识/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="四、框架相关4.1 数据双向绑定原理：常见数据绑定的方案 Object.defineProperty（vue）：劫持数据的 getter 和 setter 脏值检测（angularjs）：通过特定事件进行轮循发布/订阅模式：通过消息发布并将消息进行订阅  4.2 VDOM：三个 part 虚拟节点类，将真实 DOM节点用 js 对象的形式进行展示，并提供 render 方法，将虚拟节点渲染成真实">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.494Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="简版篇-04.框架相关知识">
+<meta name="twitter:description" content="四、框架相关4.1 数据双向绑定原理：常见数据绑定的方案 Object.defineProperty（vue）：劫持数据的 getter 和 setter 脏值检测（angularjs）：通过特定事件进行轮循发布/订阅模式：通过消息发布并将消息进行订阅  4.2 VDOM：三个 part 虚拟节点类，将真实 DOM节点用 js 对象的形式进行展示，并提供 render 方法，将虚拟节点渲染成真实">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">简版篇-04.框架相关知识</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">简版篇-04.框架相关知识</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-07-02T12:15:19.000Z" itemprop="datePublished" class="page-time">
+  2017-07-02
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#四、框架相关"><span class="post-toc-number">1.</span> <span class="post-toc-text">四、框架相关</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-1-数据双向绑定原理：常见数据绑定的方案"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">4.1 数据双向绑定原理：常见数据绑定的方案</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-2-VDOM：三个-part"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">4.2 VDOM：三个 part</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-3-vue-和-react-区别"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">4.3 vue 和 react 区别</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-4-为什么用-vue"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">4.4 为什么用 vue</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-002.前端知识体系/006.精简篇/004.简版篇之框架相关知识"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">简版篇-04.框架相关知识</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-07-02 20:15:19" datetime="2017-07-02T12:15:19.000Z"  itemprop="datePublished">2017-07-02</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="四、框架相关"><a href="#四、框架相关" class="headerlink" title="四、框架相关"></a>四、框架相关</h2><h3 id="4-1-数据双向绑定原理：常见数据绑定的方案"><a href="#4-1-数据双向绑定原理：常见数据绑定的方案" class="headerlink" title="4.1 数据双向绑定原理：常见数据绑定的方案"></a>4.1 数据双向绑定原理：常见数据绑定的方案</h3><ul>
+<li><code>Object.defineProperty（vue）</code>：劫持数据的 <code>getter</code> 和 <code>setter</code></li>
+<li>脏值检测（<code>angularjs</code>）：通过特定事件进行轮循<br>发布/订阅模式：通过消息发布并将消息进行订阅</li>
+</ul>
+<h3 id="4-2-VDOM：三个-part"><a href="#4-2-VDOM：三个-part" class="headerlink" title="4.2 VDOM：三个 part"></a>4.2 VDOM：三个 part</h3><ul>
+<li>虚拟节点类，将真实 <code>DOM</code>节点用 <code>js</code> 对象的形式进行展示，并提供 <code>render</code> 方法，将虚拟节点渲染成真实 <code>DOM</code></li>
+<li>节点 <code>diff</code> 比较：对虚拟节点进行 <code>js</code> 层面的计算，并将不同的操作都记录到 <code>patch</code> 对象</li>
+<li><code>re-render</code>：解析 <code>patch</code> 对象，进行 <code>re-render</code></li>
+</ul>
+<p><strong>补充1：VDOM 的必要性？</strong></p>
+<ul>
+<li><strong>创建真实DOM的代价高</strong>：真实的 <code>DOM</code> 节点 <code>node</code> 实现的属性很多，而 <code>vnode</code> 仅仅实现一些必要的属性，相比起来，创建一个 <code>vnode</code> 的成本比较低。</li>
+<li><strong>触发多次浏览器重绘及回流</strong>：使用 <code>vnode</code> ，相当于加了一个缓冲，让一次数据变动所带来的所有 <code>node</code> 变化，先在 <code>vnode</code> 中进行修改，然后 <code>diff</code> 之后对所有产生差异的节点集中一次对 <code>DOM tree</code> 进行修改，以减少浏览器的重绘及回流。</li>
+</ul>
+<p><strong>补充2：vue 为什么采用 vdom？</strong></p>
+<blockquote>
+<p>引入 <code>Virtual DOM</code> 在性能方面的考量仅仅是一方面。</p>
+</blockquote>
+<ul>
+<li>性能受场景的影响是非常大的，不同的场景可能造成不同实现方案之间成倍的性能差距，所以依赖细粒度绑定及 <code>Virtual DOM</code> 哪个的性能更好还真不是一个容易下定论的问题。</li>
+<li><code>Vue</code> 之所以引入了 <code>Virtual DOM</code>，更重要的原因是为了解耦 <code>HTML</code>依赖，这带来两个非常重要的好处是：</li>
+</ul>
+<blockquote>
+<ul>
+<li>不再依赖 <code>HTML</code> 解析器进行模版解析，可以进行更多的 <code>AOT</code> 工作提高运行时效率：通过模版 <code>AOT</code> 编译，<code>Vue</code> 的运行时体积可以进一步压缩，运行时效率可以进一步提升；</li>
+<li>可以渲染到 <code>DOM</code> 以外的平台，实现 <code>SSR</code>、同构渲染这些高级特性，<code>Weex</code>等框架应用的就是这一特性。</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>综上，<code>Virtual DOM</code> 在性能上的收益并不是最主要的，更重要的是它使得 <code>Vue</code> 具备了现代框架应有的高级特性。</p>
+</blockquote>
+<h3 id="4-3-vue-和-react-区别"><a href="#4-3-vue-和-react-区别" class="headerlink" title="4.3 vue 和 react 区别"></a>4.3 vue 和 react 区别</h3><ul>
+<li>相同点：都支持 <code>ssr</code>，都有 <code>vdom</code>，组件化开发，实现 <code>webComponents</code> 规范，数据驱动等</li>
+<li>不同点：<code>vue</code> 是双向数据流（当然为了实现单数据流方便管理组件状态，<code>vuex</code> 便出现了），<code>react</code> 是单向数据流。<code>vue</code>的 <code>vdom</code> 是追踪每个组件的依赖关系，不会渲染整个组件树，<code>react</code> 每当应该状态被改变时，全部子组件都会 <code>re-render</code></li>
+</ul>
+<h3 id="4-4-为什么用-vue"><a href="#4-4-为什么用-vue" class="headerlink" title="4.4 为什么用 vue"></a>4.4 为什么用 vue</h3><blockquote>
+<p>简洁、轻快、舒服</p>
+</blockquote>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2017/07/02/002.前端知识体系/006.精简篇/004.简版篇之框架相关知识/" target="_blank" rel="external">http://www.chenya.site/2017/07/02/002.前端知识体系/006.精简篇/004.简版篇之框架相关知识/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端知识体系/">前端知识体系</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/框架/">框架</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/简版篇/">简版篇</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2017/07/02/002.前端知识体系/006.精简篇/004.简版篇之框架相关知识/&title=《简版篇-04.框架相关知识》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2017/07/02/002.前端知识体系/006.精简篇/004.简版篇之框架相关知识/&title=《简版篇-04.框架相关知识》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2017/07/02/002.前端知识体系/006.精简篇/004.简版篇之框架相关知识/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《简版篇-04.框架相关知识》 — 陈亚的个人主页&url=http://www.chenya.site/2017/07/02/002.前端知识体系/006.精简篇/004.简版篇之框架相关知识/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2017/07/02/002.前端知识体系/006.精简篇/004.简版篇之框架相关知识/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/07/20/002.前端知识体系/006.精简篇/005.简版篇之网络基础类知识/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">简版篇-05.网络基础类知识</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/06/26/002.前端知识体系/006.精简篇/003.简版篇之JS基础（ES6）知识/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">简版篇-03.JS基础（ES6）知识</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2017/07/02/002.前端知识体系/006.精简篇/004.简版篇之框架相关知识/&title=《简版篇-04.框架相关知识》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2017/07/02/002.前端知识体系/006.精简篇/004.简版篇之框架相关知识/&title=《简版篇-04.框架相关知识》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2017/07/02/002.前端知识体系/006.精简篇/004.简版篇之框架相关知识/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《简版篇-04.框架相关知识》 — 陈亚的个人主页&url=http://www.chenya.site/2017/07/02/002.前端知识体系/006.精简篇/004.简版篇之框架相关知识/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2017/07/02/002.前端知识体系/006.精简篇/004.简版篇之框架相关知识/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADIUlEQVR42u3azW7qQAwGUN7/pal0V1dqEz7boWrMyQqFKDNnWBj/PB7x9fx3ff98fuf/6/zNR898//bozuMdFzY2NvZN2M/TK6fmq/RgR3fO7x8eKzY2NvY6dh60EkCVlwek8+cTCzY2NvYnsxN8tGQQPvOjx8bGxsauBrBJGOu9OTk4bGxsbOwkkBRKNsHR9NKYyT6xsbGxt7Injd6/9vmX+tvY2NjYf4b9HF+9Y0oCW75uec/Y2NjYi9jVQv9VRaV3jApVS1HY2NjYO9h5COkdU7Wsk5DyQaIXcRsbGxt7EbtXdr8qYeiFonzFH96AjY2NvZRdTVHywn01IUlCWv5MuZyEjY2NfSt2NRmoNgN6B5QXmOYlKmxsbOy7s5OCUQ7OW7a9tkSexrx4PzY2NvYidrXcUy1FVbeSH3q1VVCoqGFjY2Pfit3j9Zqy1fLTZC1sbGzsT2bnBaBqC3aS9vRav4f3sbGxsZey81ZreUSmVc+5aj/Y2NjYu9nz0s8kmCUpRNJmuGxYBxsbG/uG7Lxdmh9QFVZt5fYSHmxsbOyt7KsGYq4a9MkbDPPgio2Njb2PXf1D30Ne1frtrVLAY2NjY9+EnQehagCobjEvMBUauueNXmxsbOxF7ElvYXJYz+LVC4GHAQwbGxt7ETvJVyYF/WrjNk9+qjvHxsbG3seevKJaBpq3EHpHc/g8NjY29gp2PubSKz/l4W00dlNMSLCxsbH3savDLr2G6yTxqO7kxTFhY2NjL2JPmrXzJ69tHl+1CjY2NvZ92XmTNQ9RVwXCXrhKkhxsbGzsTexeIHnH0OTkybzVgY2Njb2VXW0D5OGhB5inJYVfEhsbG3sRO/+clPgnw0CTCFw4GmxsbOzbsid/7t9RBpr8JIUSGDY2NvYi9nzJamKTHFPCy/eGjY2N/QnsvDRf/Vffa8fmTYhqAGt2trGxsbFvwq4GrV6aUT3Kayv/2NjY2Nh5CSl/52Qoszrcg42NjY3dw1eTirzRO6qiYWNjY69jJ0WlPHnojf5UD6tXbMLGxsbex+6VZubJST58mY8QVcMhNjY29s3ZX1Zo8ib5ZvBUAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

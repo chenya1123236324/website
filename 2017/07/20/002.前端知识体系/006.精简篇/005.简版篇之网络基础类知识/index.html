@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>简版篇-05.网络基础类知识 | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="前端知识体系,简版篇,网络">
+    <meta name="description" content="五、网络基础类5.1 跨域 很多种方法，但万变不离其宗，都是为了搞定同源策略。重用的有 jsonp、iframe、cors、img、HTML5 postMessage等等。其中用到 html 标签进行跨域的原理就是 html 不受同源策略影响。但只是接受 Get 的请求方式，这个得清楚。   延伸1：img iframe script 来发送跨域请求有什么优缺点？  1. iframe  优点：跨">
+<meta name="keywords" content="前端知识体系,简版篇,网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简版篇-05.网络基础类知识">
+<meta property="og:url" content="http://www.chenya.site/2017/07/20/002.前端知识体系/006.精简篇/005.简版篇之网络基础类知识/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="五、网络基础类5.1 跨域 很多种方法，但万变不离其宗，都是为了搞定同源策略。重用的有 jsonp、iframe、cors、img、HTML5 postMessage等等。其中用到 html 标签进行跨域的原理就是 html 不受同源策略影响。但只是接受 Get 的请求方式，这个得清楚。   延伸1：img iframe script 来发送跨域请求有什么优缺点？  1. iframe  优点：跨">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.495Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="简版篇-05.网络基础类知识">
+<meta name="twitter:description" content="五、网络基础类5.1 跨域 很多种方法，但万变不离其宗，都是为了搞定同源策略。重用的有 jsonp、iframe、cors、img、HTML5 postMessage等等。其中用到 html 标签进行跨域的原理就是 html 不受同源策略影响。但只是接受 Get 的请求方式，这个得清楚。   延伸1：img iframe script 来发送跨域请求有什么优缺点？  1. iframe  优点：跨">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">简版篇-05.网络基础类知识</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">简版篇-05.网络基础类知识</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-07-20T02:25:39.000Z" itemprop="datePublished" class="page-time">
+  2017-07-20
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#五、网络基础类"><span class="post-toc-number">1.</span> <span class="post-toc-text">五、网络基础类</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5-1-跨域"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">5.1 跨域</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5-2-http-无状态无连接"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">5.2 http 无状态无连接</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5-3-http-cache：就是-http-缓存"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">5.3 http-cache：就是 http 缓存</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5-4-cookie-和-session"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">5.4 cookie 和 session</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5-5-安全问题，如-XSS-和-CSRF"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">5.5 安全问题，如 XSS 和 CSRF</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-002.前端知识体系/006.精简篇/005.简版篇之网络基础类知识"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">简版篇-05.网络基础类知识</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-07-20 10:25:39" datetime="2017-07-20T02:25:39.000Z"  itemprop="datePublished">2017-07-20</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="五、网络基础类"><a href="#五、网络基础类" class="headerlink" title="五、网络基础类"></a>五、网络基础类</h2><h3 id="5-1-跨域"><a href="#5-1-跨域" class="headerlink" title="5.1 跨域"></a>5.1 跨域</h3><blockquote>
+<p>很多种方法，但万变不离其宗，都是为了搞定同源策略。重用的有 <code>jsonp</code>、<code>iframe</code>、<code>cors</code>、<code>img</code>、H<code>TML5 postMessage</code>等等。其中用到 <code>html</code> 标签进行跨域的原理就是 <code>html</code> 不受同源策略影响。但只是接受 <code>Get</code> 的请求方式，这个得清楚。</p>
+</blockquote>
+<blockquote>
+<p><strong>延伸1：img iframe script 来发送跨域请求有什么优缺点？</strong></p>
+</blockquote>
+<p><strong>1. <code>iframe</code></strong></p>
+<ul>
+<li>优点：跨域完毕之后<code>DOM</code>操作和互相之间的<code>JavaScript</code>调用都是没有问题的</li>
+<li>缺点：1.若结果要以<code>URL</code>参数传递，这就意味着在结果数据量很大的时候需要分割传递，巨烦。2.还有一个是<code>iframe</code>本身带来的，母页面和<code>iframe</code>本身的交互本身就有安全性限制。</li>
+</ul>
+<p><strong>2. script</strong></p>
+<ul>
+<li>优点：可以直接返回<code>json</code>格式的数据，方便处理</li>
+<li>缺点：只接受<code>GET</code>请求方式</li>
+</ul>
+<p><strong>3. 图片ping</strong></p>
+<ul>
+<li>优点：可以访问任何<code>url</code>，一般用来进行点击追踪，做页面分析常用的方法</li>
+<li>缺点：不能访问响应文本，只能监听是否响应</li>
+</ul>
+<blockquote>
+<p><strong>延伸2：配合 webpack 进行反向代理？</strong></p>
+</blockquote>
+<p><code>webpack</code> 在 <code>devServer</code> 选项里面提供了一个 <code>proxy</code> 的参数供开发人员进行反向代理</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token string">'/api'</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+  target<span class="token punctuation">:</span> <span class="token string">'http://www.example.com'</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// your target host</span>
+  changeOrigin<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// needed for virtual hosted sites</span>
+  pathRewrite<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token string">'^/api'</span><span class="token punctuation">:</span> <span class="token string">''</span>  <span class="token comment" spellcheck="true">// rewrite path</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>然后再配合 <code>http-proxy-middleware</code> 插件对 <code>api</code> 请求地址进行代理</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> express <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'express'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> proxy <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'http-proxy-middleware'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// proxy api requests</span>
+<span class="token keyword">const</span> exampleProxy <span class="token operator">=</span> <span class="token function">proxy</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 这里的 options 就是 webpack 里面的 proxy 选项对应的每个选项</span>
+
+<span class="token comment" spellcheck="true">// mount `exampleProxy` in web server</span>
+<span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token function">express</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span><span class="token string">'/api'</span><span class="token punctuation">,</span> exampleProxy<span class="token punctuation">)</span><span class="token punctuation">;</span>
+app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>然后再用 <code>nginx</code> 把允许跨域的源地址添加到报头里面即可</p>
+</blockquote>
+<blockquote>
+<p>说到 <code>nginx</code> ，可以再谈谈 <code>CORS</code> 配置，大致如下</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js">location <span class="token operator">/</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>$request_method <span class="token operator">=</span> <span class="token string">'OPTIONS'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    add_header <span class="token string">'Access-Control-Allow-Origin'</span> <span class="token string">'*'</span><span class="token punctuation">;</span>  
+    add_header <span class="token string">'Access-Control-Allow-Methods'</span> <span class="token string">'GET, POST, OPTIONS'</span><span class="token punctuation">;</span> 
+    add_header <span class="token string">'Access-Control-Allow-Credentials'</span> <span class="token string">'true'</span><span class="token punctuation">;</span>
+    add_header <span class="token string">'Access-Control-Allow-Headers'</span> <span class="token string">'DNT, X-Mx-ReqToken, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type'</span><span class="token punctuation">;</span>  
+    add_header <span class="token string">'Access-Control-Max-Age'</span> <span class="token number">86400</span><span class="token punctuation">;</span>  
+    add_header <span class="token string">'Content-Type'</span> <span class="token string">'text/plain charset=UTF-8'</span><span class="token punctuation">;</span>  
+    add_header <span class="token string">'Content-Length'</span> <span class="token number">0</span><span class="token punctuation">;</span>  
+    <span class="token keyword">return</span> <span class="token number">200</span><span class="token punctuation">;</span>  
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="5-2-http-无状态无连接"><a href="#5-2-http-无状态无连接" class="headerlink" title="5.2 http 无状态无连接"></a>5.2 http 无状态无连接</h3><ul>
+<li><code>http</code> 协议对于事务处理没有记忆能力</li>
+<li>对同一个<code>url</code>请求没有上下文关系</li>
+<li>每次的请求都是独立的，它的执行情况和结果与前面的请求和之后的请求是无直接关系的，它不会受前面的请求应答情况直接影响，也不会直接影响后面的请求应答情况</li>
+<li>服务器中没有保存客户端的状态，客户端必须每次带上自己的状态去请求服务器</li>
+<li>人生若只如初见，请求过的资源下一次会继续进行请求</li>
+</ul>
+<p><strong>http协议无状态中的 状态 到底指的是什么？！</strong></p>
+<ul>
+<li>【状态】的含义就是：客户端和服务器在某次会话中产生的数据</li>
+<li>那么对应的【无状态】就意味着：这些数据不会被保留</li>
+<li>通过增加<code>cookie</code>和<code>session</code>机制，现在的网络请求其实是有状态的</li>
+<li>在没有状态的<code>http</code>协议下，服务器也一定会保留你每次网络请求对数据的修改，但这跟保留每次访问的数据是不一样的，保留的只是会话产生的结果，而没有保留会话</li>
+</ul>
+<h3 id="5-3-http-cache：就是-http-缓存"><a href="#5-3-http-cache：就是-http-缓存" class="headerlink" title="5.3 http-cache：就是 http 缓存"></a>5.3 http-cache：就是 http 缓存</h3><p><strong>1. 首先得明确 http 缓存的好处</strong></p>
+<ul>
+<li>减少了冗余的数据传输，减少网费</li>
+<li>减少服务器端的压力</li>
+<li><code>Web</code> 缓存能够减少延迟与网络阻塞，进而减少显示某个资源所用的时间</li>
+<li>加快客户端加载网页的速度</li>
+</ul>
+<p><strong>2. 常见 http 缓存的类型</strong></p>
+<ul>
+<li>私有缓存（一般为本地浏览器缓存）</li>
+<li>代理缓存</li>
+</ul>
+<p><strong>3. 然后谈谈本地缓存</strong></p>
+<blockquote>
+<p>本地缓存是指浏览器请求资源时命中了浏览器本地的缓存资源，浏览器并不会发送真正的请求给服务器了。它的执行过程是</p>
+</blockquote>
+<ul>
+<li>第一次浏览器发送请求给服务器时，此时浏览器还没有本地缓存副本，服务器返回资源给浏览器，响应码是<code>200 OK</code>，浏览器收到资源后，把资源和对应的响应头一起缓存下来</li>
+<li>第二次浏览器准备发送请求给服务器时候，浏览器会先检查上一次服务端返回的响应头信息中的<code>Cache-Control</code>，它的值是一个相对值，单位为秒，表示资源在客户端缓存的最大有效期，过期时间为第一次请求的时间减去<code>Cache-Control</code>的值，过期时间跟当前的请求时间比较，如果本地缓存资源没过期，那么命中缓存，不再请求服务器</li>
+<li>如果没有命中，浏览器就会把请求发送给服务器，进入缓存协商阶段。</li>
+</ul>
+<blockquote>
+<p>与本地缓存相关的头有：<code>Cache-Control</code>、<code>Expires</code>，<code>Cache-Control</code>有多个可选值代表不同的意义，而<code>Expires</code>就是一个日期格式的绝对值。</p>
+</blockquote>
+<p><strong>3.1 Cache-Control</strong></p>
+<blockquote>
+<p><code>Cache-Control</code>是<code>HTPP</code>缓存策略中最重要的头，它是<code>HTTP/1.1</code>中出现的，它由如下几个值</p>
+</blockquote>
+<ul>
+<li><code>no-cache</code>：不使用本地缓存。需要使用缓存协商，先与服务器确认返回的响应是否被更改，如果之前的响应中存在<code>ETag</code>，那么请求的时候会与服务端验证，如果资源未被更改，则可以避免重新下载</li>
+<li><code>no-store</code>：直接禁止游览器缓存数据，每次用户请求该资源，都会向服务器发送一个请求，每次都会下载完整的资源</li>
+<li><code>public</code>：可以被所有的用户缓存，包括终端用户和<code>CDN</code>等中间代理服务器。</li>
+<li><code>private</code>：只能被终端用户的浏览器缓存，不允许<code>CDN</code>等中继缓存服务器对其缓存。</li>
+<li><code>max-age</code>：从当前请求开始，允许获取的响应被重用的最长时间（秒）。</li>
+</ul>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 例如：</span>
+
+Cache-Control: public, max-age<span class="token operator">=</span>1000 
+<span class="token comment" spellcheck="true"># 表示资源可以被所有用户以及代理服务器缓存，最长时间为1000秒。</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>3.2 Expires</strong></p>
+<blockquote>
+<p><code>Expires</code>是<code>HTTP/1.0</code>出现的头信息，同样是用于决定本地缓存策略的头，它是一个绝对时间，时间格式是如<code>Mon, 10 Jun 2015 21:31:12 GMT</code>，只要发送请求时间是在<code>Expires</code>之前，那么本地缓存始终有效，否则就会去服务器发送请求获取新的资源。如果同时出现<code>Cache-Control：max-age</code>和<code>Expires</code>，那么<code>max-age</code>优先级更高。他们可以这样组合使用</p>
+</blockquote>
+<pre><code>Cache-Control: public
+Expires: Wed, Jan 10 2018 00:27:04 GMT
+</code></pre><p><strong>3.3 所谓的缓存协商</strong></p>
+<blockquote>
+<p>当第一次请求时服务器返回的响应头中存在以下情况时</p>
+</blockquote>
+<ul>
+<li>没有 <code>Cache-Control</code> 和 <code>Expires</code></li>
+<li><code>Cache-Control</code> 和 <code>Expires</code> 过期了</li>
+<li><code>Cache-Control</code> 的属性设置为 <code>no-cache</code> 时</li>
+</ul>
+<blockquote>
+<p>那么浏览器第二次请求时就会与服务器进行协商，询问浏览器中的缓存资源是不是旧版本，需不需要更新，此时，服务器就会做出判断，如果缓存和服务端资源的最新版本是一致的，那么就无需再次下载该资源，服务端直接返回<code>304 Not Modified</code> 状态码，如果服务器发现浏览器中的缓存已经是旧版本了，那么服务器就会把最新资源的完整内容返回给浏览器，状态码就是<code>200 Ok</code>，那么服务端是根据什么来判断浏览器的缓存是不是最新的呢？其实是根据<code>HTTP</code>的另外两组头信息，分别是：<code>Last-Modified/If-Modified-Since</code> 与 <code>ETag/If-None-Match</code>。</p>
+</blockquote>
+<p><strong>Last-Modified 与 If-Modified-Since</strong></p>
+<ul>
+<li>浏览器第一次请求资源时，服务器会把资源的最新修改时间<code>Last-Modified:Thu, 29 Dec 2011 18:23:55 GMT</code>放在响应头中返回给浏览器</li>
+<li>第二次请求时，浏览器就会把上一次服务器返回的修改时间放在请求头<code>If-Modified-Since:Thu, 29 Dec 2011 18:23:55</code>发送给服务器，服务器就会拿这个时间跟服务器上的资源的最新修改时间进行对比</li>
+</ul>
+<blockquote>
+<p>如果两者相等或者大于服务器上的最新修改时间，那么表示浏览器的缓存是有效的，此时缓存会命中，服务器就不再返回内容给浏览器了，同时<code>Last-Modified</code>头也不会返回，因为资源没被修改，返回了也没什么意义。如果没命中缓存则最新修改的资源连同<code>Last-Modified</code>头一起返回</p>
+</blockquote>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 第一次请求返回的响应头</span>
+Cache-Control:max-age<span class="token operator">=</span>3600
+Expires: Fri, Jan 12 2018 00:27:04 GMT
+Last-Modified: Wed, Jan 10 2018 00:27:04 GMT
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 第二次请求的请求头信息</span>
+If-Modified-Since: Wed, Jan 10 2018 00:27:04 GMT
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<blockquote>
+<p>这组头信息是基于资源的修改时间来判断资源有没有更新，另一种方式就是根据资源的内容来判断，就是接下来要讨论的 <code>ETag</code> 与 <code>If-None-Match</code></p>
+</blockquote>
+<p><strong>ETag与If-None-Match</strong></p>
+<blockquote>
+<p><code>ETag/If-None-Match</code>与<code>Last-Modified/If-Modified-Since</code>的流程其实是类似的，唯一的区别是它基于资源的内容的摘要信息（比如<code>MD5 hash</code>）来判断</p>
+</blockquote>
+<blockquote>
+<p>浏览器发送第二次请求时，会把第一次的响应头信息<code>ETag</code>的值放在<code>If-None-Match</code>的请求头中发送到服务器，与最新的资源的摘要信息对比，如果相等，取浏览器缓存，否则内容有更新，最新的资源连同最新的摘要信息返回。用<code>ETag</code>的好处是如果因为某种原因到时资源的修改时间没改变，那么用<code>ETag</code>就能区分资源是不是有被更新。</p>
+</blockquote>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 第一次请求返回的响应头：</span>
+
+Cache-Control: public, max-age<span class="token operator">=</span>31536000
+ETag: <span class="token string">"15f0fff99ed5aae4edffdd6496d7131f"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 第二次请求的请求头信息：</span>
+
+If-None-Match: <span class="token string">"15f0fff99ed5aae4edffdd6496d7131f"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="5-4-cookie-和-session"><a href="#5-4-cookie-和-session" class="headerlink" title="5.4 cookie 和 session"></a>5.4 cookie 和 session</h3><ul>
+<li><code>session</code>： 是一个抽象概念，开发者为了实现中断和继续等操作，将 <code>user agent</code>和 <code>server</code> 之间一对一的交互，抽象为“会话”，进而衍生出“会话状态”，也就是 <code>session</code> 的概念</li>
+<li><code>cookie</code>：它是一个世纪存在的东西，<code>http</code> 协议中定义在 <code>header</code> 中的字段，可以认为是 <code>session</code> 的一种后端无状态实现</li>
+</ul>
+<blockquote>
+<p>现在我们常说的 <code>session</code>，是为了绕开 <code>cookie</code> 的各种限制，通常借助 <code>cookie</code>本身和后端存储实现的，一种更高级的会话状态实现</p>
+</blockquote>
+<p><code>session</code> 的常见实现要借助<code>cookie</code>来发送 <code>sessionID</code></p>
+<h3 id="5-5-安全问题，如-XSS-和-CSRF"><a href="#5-5-安全问题，如-XSS-和-CSRF" class="headerlink" title="5.5 安全问题，如 XSS 和 CSRF"></a>5.5 安全问题，如 XSS 和 CSRF</h3><ul>
+<li><code>XSS</code>：跨站脚本攻击，是一种网站应用程序的安全漏洞攻击，是代码注入的一种。常见方式是将恶意代码注入合法代码里隐藏起来，再诱发恶意代码，从而进行各种各样的非法活动</li>
+</ul>
+<blockquote>
+<p>防范：记住一点 “所有用户输入都是不可信的”，所以得做输入过滤和转义</p>
+</blockquote>
+<ul>
+<li><code>CSRF</code>：跨站请求伪造，也称 <code>XSRF</code>，是一种挟制用户在当前已登录的<code>Web</code>应用程序上执行非本意的操作的攻击方法。与 <code>XSS</code> 相比，<code>XSS</code>利用的是用户对指定网站的信任，<code>CSRF</code>利用的是网站对用户网页浏览器的信任。</li>
+</ul>
+<blockquote>
+<p>防范：用户操作验证（验证码），额外验证机制（<code>token</code>使用）等</p>
+</blockquote>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2017/07/20/002.前端知识体系/006.精简篇/005.简版篇之网络基础类知识/" target="_blank" rel="external">http://www.chenya.site/2017/07/20/002.前端知识体系/006.精简篇/005.简版篇之网络基础类知识/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端知识体系/">前端知识体系</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/简版篇/">简版篇</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网络/">网络</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2017/07/20/002.前端知识体系/006.精简篇/005.简版篇之网络基础类知识/&title=《简版篇-05.网络基础类知识》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2017/07/20/002.前端知识体系/006.精简篇/005.简版篇之网络基础类知识/&title=《简版篇-05.网络基础类知识》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2017/07/20/002.前端知识体系/006.精简篇/005.简版篇之网络基础类知识/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《简版篇-05.网络基础类知识》 — 陈亚的个人主页&url=http://www.chenya.site/2017/07/20/002.前端知识体系/006.精简篇/005.简版篇之网络基础类知识/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2017/07/20/002.前端知识体系/006.精简篇/005.简版篇之网络基础类知识/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/08/12/002.前端知识体系/007.综合篇/001.综合篇之前端综合知识/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">综合篇-01.前端综合知识</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/07/02/002.前端知识体系/006.精简篇/004.简版篇之框架相关知识/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">简版篇-04.框架相关知识</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2017/07/20/002.前端知识体系/006.精简篇/005.简版篇之网络基础类知识/&title=《简版篇-05.网络基础类知识》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2017/07/20/002.前端知识体系/006.精简篇/005.简版篇之网络基础类知识/&title=《简版篇-05.网络基础类知识》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2017/07/20/002.前端知识体系/006.精简篇/005.简版篇之网络基础类知识/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《简版篇-05.网络基础类知识》 — 陈亚的个人主页&url=http://www.chenya.site/2017/07/20/002.前端知识体系/006.精简篇/005.简版篇之网络基础类知识/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2017/07/20/002.前端知识体系/006.精简篇/005.简版篇之网络基础类知识/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAEOCAAAAABd2qZ5AAAD4UlEQVR42u3aS27bQBAFQN3/0s42gEDqve6hrUVxZUjUcKYYoNOf1yu+fi6u/7+9uv9qhfffvq+Tf57s6tiFAwcOHDhGR20f9n7P/aZnKPlq93de7RYHDhw4cJziSMJYS5Mc6f7z+2iYHL4O4Thw4MCB49c58s3lZHnQTcL5KjnEgQMHDhy/zjErEbahdFa1w4EDBw4c38ORN5byktyG9f7AbeHvkVopDhw4cOBYRLo23fq2vx+Z78CBAwcOHGVSlIe6tvnUpoKbcmRxOhw4cODAseZoH5+PuO3j/6Z9ladnOHDgwIHjLEfevMnLhfeFwiRwJmueKlZGR8WBAwcOHF0m9coDWBK325ZV+5Q8dWz3jAMHDhw49hztCEJ7zyxFnIXPKFu9/y8CDhw4cOA4xJFs/X7pNtDOGkhJWM3hoiopDhw4cOAoOZLA2Q46zKDzcNsOSbS4OHDgwIFjw5EfqU3q2mGFVVCM08gPz8KBAwcOHGuO2eHzw7T3tIF/0xKL/qXgwIEDB44FR3vNCoXJgMKsNdWuf4AABw4cOHDEHG15Li8sboqDCc3riQsHDhw4cCwIzg7AbQqFm322aR4OHDhw4DjFkQyZnR2SO3tPC/1hBRw4cODAcYjjuWRvXwrMi5IHToEDBw4cOA5xtMeYPb5dPw/kyUBDtGccOHDgwHGIIwlgs1ZQXrDbp4jJnj+cBQcOHDhwrDmS1GjTjpoF8tkow6mBPBw4cODAsedof/ZzeyU0m/XbAYh6IAMHDhw4cCw4ThUHZ4lWO4qXJ4F5wvZhVA4HDhw4cCw42qGB5DCz9K8tILado8tf4cCBAweOQxyzKDMLe/nWZ8eeDUDgwIEDB45THG2AnBXj2gJicpj9oMNwlhAHDhw4cAQcSYkwT7Rymtm3bRhuwzMOHDhw4Nhz5OFwU6rbw20GL5IXjwMHDhw49hx5QMpToKRouGlHbcbyouCKAwcOHDgWHJv2zNlhhdm1GV+4fKk4cODAgeMoR5v/bX41LNvFNDMsHDhw4MCx4cgbTvnYwX7IYHYVoTRvNeHAgQMHjhHHrG1zqvC3aUrty5dR2wkHDhw4cHSzCsMmTXLgGU17z2F6HDhw4MCx4NikSe3mZonW/sBFIocDBw4cONYc7ejAJnC2rabZgMLsJdUoOHDgwIHj9llJcG1bRO2x26GH/PP6/ePAgQMHjkMcbWK2+fbpxtJsfRw4cODA8VcceXhuA2ce8vNgn7fEcODAgQPHN3AMg9kDTMf2hgMHDhw4DnG04a1tFz1Rmmz3drjthAMHDhw41gMN+RKb9GxWKNwXNHHgwIEDx5rjHxxU11roAdCAAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

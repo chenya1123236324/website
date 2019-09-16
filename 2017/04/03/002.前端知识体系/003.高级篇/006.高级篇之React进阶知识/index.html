@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>高级篇-06.React进阶知识 | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="前端知识体系,高级篇,React">
+    <meta name="description" content="六、React1 React 中 keys 的作用是什么？ Keys是 React 用于追踪哪些列表中元素被修改、被添加或者被移除的辅助标识   在开发过程中，我们需要保证某个元素的 key 在其同级元素中具有唯一性。在 React Diff 算法中React 会借助元素的 Key 值来判断该元素是新近创建的还是被移动而来的元素，从而减少不必要的元素重渲染。此外，React 还需要借助 Key 值">
+<meta name="keywords" content="前端知识体系,高级篇,React">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高级篇-06.React进阶知识">
+<meta property="og:url" content="http://www.chenya.site/2017/04/03/002.前端知识体系/003.高级篇/006.高级篇之React进阶知识/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="六、React1 React 中 keys 的作用是什么？ Keys是 React 用于追踪哪些列表中元素被修改、被添加或者被移除的辅助标识   在开发过程中，我们需要保证某个元素的 key 在其同级元素中具有唯一性。在 React Diff 算法中React 会借助元素的 Key 值来判断该元素是新近创建的还是被移动而来的元素，从而减少不必要的元素重渲染。此外，React 还需要借助 Key 值">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.491Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="高级篇-06.React进阶知识">
+<meta name="twitter:description" content="六、React1 React 中 keys 的作用是什么？ Keys是 React 用于追踪哪些列表中元素被修改、被添加或者被移除的辅助标识   在开发过程中，我们需要保证某个元素的 key 在其同级元素中具有唯一性。在 React Diff 算法中React 会借助元素的 Key 值来判断该元素是新近创建的还是被移动而来的元素，从而减少不必要的元素重渲染。此外，React 还需要借助 Key 值">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">高级篇-06.React进阶知识</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">高级篇-06.React进阶知识</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-04-03T15:51:28.000Z" itemprop="datePublished" class="page-time">
+  2017-04-03
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#六、React"><span class="post-toc-number">1.</span> <span class="post-toc-text">六、React</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-React-中-keys-的作用是什么？"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">1 React 中 keys 的作用是什么？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-传入-setState-函数的第二个参数的作用是什么？"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">2 传入 setState 函数的第二个参数的作用是什么？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-React-中-refs-的作用是什么"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">3 React 中 refs 的作用是什么</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-在生命周期中的哪一步你应该发起-AJAX-请求"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">4 在生命周期中的哪一步你应该发起 AJAX 请求</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5-shouldComponentUpdate-的作用"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">5 shouldComponentUpdate 的作用</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#6-如何告诉-React-它应该编译生产环境版"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">6 如何告诉 React 它应该编译生产环境版</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#7-概述下-React-中的事件处理逻辑"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">7 概述下 React 中的事件处理逻辑</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#8-createElement-与-cloneElement-的区别是什么"><span class="post-toc-number">1.8.</span> <span class="post-toc-text">8 createElement 与 cloneElement 的区别是什么</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#9-redux中间件"><span class="post-toc-number">1.9.</span> <span class="post-toc-text">9 redux中间件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#10-redux有什么缺点"><span class="post-toc-number">1.10.</span> <span class="post-toc-text">10 redux有什么缺点</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#11-react组件的划分业务组件技术组件？"><span class="post-toc-number">1.11.</span> <span class="post-toc-text">11 react组件的划分业务组件技术组件？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#12-react生命周期函数"><span class="post-toc-number">1.12.</span> <span class="post-toc-text">12 react生命周期函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#13-react性能优化是哪个周期函数"><span class="post-toc-number">1.13.</span> <span class="post-toc-text">13 react性能优化是哪个周期函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#14-为什么虚拟dom会提高性能"><span class="post-toc-number">1.14.</span> <span class="post-toc-text">14 为什么虚拟dom会提高性能</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#15-diff算法"><span class="post-toc-number">1.15.</span> <span class="post-toc-text">15 diff算法?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#16-react性能优化方案"><span class="post-toc-number">1.16.</span> <span class="post-toc-text">16 react性能优化方案</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#16-简述flux-思想"><span class="post-toc-number">1.17.</span> <span class="post-toc-text">16 简述flux 思想</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#17-说说你用react有什么坑点？"><span class="post-toc-number">1.18.</span> <span class="post-toc-text">17 说说你用react有什么坑点？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#18-我现在有一个button，要用react在上面绑定点击事件，要怎么做？"><span class="post-toc-number">1.19.</span> <span class="post-toc-text">18  我现在有一个button，要用react在上面绑定点击事件，要怎么做？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#19-react-的虚拟dom是怎么实现的"><span class="post-toc-number">1.20.</span> <span class="post-toc-text">19 react 的虚拟dom是怎么实现的</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#20-react-的渲染过程中，兄弟节点之间是怎么处理的？也就是key值不一样的时候"><span class="post-toc-number">1.21.</span> <span class="post-toc-text">20 react 的渲染过程中，兄弟节点之间是怎么处理的？也就是key值不一样的时候</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#21-那给我介绍一下react"><span class="post-toc-number">1.22.</span> <span class="post-toc-text">21 那给我介绍一下react</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-002.前端知识体系/003.高级篇/006.高级篇之React进阶知识"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">高级篇-06.React进阶知识</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-04-03 23:51:28" datetime="2017-04-03T15:51:28.000Z"  itemprop="datePublished">2017-04-03</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="六、React"><a href="#六、React" class="headerlink" title="六、React"></a>六、React</h2><h3 id="1-React-中-keys-的作用是什么？"><a href="#1-React-中-keys-的作用是什么？" class="headerlink" title="1 React 中 keys 的作用是什么？"></a>1 React 中 keys 的作用是什么？</h3><blockquote>
+<p><code>Keys</code>是 <code>React</code> 用于追踪哪些列表中元素被修改、被添加或者被移除的辅助标识</p>
+</blockquote>
+<ul>
+<li>在开发过程中，我们需要保证某个元素的 <code>key</code> 在其同级元素中具有唯一性。在 <code>React Diff</code> 算法中<code>React</code> 会借助元素的 <code>Key</code> 值来判断该元素是新近创建的还是被移动而来的元素，从而减少不必要的元素重渲染。此外，React 还需要借助 <code>Key</code> 值来判断元素与本地状态的关联关系，因此我们绝不可忽视转换函数中 <code>Key</code> 的重要性</li>
+</ul>
+<h3 id="2-传入-setState-函数的第二个参数的作用是什么？"><a href="#2-传入-setState-函数的第二个参数的作用是什么？" class="headerlink" title="2 传入 setState 函数的第二个参数的作用是什么？"></a>2 传入 setState 函数的第二个参数的作用是什么？</h3><blockquote>
+<p>该函数会在<code>setState</code>函数调用完成并且组件开始重渲染的时候被调用，我们可以用该函数来监听渲染是否完成：</p>
+</blockquote>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span>
+  <span class="token punctuation">{</span> username<span class="token punctuation">:</span> <span class="token string">'tylermcginnis33'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'setState has finished and the component has re-rendered.'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span>prevState<span class="token punctuation">,</span> props<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span>
+    streak<span class="token punctuation">:</span> prevState<span class="token punctuation">.</span>streak <span class="token operator">+</span> props<span class="token punctuation">.</span>count
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-React-中-refs-的作用是什么"><a href="#3-React-中-refs-的作用是什么" class="headerlink" title="3 React 中 refs 的作用是什么"></a>3 React 中 refs 的作用是什么</h3><ul>
+<li><code>Refs</code> 是 <code>React</code> 提供给我们的安全访问 <code>DOM</code>元素或者某个组件实例的句柄</li>
+<li>可以为元素添加<code>ref</code>属性然后在回调函数中接受该元素在 <code>DOM</code> 树中的句柄，该值会作为回调函数的第一个参数返回</li>
+</ul>
+<h3 id="4-在生命周期中的哪一步你应该发起-AJAX-请求"><a href="#4-在生命周期中的哪一步你应该发起-AJAX-请求" class="headerlink" title="4 在生命周期中的哪一步你应该发起 AJAX 请求"></a>4 在生命周期中的哪一步你应该发起 AJAX 请求</h3><blockquote>
+<p>我们应当将AJAX 请求放到 <code>componentDidMount</code> 函数中执行，主要原因有下</p>
+</blockquote>
+<ul>
+<li><code>React</code> 下一代调和算法 <code>Fiber</code> 会通过开始或停止渲染的方式优化应用性能，其会影响到 <code>componentWillMount</code> 的触发次数。对于 <code>componentWillMount</code> 这个生命周期函数的调用次数会变得不确定，<code>React</code> 可能会多次频繁调用 <code>componentWillMount</code>。如果我们将 <code>AJAX</code> 请求放到 <code>componentWillMount</code> 函数中，那么显而易见其会被触发多次，自然也就不是好的选择。</li>
+<li>如果我们将<code>AJAX</code> 请求放置在生命周期的其他函数中，我们并不能保证请求仅在组件挂载完毕后才会要求响应。如果我们的数据请求在组件挂载之前就完成，并且调用了<code>setState</code>函数将数据添加到组件状态中，对于未挂载的组件则会报错。而在 <code>componentDidMount</code> 函数中进行 <code>AJAX</code> 请求则能有效避免这个问题</li>
+</ul>
+<h3 id="5-shouldComponentUpdate-的作用"><a href="#5-shouldComponentUpdate-的作用" class="headerlink" title="5 shouldComponentUpdate 的作用"></a>5 shouldComponentUpdate 的作用</h3><blockquote>
+<p><code>shouldComponentUpdate</code> 允许我们手动地判断是否要进行组件更新，根据组件的应用场景设置函数的合理返回值能够帮我们避免不必要的更新</p>
+</blockquote>
+<h3 id="6-如何告诉-React-它应该编译生产环境版"><a href="#6-如何告诉-React-它应该编译生产环境版" class="headerlink" title="6 如何告诉 React 它应该编译生产环境版"></a>6 如何告诉 React 它应该编译生产环境版</h3><blockquote>
+<p>通常情况下我们会使用 <code>Webpack</code> 的 <code>DefinePlugin</code> 方法来将 <code>NODE_ENV</code> 变量值设置为 <code>production</code>。编译版本中 <code>React</code>会忽略 <code>propType</code> 验证以及其他的告警信息，同时还会降低代码库的大小，<code>React</code> 使用了 <code>Uglify</code> 插件来移除生产环境下不必要的注释等信息</p>
+</blockquote>
+<h3 id="7-概述下-React-中的事件处理逻辑"><a href="#7-概述下-React-中的事件处理逻辑" class="headerlink" title="7 概述下 React 中的事件处理逻辑"></a>7 概述下 React 中的事件处理逻辑</h3><blockquote>
+<p>为了解决跨浏览器兼容性问题，<code>React</code> 会将浏览器原生事件（<code>Browser Native Event</code>）封装为合成事件（<code>SyntheticEvent</code>）传入设置的事件处理器中。这里的合成事件提供了与原生事件相同的接口，不过它们屏蔽了底层浏览器的细节差异，保证了行为的一致性。另外有意思的是，<code>React</code> 并没有直接将事件附着到子元素上，而是以单一事件监听器的方式将所有的事件发送到顶层进行处理。这样 <code>React</code> 在更新 <code>DOM</code> 的时候就不需要考虑如何去处理附着在 <code>DOM</code> 上的事件监听器，最终达到优化性能的目的</p>
+</blockquote>
+<h3 id="8-createElement-与-cloneElement-的区别是什么"><a href="#8-createElement-与-cloneElement-的区别是什么" class="headerlink" title="8 createElement 与 cloneElement 的区别是什么"></a>8 createElement 与 cloneElement 的区别是什么</h3><blockquote>
+<p><code>createElement</code> 函数是 JSX 编译之后使用的创建 <code>React Element</code> 的函数，而 <code>cloneElement</code> 则是用于复制某个元素并传入新的 <code>Props</code></p>
+</blockquote>
+<h3 id="9-redux中间件"><a href="#9-redux中间件" class="headerlink" title="9 redux中间件"></a>9 redux中间件</h3><blockquote>
+<p>中间件提供第三方插件的模式，自定义拦截 <code>action</code> -&gt; <code>reducer</code> 的过程。变为 <code>action</code> -&gt; <code>middlewares</code> -&gt; <code>reducer</code>。这种机制可以让我们改变数据流，实现如异步<code>action</code> ，<code>action</code> 过滤，日志输出，异常报告等功能</p>
+</blockquote>
+<ul>
+<li><code>redux-logger</code>：提供日志输出</li>
+<li><code>redux-thunk</code>：处理异步操作</li>
+<li><code>redux-promise</code>：处理异步操作，<code>actionCreator</code>的返回值是<code>promise</code></li>
+</ul>
+<h3 id="10-redux有什么缺点"><a href="#10-redux有什么缺点" class="headerlink" title="10 redux有什么缺点"></a>10 redux有什么缺点</h3><ul>
+<li>一个组件所需要的数据，必须由父组件传过来，而不能像<code>flux</code>中直接从<code>store</code>取。</li>
+<li>当一个组件相关数据更新时，即使父组件不需要用到这个组件，父组件还是会重新<code>render</code>，可能会有效率影响，或者需要写复杂的<code>shouldComponentUpdate</code>进行判断。</li>
+</ul>
+<h3 id="11-react组件的划分业务组件技术组件？"><a href="#11-react组件的划分业务组件技术组件？" class="headerlink" title="11 react组件的划分业务组件技术组件？"></a>11 react组件的划分业务组件技术组件？</h3><ul>
+<li>根据组件的职责通常把组件分为UI组件和容器组件。</li>
+<li>UI 组件负责 UI 的呈现，容器组件负责管理数据和逻辑。</li>
+<li>两者通过<code>React-Redux</code> 提供<code>connect</code>方法联系起来</li>
+</ul>
+<h3 id="12-react生命周期函数"><a href="#12-react生命周期函数" class="headerlink" title="12 react生命周期函数"></a>12 react生命周期函数</h3><p><strong>初始化阶段</strong></p>
+<ul>
+<li><code>getDefaultProps</code>:获取实例的默认属性</li>
+<li><code>getInitialState</code>:获取每个实例的初始化状态</li>
+<li><code>componentWillMount</code>：组件即将被装载、渲染到页面上</li>
+<li><code>render</code>:组件在这里生成虚拟的<code>DOM</code>节点</li>
+<li><code>omponentDidMount</code>:组件真正在被装载之后</li>
+</ul>
+<p><strong>运行中状态</strong></p>
+<ul>
+<li><code>componentWillReceiveProps</code>:组件将要接收到属性的时候调用</li>
+<li><code>shouldComponentUpdate</code>:组件接受到新属性或者新状态的时候（可以返回false，接收数据后不更新，阻止<code>render</code>调用，后面的函数不会被继续执行了）</li>
+<li><code>componentWillUpdate</code>:组件即将更新不能修改属性和状态</li>
+<li><code>render</code>:组件重新描绘</li>
+<li><code>componentDidUpdate</code>:组件已经更新</li>
+</ul>
+<p><strong>销毁阶段</strong></p>
+<ul>
+<li><code>componentWillUnmount</code>:组件即将销毁</li>
+</ul>
+<h3 id="13-react性能优化是哪个周期函数"><a href="#13-react性能优化是哪个周期函数" class="headerlink" title="13 react性能优化是哪个周期函数"></a>13 react性能优化是哪个周期函数</h3><blockquote>
+<p><code>shouldComponentUpdate</code> 这个方法用来判断是否需要调用render方法重新描绘dom。因为dom的描绘非常消耗性能，如果我们能在<code>shouldComponentUpdate方</code>法中能够写出更优化的<code>dom diff</code>算法，可以极大的提高性能</p>
+</blockquote>
+<h3 id="14-为什么虚拟dom会提高性能"><a href="#14-为什么虚拟dom会提高性能" class="headerlink" title="14 为什么虚拟dom会提高性能"></a>14 为什么虚拟dom会提高性能</h3><blockquote>
+<p>虚拟<code>dom</code>相当于在<code>js</code>和真实<code>dom</code>中间加了一个缓存，利用<code>dom diff</code>算法避免了没有必要的<code>dom</code>操作，从而提高性能</p>
+</blockquote>
+<p><strong>具体实现步骤如下</strong></p>
+<ul>
+<li>用 <code>JavaScript</code> 对象结构表示 DOM 树的结构；然后用这个树构建一个真正的 <code>DOM</code> 树，插到文档当中</li>
+<li>当状态变更的时候，重新构造一棵新的对象树。然后用新的树和旧的树进行比较，记录两棵树差异</li>
+<li>把2所记录的差异应用到步骤1所构建的真正的<code>DOM</code>树上，视图就更新</li>
+</ul>
+<h3 id="15-diff算法"><a href="#15-diff算法" class="headerlink" title="15 diff算法?"></a>15 diff算法?</h3><ul>
+<li>把树形结构按照层级分解，只比较同级元素。</li>
+<li>给列表结构的每个单元添加唯一的<code>key</code>属性，方便比较。</li>
+<li><code>React</code> 只会匹配相同 <code>class</code> 的 <code>component</code>（这里面的<code>class</code>指的是组件的名字）</li>
+<li>合并操作，调用 <code>component</code> 的 <code>setState</code> 方法的时候, <code>React</code> 将其标记为 - <code>dirty</code>.到每一个事件循环结束, <code>React</code> 检查所有标记 <code>dirty</code>的 <code>component</code>重新绘制.</li>
+<li>选择性子树渲染。开发人员可以重写<code>shouldComponentUpdate</code>提高<code>diff</code>的性能</li>
+</ul>
+<h3 id="16-react性能优化方案"><a href="#16-react性能优化方案" class="headerlink" title="16 react性能优化方案"></a>16 react性能优化方案</h3><ul>
+<li>重写<code>shouldComponentUpdate</code>来避免不必要的dom操作</li>
+<li>使用 <code>production</code> 版本的<code>react.js</code></li>
+<li>使用<code>key</code>来帮助<code>React</code>识别列表中所有子组件的最小变化</li>
+</ul>
+<h3 id="16-简述flux-思想"><a href="#16-简述flux-思想" class="headerlink" title="16 简述flux 思想"></a>16 简述flux 思想</h3><blockquote>
+<p><code>Flux</code> 的最大特点，就是数据的”单向流动”。</p>
+</blockquote>
+<ul>
+<li>用户访问 <code>View</code></li>
+<li><code>View</code>发出用户的 <code>Action</code></li>
+<li><code>Dispatcher</code> 收到<code>Action</code>，要求 <code>Store</code> 进行相应的更新</li>
+<li><code>Store</code> 更新后，发出一个<code>&quot;change&quot;</code>事件</li>
+<li><code>View</code> 收到<code>&quot;change&quot;</code>事件后，更新页面</li>
+</ul>
+<h3 id="17-说说你用react有什么坑点？"><a href="#17-说说你用react有什么坑点？" class="headerlink" title="17 说说你用react有什么坑点？"></a>17 说说你用react有什么坑点？</h3><p><strong>1. JSX做表达式判断时候，需要强转为boolean类型</strong></p>
+<blockquote>
+<p>如果不使用 <code>!!b</code> 进行强转数据类型，会在页面里面输出 <code>0</code>。</p>
+</blockquote>
+<pre class="line-numbers language-jsx"><code class="language-jsx"><span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> b <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token punctuation">{</span>
+      <span class="token operator">!</span><span class="token operator">!</span>b <span class="token operator">&amp;&amp;</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>这是一段文本<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token punctuation">}</span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>2. 尽量不要在 componentWillReviceProps 里使用 setState，如果一定要使用，那么需要判断结束条件，不然会出现无限重渲染，导致页面崩溃</strong></p>
+<p><strong>3. 给组件添加ref时候，尽量不要使用匿名函数，因为当组件更新的时候，匿名函数会被当做新的prop处理，让ref属性接受到新函数的时候，react内部会先清空ref，也就是会以null为回调参数先执行一次ref这个props，然后在以该组件的实例执行一次ref，所以用匿名函数做ref的时候，有的时候去ref赋值后的属性会取到null</strong></p>
+<p><strong>4. 遍历子节点的时候，不要用 index 作为组件的 key 进行传入</strong></p>
+<h3 id="18-我现在有一个button，要用react在上面绑定点击事件，要怎么做？"><a href="#18-我现在有一个button，要用react在上面绑定点击事件，要怎么做？" class="headerlink" title="18  我现在有一个button，要用react在上面绑定点击事件，要怎么做？"></a>18  我现在有一个button，要用react在上面绑定点击事件，要怎么做？</h3><pre class="line-numbers language-jsx"><code class="language-jsx"><span class="token keyword">class</span> <span class="token class-name">Demo</span> <span class="token punctuation">{</span>
+  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">onClick</span><span class="token script language-javascript"><span class="token punctuation">=</span><span class="token punctuation">{</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      <span class="token function">alert</span><span class="token punctuation">(</span><span class="token string">'我点击了按钮'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">}</span></span><span class="token punctuation">></span></span>
+      按钮
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>你觉得你这样设置点击事件会有什么问题吗？</strong></p>
+<blockquote>
+<p>由于<code>onClick</code>使用的是匿名函数，所有每次重渲染的时候，会把该<code>onClick</code>当做一个新的<code>prop</code>来处理，会将内部缓存的<code>onClick</code>事件进行重新赋值，所以相对直接使用函数来说，可能有一点的性能下降</p>
+</blockquote>
+<p>修改</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">class</span> <span class="token class-name">Demo</span> <span class="token punctuation">{</span>
+
+  onClick <span class="token operator">=</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token function">alert</span><span class="token punctuation">(</span><span class="token string">'我点击了按钮'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token operator">&lt;</span>button onClick<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>onClick<span class="token punctuation">}</span><span class="token operator">></span>
+      按钮
+    <span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
+  <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="19-react-的虚拟dom是怎么实现的"><a href="#19-react-的虚拟dom是怎么实现的" class="headerlink" title="19 react 的虚拟dom是怎么实现的"></a>19 react 的虚拟dom是怎么实现的</h3><blockquote>
+<p>首先说说为什么要使用<code>Virturl DOM</code>，因为操作真实<code>DOM</code>的耗费的性能代价太高，所以<code>react</code>内部使用<code>js</code>实现了一套dom结构，在每次操作在和真实dom之前，使用实现好的diff算法，对虚拟dom进行比较，递归找出有变化的dom节点，然后对其进行更新操作。为了实现虚拟<code>DOM</code>，我们需要把每一种节点类型抽象成对象，每一种节点类型有自己的属性，也就是prop，每次进行<code>diff</code>的时候，<code>react</code>会先比较该节点类型，假如节点类型不一样，那么<code>react</code>会直接删除该节点，然后直接创建新的节点插入到其中，假如节点类型一样，那么会比较<code>prop</code>是否有更新，假如有<code>prop</code>不一样，那么<code>react</code>会判定该节点有更新，那么重渲染该节点，然后在对其子节点进行比较，一层一层往下，直到没有子节点</p>
+</blockquote>
+<h3 id="20-react-的渲染过程中，兄弟节点之间是怎么处理的？也就是key值不一样的时候"><a href="#20-react-的渲染过程中，兄弟节点之间是怎么处理的？也就是key值不一样的时候" class="headerlink" title="20 react 的渲染过程中，兄弟节点之间是怎么处理的？也就是key值不一样的时候"></a>20 react 的渲染过程中，兄弟节点之间是怎么处理的？也就是key值不一样的时候</h3><blockquote>
+<p>通常我们输出节点的时候都是map一个数组然后返回一个<code>ReactNode</code>，为了方便<code>react</code>内部进行优化，我们必须给每一个<code>reactNode</code>添加<code>key</code>，这个<code>key prop</code>在设计值处不是给开发者用的，而是给react用的，大概的作用就是给每一个<code>reactNode</code>添加一个身份标识，方便react进行识别，在重渲染过程中，如果key一样，若组件属性有所变化，则<code>react</code>只更新组件对应的属性；没有变化则不更新，如果key不一样，则react先销毁该组件，然后重新创建该组件</p>
+</blockquote>
+<h3 id="21-那给我介绍一下react"><a href="#21-那给我介绍一下react" class="headerlink" title="21 那给我介绍一下react"></a>21 那给我介绍一下react</h3><ol>
+<li>以前我们没有jquery的时候，我们大概的流程是从后端通过ajax获取到数据然后使用jquery生成dom结果然后更新到页面当中，但是随着业务发展，我们的项目可能会越来越复杂，我们每次请求到数据，或则数据有更改的时候，我们又需要重新组装一次dom结构，然后更新页面，这样我们手动同步dom和数据的成本就越来越高，而且频繁的操作dom，也使我我们页面的性能慢慢的降低。</li>
+<li>这个时候mvvm出现了，mvvm的双向数据绑定可以让我们在数据修改的同时同步dom的更新，dom的更新也可以直接同步我们数据的更改，这个特定可以大大降低我们手动去维护dom更新的成本，mvvm为react的特性之一，虽然react属于单项数据流，需要我们手动实现双向数据绑定。</li>
+<li>有了mvvm还不够，因为如果每次有数据做了更改，然后我们都全量更新dom结构的话，也没办法解决我们频繁操作dom结构(降低了页面性能)的问题，为了解决这个问题，react内部实现了一套虚拟dom结构，也就是用js实现的一套dom结构，他的作用是讲真实dom在js中做一套缓存，每次有数据更改的时候，react内部先使用算法，也就是鼎鼎有名的diff算法对dom结构进行对比，找到那些我们需要新增、更新、删除的dom节点，然后一次性对真实DOM进行更新，这样就大大降低了操作dom的次数。<br>那么diff算法是怎么运作的呢，首先，diff针对类型不同的节点，会直接判定原来节点需要卸载并且用新的节点来装载卸载的节点的位置；针对于节点类型相同的节点，会对比这个节点的所有属性，如果节点的所有属性相同，那么判定这个节点不需要更新，如果节点属性不相同，那么会判定这个节点需要更新，react会更新并重渲染这个节点。</li>
+<li>react设计之初是主要负责UI层的渲染，虽然每个组件有自己的state，state表示组件的状态，当状态需要变化的时候，需要使用setState更新我们的组件，但是，我们想通过一个组件重渲染它的兄弟组件，我们就需要将组件的状态提升到父组件当中，让父组件的状态来控制这两个组件的重渲染，当我们组件的层次越来越深的时候，状态需要一直往下传，无疑加大了我们代码的复杂度，我们需要一个状态管理中心，来帮我们管理我们状态state。</li>
+<li>这个时候，redux出现了，我们可以将所有的state交给redux去管理，当我们的某一个state有变化的时候，依赖到这个state的组件就会进行一次重渲染，这样就解决了我们的我们需要一直把state往下传的问题。redux有action、reducer的概念，action为唯一修改state的来源，reducer为唯一确定state如何变化的入口，这使得redux的数据流非常规范，同时也暴露出了redux代码的复杂，本来那么简单的功能，却需要完成那么多的代码。</li>
+<li>后来，社区就出现了另外一套解决方案，也就是mobx，它推崇代码简约易懂，只需要定义一个可观测的对象，然后哪个组价使用到这个可观测的对象，并且这个对象的数据有更改，那么这个组件就会重渲染，而且mobx内部也做好了是否重渲染组件的生命周期shouldUpdateComponent，不建议开发者进行更改，这使得我们使用mobx开发项目的时候可以简单快速的完成很多功能，连redux的作者也推荐使用mobx进行项目开发。但是，随着项目的不断变大，mobx也不断暴露出了它的缺点，就是数据流太随意，出了bug之后不好追溯数据的流向，这个缺点正好体现出了redux的优点所在，所以针对于小项目来说，社区推荐使用mobx，对大项目推荐使用redux</li>
+</ol>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2017/04/03/002.前端知识体系/003.高级篇/006.高级篇之React进阶知识/" target="_blank" rel="external">http://www.chenya.site/2017/04/03/002.前端知识体系/003.高级篇/006.高级篇之React进阶知识/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端知识体系/">前端知识体系</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/高级篇/">高级篇</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2017/04/03/002.前端知识体系/003.高级篇/006.高级篇之React进阶知识/&title=《高级篇-06.React进阶知识》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2017/04/03/002.前端知识体系/003.高级篇/006.高级篇之React进阶知识/&title=《高级篇-06.React进阶知识》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2017/04/03/002.前端知识体系/003.高级篇/006.高级篇之React进阶知识/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《高级篇-06.React进阶知识》 — 陈亚的个人主页&url=http://www.chenya.site/2017/04/03/002.前端知识体系/003.高级篇/006.高级篇之React进阶知识/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2017/04/03/002.前端知识体系/003.高级篇/006.高级篇之React进阶知识/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/04/23/002.前端知识体系/003.高级篇/007.高级篇之Vue进阶知识/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">高级篇-07.Vue进阶知识</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/03/09/002.前端知识体系/003.高级篇/005.高级篇之小程序进阶知识/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">高级篇-05.小程序进阶知识</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2017/04/03/002.前端知识体系/003.高级篇/006.高级篇之React进阶知识/&title=《高级篇-06.React进阶知识》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2017/04/03/002.前端知识体系/003.高级篇/006.高级篇之React进阶知识/&title=《高级篇-06.React进阶知识》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2017/04/03/002.前端知识体系/003.高级篇/006.高级篇之React进阶知识/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《高级篇-06.React进阶知识》 — 陈亚的个人主页&url=http://www.chenya.site/2017/04/03/002.前端知识体系/003.高级篇/006.高级篇之React进阶知识/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2017/04/03/002.前端知识体系/003.高级篇/006.高级篇之React进阶知识/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADLElEQVR42u3a3UrDYAwGYO//pid4JKjtm6TDNXt6JFtpvycDQ34+PuLr8XUdf/7znuNvv3/+150/v82ffMGFjY2NfRP24/BKHp3c/9eTq9TknMf3YGNjY29l58np+NDJc/IQ58jcgo2Njf3O7N6he+HIyxtsbGxs7F4Cm3Sw5oVNr3WFjY2NvZtdbdZcNTbIW07/1kvDxsbGfnl2NeW88t9PnG9jY2NjvyT70bqqCzpJIuwNEnoKbGxs7E3sXpPo+MW95lEvuJNWFDY2NvYm9mRZJz9Kcojqc5Khb+EM2NjY2Ddk58lgPvrNY5+nsWphU86B2NjY2LdiV0nV5JGHIy9mmgs92NjY2EvZ1UZM0lpKiofJYKC31oONjY29iZ0fupokkoDmDf35qLgwG8HGxsa+ITs/YjVd5QOG3v2T8gkbGxt7E7vags/TTJ4sn5EIsbGxsd+HXV1wTNZo8kFsPtCt/kgnpQs2Njb2Cna+OpMDess0vdAnT8DGxsbezb6q6TMJRz4Y7q3yROMBbGxs7Nuye42k3mpO9aB5eZMnS2xsbOx97DxR9QqP3hpQr82UBA4bGxt7Hzt/QQ85WcG5an3nl7NhY2NjL2JXc10+6J23pfKCZDTfxsbGxl7EnlOr7ZteqyhPcifnwcbGxl7BzpvsySuTwcAkiPk9J4HAxsbGXsfuLfFUE1i1aJmwTxTY2NjYS9nVh07GrkldUF27ScAnUxFsbGzs27Lzpnzv//+88Mg/Kcy3sbGxsVew80TSO+hkFJEcelJKYWNjY29lV0NQLgPiBlMviVaLHGxsbOx97HyAOlnKyYuTfORQHU5gY2Nj72PP2+69tNdjV3+A8oWNjY29iN0b3Fap1XBXG1jY2NjYW9mP4pUH5aqjVwMRtaKwsbGxF7F7r6yOfp8RuN7wGBsbG3sru9oSypNHEuNeedNLYIWCBBsbG/uG7GpiqA5Ty8eaD2uT1hI2Njb2W7KrTZxqaykPXz4qPtk2xcbGxn4bdm9AOy9y8h+jkICxsbGx17EnKaF3uEnRkgfxJIFhY2Njr2D31mXytZ7JgHaeAicNKWxsbOyXZ38C3lRY3AYM07kAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

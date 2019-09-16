@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Vue源码学习 - 生命周期 | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="日常学习,前端资源,Vue源码学习">
+    <meta name="description" content="生命周期每个 Vue 实例在被创建之前都要经过一系列的初始化过程。例如需要设置数据监听、编译模板、挂载实例到 DOM、在数据变化时更新 DOM 等。同时在这个过程中也会运行一些叫做生命周期钩子的函数，给予用户机会在一些特定的场景下添加他们自己的代码。">
+<meta name="keywords" content="日常学习,前端资源,Vue源码学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue源码学习 - 生命周期">
+<meta property="og:url" content="http://www.chenya.site/2018/02/15/005.vue源码学习/003.组件化/005.生命周期/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="生命周期每个 Vue 实例在被创建之前都要经过一系列的初始化过程。例如需要设置数据监听、编译模板、挂载实例到 DOM、在数据变化时更新 DOM 等。同时在这个过程中也会运行一些叫做生命周期钩子的函数，给予用户机会在一些特定的场景下添加他们自己的代码。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/vue%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/lifecycle.png">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.504Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue源码学习 - 生命周期">
+<meta name="twitter:description" content="生命周期每个 Vue 实例在被创建之前都要经过一系列的初始化过程。例如需要设置数据监听、编译模板、挂载实例到 DOM、在数据变化时更新 DOM 等。同时在这个过程中也会运行一些叫做生命周期钩子的函数，给予用户机会在一些特定的场景下添加他们自己的代码。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/vue%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/lifecycle.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">Vue源码学习 - 生命周期</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Vue源码学习 - 生命周期</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-02-14T22:31:31.000Z" itemprop="datePublished" class="page-time">
+  2018-02-15
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#生命周期"><span class="post-toc-number">1.</span> <span class="post-toc-text">生命周期</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#beforeCreate-amp-created"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">beforeCreate &amp; created</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#beforeMount-amp-mounted"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">beforeMount &amp; mounted</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#beforeUpdate-amp-updated"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">beforeUpdate &amp; updated</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#beforeDestroy-amp-destroyed"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">beforeDestroy &amp; destroyed</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#activated-amp-deactivated"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">activated &amp; deactivated</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">总结</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-005.vue源码学习/003.组件化/005.生命周期"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Vue源码学习 - 生命周期</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-02-15 06:31:31" datetime="2018-02-14T22:31:31.000Z"  itemprop="datePublished">2018-02-15</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h1><p>每个 Vue 实例在被创建之前都要经过一系列的初始化过程。例如需要设置数据监听、编译模板、挂载实例到 DOM、在数据变化时更新 DOM 等。同时在这个过程中也会运行一些叫做生命周期钩子的函数，给予用户机会在一些特定的场景下添加他们自己的代码。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/vue%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/lifecycle.png" alt="生命周期" title="生命周期">
+                </div>
+                <div class="image-caption">生命周期</div>
+            </figure>
+<p>在我们实际项目开发过程中，会非常频繁地和 Vue 组件的生命周期打交道，接下来我们就从源码的角度来看一下这些生命周期的钩子函数是如何被执行的。</p>
+<p>源码中最终执行生命周期的函数都是调用 <code>callHook</code> 方法，它的定义在 <code>src/core/instance/lifecycle</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> callHook <span class="token punctuation">(</span>vm<span class="token punctuation">:</span> Component<span class="token punctuation">,</span> hook<span class="token punctuation">:</span> string<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// #7573 disable dep collection when invoking lifecycle hooks</span>
+  <span class="token function">pushTarget</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">const</span> handlers <span class="token operator">=</span> vm<span class="token punctuation">.</span>$options<span class="token punctuation">[</span>hook<span class="token punctuation">]</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>handlers<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> j <span class="token operator">=</span> handlers<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i <span class="token operator">&lt;</span> j<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        handlers<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>vm<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">handleError</span><span class="token punctuation">(</span>e<span class="token punctuation">,</span> vm<span class="token punctuation">,</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>hook<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> hook`</span></span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>vm<span class="token punctuation">.</span>_hasHookEvent<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    vm<span class="token punctuation">.</span><span class="token function">$emit</span><span class="token punctuation">(</span><span class="token string">'hook:'</span> <span class="token operator">+</span> hook<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token function">popTarget</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>callHook</code> 函数的逻辑很简单，根据传入的字符串 <code>hook</code>，去拿到 <code>vm.$options[hook]</code> 对应的回调函数数组，然后遍历执行，执行的时候把 <code>vm</code> 作为函数执行的上下文。</p>
+<p>在上一节中，我们详细地介绍了 Vue.js 合并 <code>options</code> 的过程，各个阶段的生命周期的函数也被合并到 <code>vm.$options</code> 里，并且是一个数组。因此 <code>callhook</code> 函数的功能就是调用某个生命周期钩子注册的所有回调函数。</p>
+<p>了解了生命周期的执行方式后，接下来我们会具体介绍每一个生命周期函数它的调用时机。</p>
+<h2 id="beforeCreate-amp-created"><a href="#beforeCreate-amp-created" class="headerlink" title="beforeCreate &amp; created"></a>beforeCreate &amp; created</h2><p><code>beforeCreate</code> 和 <code>created</code> 函数都是在实例化 <code>Vue</code> 的阶段，在 <code>_init</code> 方法中执行的，它的定义在 <code>src/core/instance/init.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js">Vue<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>_init <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>options<span class="token operator">?</span><span class="token punctuation">:</span> Object<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// ...</span>
+  <span class="token function">initLifecycle</span><span class="token punctuation">(</span>vm<span class="token punctuation">)</span>
+  <span class="token function">initEvents</span><span class="token punctuation">(</span>vm<span class="token punctuation">)</span>
+  <span class="token function">initRender</span><span class="token punctuation">(</span>vm<span class="token punctuation">)</span>
+  <span class="token function">callHook</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> <span class="token string">'beforeCreate'</span><span class="token punctuation">)</span>
+  <span class="token function">initInjections</span><span class="token punctuation">(</span>vm<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// resolve injections before data/props</span>
+  <span class="token function">initState</span><span class="token punctuation">(</span>vm<span class="token punctuation">)</span>
+  <span class="token function">initProvide</span><span class="token punctuation">(</span>vm<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// resolve provide after data/props</span>
+  <span class="token function">callHook</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> <span class="token string">'created'</span><span class="token punctuation">)</span>
+  <span class="token comment" spellcheck="true">// ...</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到 <code>beforeCreate</code> 和 <code>created</code> 的钩子调用是在 <code>initState</code> 的前后，<code>initState</code> 的作用是初始化 <code>props</code>、<code>data</code>、<code>methods</code>、<code>watch</code>、<code>computed</code> 等属性，之后我们会详细分析。那么显然 <code>beforeCreate</code> 的钩子函数中就不能获取到 <code>props</code>、<code>data</code> 中定义的值，也不能调用 <code>methods</code> 中定义的函数。</p>
+<p>在这俩个钩子函数执行的时候，并没有渲染 DOM，所以我们也不能够访问 DOM，一般来说，如果组件在加载的时候需要和后端有交互，放在这俩个钩子函数执行都可以，如果是需要访问 <code>props</code>、<code>data</code> 等数据的话，就需要使用 <code>created</code> 钩子函数。之后我们会介绍 vue-router 和 vuex 的时候会发现它们都混合了 <code>beforeCreatd</code> 钩子函数。</p>
+<h2 id="beforeMount-amp-mounted"><a href="#beforeMount-amp-mounted" class="headerlink" title="beforeMount &amp; mounted"></a>beforeMount &amp; mounted</h2><p>顾名思义，<code>beforeMount</code> 钩子函数发生在 <code>mount</code>，也就是 DOM 挂载之前，它的调用时机是在 <code>mountComponent</code> 函数中，定义在 <code>src/core/instance/lifecycle.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> mountComponent <span class="token punctuation">(</span>
+  vm<span class="token punctuation">:</span> Component<span class="token punctuation">,</span>
+  el<span class="token punctuation">:</span> <span class="token operator">?</span>Element<span class="token punctuation">,</span>
+  hydrating<span class="token operator">?</span><span class="token punctuation">:</span> boolean
+<span class="token punctuation">)</span><span class="token punctuation">:</span> Component <span class="token punctuation">{</span>
+  vm<span class="token punctuation">.</span>$el <span class="token operator">=</span> el
+  <span class="token comment" spellcheck="true">// ...</span>
+  <span class="token function">callHook</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> <span class="token string">'beforeMount'</span><span class="token punctuation">)</span>
+
+  <span class="token keyword">let</span> updateComponent
+  <span class="token comment" spellcheck="true">/* istanbul ignore if */</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>NODE_ENV <span class="token operator">!==</span> <span class="token string">'production'</span> <span class="token operator">&amp;&amp;</span> config<span class="token punctuation">.</span>performance <span class="token operator">&amp;&amp;</span> mark<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    updateComponent <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> name <span class="token operator">=</span> vm<span class="token punctuation">.</span>_name
+      <span class="token keyword">const</span> id <span class="token operator">=</span> vm<span class="token punctuation">.</span>_uid
+      <span class="token keyword">const</span> startTag <span class="token operator">=</span> <span class="token template-string"><span class="token string">`vue-perf-start:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>id<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
+      <span class="token keyword">const</span> endTag <span class="token operator">=</span> <span class="token template-string"><span class="token string">`vue-perf-end:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>id<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
+
+      <span class="token function">mark</span><span class="token punctuation">(</span>startTag<span class="token punctuation">)</span>
+      <span class="token keyword">const</span> vnode <span class="token operator">=</span> vm<span class="token punctuation">.</span><span class="token function">_render</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token function">mark</span><span class="token punctuation">(</span>endTag<span class="token punctuation">)</span>
+      <span class="token function">measure</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`vue </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> render`</span></span><span class="token punctuation">,</span> startTag<span class="token punctuation">,</span> endTag<span class="token punctuation">)</span>
+
+      <span class="token function">mark</span><span class="token punctuation">(</span>startTag<span class="token punctuation">)</span>
+      vm<span class="token punctuation">.</span><span class="token function">_update</span><span class="token punctuation">(</span>vnode<span class="token punctuation">,</span> hydrating<span class="token punctuation">)</span>
+      <span class="token function">mark</span><span class="token punctuation">(</span>endTag<span class="token punctuation">)</span>
+      <span class="token function">measure</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`vue </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> patch`</span></span><span class="token punctuation">,</span> startTag<span class="token punctuation">,</span> endTag<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    updateComponent <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      vm<span class="token punctuation">.</span><span class="token function">_update</span><span class="token punctuation">(</span>vm<span class="token punctuation">.</span><span class="token function">_render</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> hydrating<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment" spellcheck="true">// we set this to vm._watcher inside the watcher's constructor</span>
+  <span class="token comment" spellcheck="true">// since the watcher's initial patch may call $forceUpdate (e.g. inside child</span>
+  <span class="token comment" spellcheck="true">// component's mounted hook), which relies on vm._watcher being already defined</span>
+  <span class="token keyword">new</span> <span class="token class-name">Watcher</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> updateComponent<span class="token punctuation">,</span> noop<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    before <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>vm<span class="token punctuation">.</span>_isMounted<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">callHook</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> <span class="token string">'beforeUpdate'</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token boolean">true</span> <span class="token comment" spellcheck="true">/* isRenderWatcher */</span><span class="token punctuation">)</span>
+  hydrating <span class="token operator">=</span> <span class="token boolean">false</span>
+
+  <span class="token comment" spellcheck="true">// manually mounted instance, call mounted on self</span>
+  <span class="token comment" spellcheck="true">// mounted is called for render-created child components in its inserted hook</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>vm<span class="token punctuation">.</span>$vnode <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    vm<span class="token punctuation">.</span>_isMounted <span class="token operator">=</span> <span class="token boolean">true</span>
+    <span class="token function">callHook</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> <span class="token string">'mounted'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> vm
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在执行 <code>vm._render()</code> 函数渲染 VNode 之前，执行了 <code>beforeMount</code> 钩子函数，在执行完 <code>vm._update()</code> 把 VNode patch 到真实 DOM 后，执行 <code>mounted</code> 钩子。注意，这里对 <code>mounted</code> 钩子函数执行有一个判断逻辑，<code>vm.$vnode</code> 如果为 <code>null</code>，则表明这不是一次组件的初始化过程，而是我们通过外部 <code>new Vue</code> 初始化过程。那么对于组件，它的 <code>mounted</code> 时机在哪儿呢？</p>
+<p>之前我们提到过，组件的 VNode patch 到 DOM 后，会执行 <code>invokeInsertHook</code> 函数，把 <code>insertedVnodeQueue</code> 里保存的钩子函数依次执行一遍，它的定义在 <code>src/core/vdom/patch.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> invokeInsertHook <span class="token punctuation">(</span>vnode<span class="token punctuation">,</span> queue<span class="token punctuation">,</span> initial<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// delay insert hooks for component root nodes, invoke them after the</span>
+  <span class="token comment" spellcheck="true">// element is really inserted</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isTrue</span><span class="token punctuation">(</span>initial<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token function">isDef</span><span class="token punctuation">(</span>vnode<span class="token punctuation">.</span>parent<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    vnode<span class="token punctuation">.</span>parent<span class="token punctuation">.</span>data<span class="token punctuation">.</span>pendingInsert <span class="token operator">=</span> queue
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> queue<span class="token punctuation">.</span>length<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      queue<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>data<span class="token punctuation">.</span>hook<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>queue<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>该函数会执行 <code>insert</code> 这个钩子函数，对于组件而言，<code>insert</code> 钩子函数的定义在 <code>src/core/vdom/create-component.js</code> 中的 <code>componentVNodeHooks</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> componentVNodeHooks <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// ...</span>
+  insert <span class="token punctuation">(</span>vnode<span class="token punctuation">:</span> MountedComponentVNode<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> <span class="token punctuation">{</span> context<span class="token punctuation">,</span> componentInstance <span class="token punctuation">}</span> <span class="token operator">=</span> vnode
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>componentInstance<span class="token punctuation">.</span>_isMounted<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      componentInstance<span class="token punctuation">.</span>_isMounted <span class="token operator">=</span> <span class="token boolean">true</span>
+      <span class="token function">callHook</span><span class="token punctuation">(</span>componentInstance<span class="token punctuation">,</span> <span class="token string">'mounted'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// ...</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们可以看到，每个子组件都是在这个钩子函数中执行 <code>mounted</code> 钩子函数，并且我们之前分析过，<code>insertedVnodeQueue</code> 的添加顺序是先子后父，所以对于同步渲染的子组件而言，<code>mounted</code> 钩子函数的执行顺序也是先子后父。 </p>
+<h2 id="beforeUpdate-amp-updated"><a href="#beforeUpdate-amp-updated" class="headerlink" title="beforeUpdate &amp; updated"></a>beforeUpdate &amp; updated</h2><p>顾名思义，<code>beforeUpdate</code> 和 <code>updated</code> 的钩子函数执行时机都应该是在数据更新的时候，到目前为止，我们还没有分析 Vue 的数据双向绑定、更新相关，下一章我会详细介绍这个过程。</p>
+<p><code>beforeUpdate</code> 的执行时机是在渲染 Watcher 的 <code>before</code> 函数中，我们刚才提到过：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> mountComponent <span class="token punctuation">(</span>
+  vm<span class="token punctuation">:</span> Component<span class="token punctuation">,</span>
+  el<span class="token punctuation">:</span> <span class="token operator">?</span>Element<span class="token punctuation">,</span>
+  hydrating<span class="token operator">?</span><span class="token punctuation">:</span> boolean
+<span class="token punctuation">)</span><span class="token punctuation">:</span> Component <span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// ...</span>
+
+  <span class="token comment" spellcheck="true">// we set this to vm._watcher inside the watcher's constructor</span>
+  <span class="token comment" spellcheck="true">// since the watcher's initial patch may call $forceUpdate (e.g. inside child</span>
+  <span class="token comment" spellcheck="true">// component's mounted hook), which relies on vm._watcher being already defined</span>
+  <span class="token keyword">new</span> <span class="token class-name">Watcher</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> updateComponent<span class="token punctuation">,</span> noop<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    before <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>vm<span class="token punctuation">.</span>_isMounted<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">callHook</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> <span class="token string">'beforeUpdate'</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token boolean">true</span> <span class="token comment" spellcheck="true">/* isRenderWatcher */</span><span class="token punctuation">)</span>
+  <span class="token comment" spellcheck="true">// ...</span>
+<span class="token punctuation">}</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注意这里有个判断，也就是在组件已经 <code>mounted</code> 之后，才会去调用这个钩子函数。</p>
+<p><code>update</code> 的执行时机是在<code>flushSchedulerQueue</code> 函数调用的时候，它的定义在 <code>src/core/observer/scheduler.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> flushSchedulerQueue <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// ...</span>
+  <span class="token comment" spellcheck="true">// 获取到 updatedQueue</span>
+  <span class="token function">callUpdatedHooks</span><span class="token punctuation">(</span>updatedQueue<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> callUpdatedHooks <span class="token punctuation">(</span>queue<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> i <span class="token operator">=</span> queue<span class="token punctuation">.</span>length
+  <span class="token keyword">while</span> <span class="token punctuation">(</span>i<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> watcher <span class="token operator">=</span> queue<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+    <span class="token keyword">const</span> vm <span class="token operator">=</span> watcher<span class="token punctuation">.</span>vm
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>vm<span class="token punctuation">.</span>_watcher <span class="token operator">===</span> watcher <span class="token operator">&amp;&amp;</span> vm<span class="token punctuation">.</span>_isMounted<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">callHook</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> <span class="token string">'updated'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>flushSchedulerQueue</code> 函数我们之后会详细介绍，可以先大概了解一下，<code>updatedQueue</code> 是更新了的 <code>wathcer</code> 数组，那么在 <code>callUpdatedHooks</code> 函数中，它对这些数组做遍历，只有满足当前 <code>watcher</code> 为 <code>vm._watcher</code> 以及组件已经 <code>mounted</code> 这两个条件，才会执行 <code>updated</code> 钩子函数。</p>
+<p>我们之前提过，在组件 mount 的过程中，会实例化一个渲染的 <code>Watcher</code> 去监听 <code>vm</code> 上的数据变化重新渲染，这段逻辑发生在 <code>mountComponent</code> 函数执行的时候：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> mountComponent <span class="token punctuation">(</span>
+  vm<span class="token punctuation">:</span> Component<span class="token punctuation">,</span>
+  el<span class="token punctuation">:</span> <span class="token operator">?</span>Element<span class="token punctuation">,</span>
+  hydrating<span class="token operator">?</span><span class="token punctuation">:</span> boolean
+<span class="token punctuation">)</span><span class="token punctuation">:</span> Component <span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// ...</span>
+  <span class="token comment" spellcheck="true">// 这里是简写</span>
+  <span class="token keyword">let</span> updateComponent <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      vm<span class="token punctuation">.</span><span class="token function">_update</span><span class="token punctuation">(</span>vm<span class="token punctuation">.</span><span class="token function">_render</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> hydrating<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">new</span> <span class="token class-name">Watcher</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> updateComponent<span class="token punctuation">,</span> noop<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    before <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>vm<span class="token punctuation">.</span>_isMounted<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">callHook</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> <span class="token string">'beforeUpdate'</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token boolean">true</span> <span class="token comment" spellcheck="true">/* isRenderWatcher */</span><span class="token punctuation">)</span>
+  <span class="token comment" spellcheck="true">// ...</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>那么在实例化 <code>Watcher</code> 的过程中，在它的构造函数里会判断 <code>isRenderWatcher</code>，接着把当前 <code>watcher</code> 的实例赋值给 <code>vm._watcher</code>，定义在 <code>src/core/observer/watcher.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">class</span> <span class="token class-name">Watcher</span> <span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// ...</span>
+  constructor <span class="token punctuation">(</span>
+    vm<span class="token punctuation">:</span> Component<span class="token punctuation">,</span>
+    expOrFn<span class="token punctuation">:</span> string <span class="token operator">|</span> Function<span class="token punctuation">,</span>
+    cb<span class="token punctuation">:</span> Function<span class="token punctuation">,</span>
+    options<span class="token operator">?</span><span class="token punctuation">:</span> <span class="token operator">?</span>Object<span class="token punctuation">,</span>
+    isRenderWatcher<span class="token operator">?</span><span class="token punctuation">:</span> boolean
+  <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>vm <span class="token operator">=</span> vm
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>isRenderWatcher<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      vm<span class="token punctuation">.</span>_watcher <span class="token operator">=</span> <span class="token keyword">this</span>
+    <span class="token punctuation">}</span>
+    vm<span class="token punctuation">.</span>_watchers<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true">// ...</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>同时，还把当前 <code>wathcer</code> 实例 push 到 <code>vm._watchers</code> 中，<code>vm._watcher</code> 是专门用来监听 <code>vm</code> 上数据变化然后重新渲染的，所以它是一个渲染相关的 <code>watcher</code>，因此在 <code>callUpdatedHooks</code> 函数中，只有 <code>vm._watcher</code> 的回调执行完毕后，才会执行 <code>updated</code> 钩子函数。</p>
+<h2 id="beforeDestroy-amp-destroyed"><a href="#beforeDestroy-amp-destroyed" class="headerlink" title="beforeDestroy &amp; destroyed"></a>beforeDestroy &amp; destroyed</h2><p>顾名思义，<code>beforeDestroy</code> 和 <code>destroyed</code> 钩子函数的执行时机在组件销毁的阶段，组件的销毁过程之后会详细介绍，最终会调用 <code>$destroy</code> 方法，它的定义在 <code>src/core/instance/lifecycle.js</code> 中：</p>
+<pre class="line-numbers language-js"><code class="language-js">Vue<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$destroy <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> vm<span class="token punctuation">:</span> Component <span class="token operator">=</span> <span class="token keyword">this</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>vm<span class="token punctuation">.</span>_isBeingDestroyed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">callHook</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> <span class="token string">'beforeDestroy'</span><span class="token punctuation">)</span>
+    vm<span class="token punctuation">.</span>_isBeingDestroyed <span class="token operator">=</span> <span class="token boolean">true</span>
+    <span class="token comment" spellcheck="true">// remove self from parent</span>
+    <span class="token keyword">const</span> parent <span class="token operator">=</span> vm<span class="token punctuation">.</span>$parent
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>parent <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>parent<span class="token punctuation">.</span>_isBeingDestroyed <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>vm<span class="token punctuation">.</span>$options<span class="token punctuation">.</span>abstract<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">remove</span><span class="token punctuation">(</span>parent<span class="token punctuation">.</span>$children<span class="token punctuation">,</span> vm<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// teardown watchers</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>vm<span class="token punctuation">.</span>_watcher<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      vm<span class="token punctuation">.</span>_watcher<span class="token punctuation">.</span><span class="token function">teardown</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">let</span> i <span class="token operator">=</span> vm<span class="token punctuation">.</span>_watchers<span class="token punctuation">.</span>length
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>i<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      vm<span class="token punctuation">.</span>_watchers<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">teardown</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// remove reference from data ob</span>
+    <span class="token comment" spellcheck="true">// frozen object may not have observer.</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>vm<span class="token punctuation">.</span>_data<span class="token punctuation">.</span>__ob__<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      vm<span class="token punctuation">.</span>_data<span class="token punctuation">.</span>__ob__<span class="token punctuation">.</span>vmCount<span class="token operator">--</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// call the last hook...</span>
+    vm<span class="token punctuation">.</span>_isDestroyed <span class="token operator">=</span> <span class="token boolean">true</span>
+    <span class="token comment" spellcheck="true">// invoke destroy hooks on current rendered tree</span>
+    vm<span class="token punctuation">.</span><span class="token function">__patch__</span><span class="token punctuation">(</span>vm<span class="token punctuation">.</span>_vnode<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true">// fire destroyed hook</span>
+    <span class="token function">callHook</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> <span class="token string">'destroyed'</span><span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true">// turn off all instance listeners.</span>
+    vm<span class="token punctuation">.</span><span class="token function">$off</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true">// remove __vue__ reference</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>vm<span class="token punctuation">.</span>$el<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      vm<span class="token punctuation">.</span>$el<span class="token punctuation">.</span>__vue__ <span class="token operator">=</span> <span class="token keyword">null</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// release circular reference (#6759)</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>vm<span class="token punctuation">.</span>$vnode<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      vm<span class="token punctuation">.</span>$vnode<span class="token punctuation">.</span>parent <span class="token operator">=</span> <span class="token keyword">null</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>beforeDestroy</code> 钩子函数的执行时机是在 <code>$destroy</code> 函数执行最开始的地方，接着执行了一系列的销毁动作，包括从 <code>parent</code> 的 <code>$children</code> 中删掉自身，删除 <code>watcher</code>，当前渲染的 VNode 执行销毁钩子函数等，执行完毕后再调用 <code>destroy</code> 钩子函数。</p>
+<p>在 <code>$destroy</code> 的执行过程中，它又会执行 <code>vm.__patch__(vm._vnode, null)</code> 触发它子组件的销毁钩子函数，这样一层层的递归调用，所以 <code>destroy</code> 钩子函数执行顺序是先子后父，和 <code>mounted</code> 过程一样。</p>
+<h2 id="activated-amp-deactivated"><a href="#activated-amp-deactivated" class="headerlink" title="activated &amp; deactivated"></a>activated &amp; deactivated</h2><p><code>activated</code> 和 <code>deactivated</code> 钩子函数是专门为 <code>keep-alive</code> 组件定制的钩子，我们会在介绍 <code>keep-alive</code> 组件的时候详细介绍，这里先留个悬念。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一节主要介绍了 Vue 生命周期中各个钩子函数的执行时机以及顺序，通过分析，我们知道了如在 <code>created</code> 钩子函数中可以访问到数据，在 <code>mounted</code> 钩子函数中可以访问到 DOM，在 <code>destroy</code> 钩子函数中可以做一些定时器销毁工作，了解它们有利于我们在合适的生命周期去做不同的事情。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/02/15/005.vue源码学习/003.组件化/005.生命周期/" target="_blank" rel="external">http://www.chenya.site/2018/02/15/005.vue源码学习/003.组件化/005.生命周期/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue源码学习/">Vue源码学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端资源/">前端资源</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/日常学习/">日常学习</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2018/02/15/005.vue源码学习/003.组件化/005.生命周期/&title=《Vue源码学习 - 生命周期》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2018/02/15/005.vue源码学习/003.组件化/005.生命周期/&title=《Vue源码学习 - 生命周期》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2018/02/15/005.vue源码学习/003.组件化/005.生命周期/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Vue源码学习 - 生命周期》 — 陈亚的个人主页&url=http://www.chenya.site/2018/02/15/005.vue源码学习/003.组件化/005.生命周期/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2018/02/15/005.vue源码学习/003.组件化/005.生命周期/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/02/18/005.vue源码学习/003.组件化/006.组件注册/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Vue源码学习 - 组件注册</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/02/14/005.vue源码学习/003.组件化/004.合并配置/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Vue源码学习 - 合并配置</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2018/02/15/005.vue源码学习/003.组件化/005.生命周期/&title=《Vue源码学习 - 生命周期》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2018/02/15/005.vue源码学习/003.组件化/005.生命周期/&title=《Vue源码学习 - 生命周期》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2018/02/15/005.vue源码学习/003.组件化/005.生命周期/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Vue源码学习 - 生命周期》 — 陈亚的个人主页&url=http://www.chenya.site/2018/02/15/005.vue源码学习/003.组件化/005.生命周期/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2018/02/15/005.vue源码学习/003.组件化/005.生命周期/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADJUlEQVR42u3aQW7jQAwEwPz/097rAlnL3ZxZwBqVToHjWKoJEIZN/vzE1+vX9ffrv9/z7rvt1++ud3fcfGFjY2PfhL1yg3e3XHnn9RNev55YsLGxsU9lXz/Qu69XqkZyx2tS/mzY2NjY2G3xSApkXupmTQ42NjY2dvtxSbFZD7DyGAsbGxv7aey8zOSM64eYxf15+LUtS8PGxsb+enYL+Oav/8t8GxsbG/uL2a/yakOitngkw4P1CxsbG/sk9q6lmbwVmR3QLEj68PzY2NjYB7Hz0Gc96GmHCrNyOAySsLGxsW/I3pVC5cs97TrOroOrKzY2Njb2Tdiz5qFYiynLTBInrTc82NjY2Cexk1LRnt+sjWm/u7RUhI2NjX0oexb05HFPPjaeDRKKIoeNjY19HDsP9GcLOsnProdZxevY2NjYD2Pn1JV3zhqh2eAZGxsb+yR2HtzncXz7mSvDhjbqwsbGxj6PPYvv8yKUtzSzwW1yEP94PzY2NvZB7Dbib8OgnPcKrnZsEMVY2NjY2Ddnz0pRXpDan50dfTvkwMbGxj6J3f673w4GkkeZMdoGqc6lsLGxsW/Cbm8/e+jZAlAe+tfzEGxsbOyD2OulKwmS8kB/FvrPXsHGxsY+g92Wh9nf//Ump136wcbGxn4Ou73l+krN/ytyCRgbGxv7PHbCWxnT5geXHOKslEbbSdjY2Ni3Zc8eaBe+HdC2Q4UPn4mNjY19BHtlOWbWoqwcR340H4zY2NjYB7HXhwGzI8tHs7PWJVFgY2Njn8dOGo/2P/m2bVhZG8oHw9jY2NjnsVcKwGxdpm082lIXHTo2Njb2oez2IGbNzEpK364WYWNjYz+N3ZaNvJAkxzp7kra5wsbGxj6J/SqvvFwNo/lyVWhYCLGxsbEPYu+6cd0GbBowz4bQ2NjY2Oex2wHtyspOXt7WQ6gPZRgbGxv7OHZePHJwG+K3A4ZtWRo2Njb2w9hticqLU9Ki7PolYWNjYz+Zncc6s8LTLuIkn4ONjY39BHbSPFzfLF+XzItZG2wVvwBsbGzsg9iz+H5vlN8WszaKGi7uYGNjY387+w80UM5KRKuRDAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

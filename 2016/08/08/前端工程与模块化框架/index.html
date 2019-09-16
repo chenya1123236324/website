@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>前端工程与模块化框架 | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="前端工程,模块化,模块化框架">
+    <meta name="description" content="前端工程与模块化框架一直酝酿着写一篇关于模块化框架的文章，因为模块化框架是前端工程中的 最为核心的部分 。本来又想长篇大论的写一篇完整且严肃的paper，但看了 @糖饼 在 div.io 的一篇文章 《再谈 SeaJS 与 RequireJS 的差异》觉得可以借着这篇继续谈一下，加上最近spm3发布，在seajs的官网上又引来了一场 口水战 ，我并不想参与到这场论战中，各有所爱的事情不好评论什么，">
+<meta name="keywords" content="前端工程,模块化,模块化框架">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端工程与模块化框架">
+<meta property="og:url" content="http://www.chenya.site/2016/08/08/前端工程与模块化框架/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="前端工程与模块化框架一直酝酿着写一篇关于模块化框架的文章，因为模块化框架是前端工程中的 最为核心的部分 。本来又想长篇大论的写一篇完整且严肃的paper，但看了 @糖饼 在 div.io 的一篇文章 《再谈 SeaJS 与 RequireJS 的差异》觉得可以借着这篇继续谈一下，加上最近spm3发布，在seajs的官网上又引来了一场 口水战 ，我并不想参与到这场论战中，各有所爱的事情不好评论什么，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.508Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端工程与模块化框架">
+<meta name="twitter:description" content="前端工程与模块化框架一直酝酿着写一篇关于模块化框架的文章，因为模块化框架是前端工程中的 最为核心的部分 。本来又想长篇大论的写一篇完整且严肃的paper，但看了 @糖饼 在 div.io 的一篇文章 《再谈 SeaJS 与 RequireJS 的差异》觉得可以借着这篇继续谈一下，加上最近spm3发布，在seajs的官网上又引来了一场 口水战 ，我并不想参与到这场论战中，各有所爱的事情不好评论什么，">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">前端工程与模块化框架</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">前端工程与模块化框架</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2016-08-08T12:46:25.000Z" itemprop="datePublished" class="page-time">
+  2016-08-08
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/随笔/">随笔</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#前端工程与模块化框架"><span class="post-toc-number">1.</span> <span class="post-toc-text">前端工程与模块化框架</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#解决模块化管理的新思路"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">解决模块化管理的新思路</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#具体实现过程"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">具体实现过程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#先来看一下这种方案的优点"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">先来看一下这种方案的优点</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#再来讨论一下这种方案的缺点："><span class="post-toc-number">1.4.</span> <span class="post-toc-text">再来讨论一下这种方案的缺点：</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-前端工程与模块化框架"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">前端工程与模块化框架</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2016-08-08 20:46:25" datetime="2016-08-08T12:46:25.000Z"  itemprop="datePublished">2016-08-08</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/随笔/">随笔</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="前端工程与模块化框架"><a href="#前端工程与模块化框架" class="headerlink" title="前端工程与模块化框架"></a>前端工程与模块化框架</h1><p>一直酝酿着写一篇关于模块化框架的文章，因为模块化框架是前端工程中的 <code>最为核心的部分</code> 。本来又想长篇大论的写一篇完整且严肃的paper，但看了 <a href="https://github.com/aui" target="_blank" rel="noopener">@糖饼</a> 在 <a href="http://div.io/" target="_blank" rel="noopener">div.io</a> 的一篇文章 《<a href="http://div.io/topic/430" target="_blank" rel="noopener">再谈 SeaJS 与 RequireJS 的差异</a>》觉得可以借着这篇继续谈一下，加上最近spm3发布，在seajs的官网上又引来了一场 <a href="https://github.com/seajs/seajs/issues/454" target="_blank" rel="noopener">口水战</a> ，我并不想参与到这场论战中，各有所爱的事情不好评论什么，但我想从工程的角度来阐述一下已知的模块化框架相关的问题，并给出一些新的思路，<del>其实也不新啦，都实践了2多年了</del>。</p>
+<blockquote>
+<p>前端模块化框架肩负着 <code>模块管理</code>、<code>资源加载</code> 两项重要的功能，这两项功能与工具、性能、业务、部署等工程环节都有着非常紧密的联系。因此，模块化框架的设计应该最高优先级考虑工程需要。</p>
+</blockquote>
+<p>基于 <a href="https://github.com/aui" target="_blank" rel="noopener">@糖饼</a> 的文章 《<a href="http://div.io/topic/430" target="_blank" rel="noopener">再谈 SeaJS 与 RequireJS 的差异</a>》，我这里还要补充一些模块化框架在工程方面的缺点：</p>
+<ol>
+<li>requirejs和seajs二者在加载上都有缺陷，就是模块的依赖要等到模块加载完成后，通过静态分析（seajs）或者deps参数（requirejs）来获取，这就为 <code>合并请求</code> 和 <code>按需加载</code> 带来了实现上的矛盾：<ul>
+<li>要么放弃按需加载，把所有js合成一个文件，从而满足请求合并（两个框架的官方demo都有这样的例子）；</li>
+<li>要么放弃请求合并，请求独立的模块文件，从而满足按需加载。</li>
+</ul>
+</li>
+<li><p>AMD规范在执行callback的时候，要初始化所有依赖的模块，而CMD只有执行到require的时候才初始化模块。所以用AMD实现某种if-else逻辑分支加载不同的模块的时候，就会比较麻烦了。考虑这种情况：</p>
+<pre class="line-numbers language-javascript"><code class="language-javascript"> <span class="token comment" spellcheck="true">//AMD for SPA</span>
+ <span class="token function">require</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'page/index'</span><span class="token punctuation">,</span> <span class="token string">'page/detail'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>index<span class="token punctuation">,</span> detail<span class="token punctuation">)</span><span class="token punctuation">{</span>
+     <span class="token comment" spellcheck="true">//在执行回调之前，index和detail模块的factory均执行过了</span>
+     <span class="token keyword">switch</span><span class="token punctuation">(</span>location<span class="token punctuation">.</span>hash<span class="token punctuation">)</span><span class="token punctuation">{</span>
+         <span class="token keyword">case</span> <span class="token string">'#index'</span><span class="token punctuation">:</span>
+             <span class="token function">index</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token keyword">break</span><span class="token punctuation">;</span>
+         <span class="token keyword">case</span> <span class="token string">'#detail'</span><span class="token punctuation">:</span>
+             <span class="token function">detail</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token keyword">break</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span>
+ <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p> 在执行回调之前，已经同时执行了index和detail模块的factory，而CMD只有执行到require才会调用对应模块的factory。这种差别带来的不仅仅是性能上的差异，也可能为开发增加一点小麻烦，比如不方便实现换肤功能，factory注意不要直接操作dom等。当然，我们可以多层嵌套require来解决这个问题，但又会引起模块请求串行的问题。</p>
+</li>
+</ol>
+<hr>
+<blockquote>
+<p>结论：以纯前端方式实现模块化框架 <strong>不能</strong> 同时满足 <code>按需加载</code>，<code>请求合并</code> 和 <code>依赖管理</code> 三个需求。</p>
+</blockquote>
+<p>导致这个问题的根本原因是 <code>纯前端方式只能在运行时分析依赖关系</code>。</p>
+<h2 id="解决模块化管理的新思路"><a href="#解决模块化管理的新思路" class="headerlink" title="解决模块化管理的新思路"></a>解决模块化管理的新思路</h2><p>由于根本问题出在 <code>运行时分析依赖</code>，因此新思路的策略很简单：不在运行时分析依赖。这就要借助 <code>构建工具</code> 做线下分析了，其基本原理就是：</p>
+<blockquote>
+<p>利用构建工具在线下进行 <code>模块依赖分析</code>，然后把依赖关系数据写入到构建结果中，并调用模块化框架的 <code>依赖关系声明接口</code> ，实现模块管理、请求合并以及按需加载等功能。</p>
+</blockquote>
+<p>举个例子，假设我们有一个这样的工程：</p>
+<pre><code>project
+  ├ lib
+  │  └ xmd.js    #模块化框架
+  ├ mods         #模块目录
+  │  ├ a.js
+  │  ├ b.js
+  │  ├ c.js
+  │  ├ d.js
+  │  └ e.js
+  └ index.html   #入口页面
+</code></pre><p>工程中，<code>index.html</code> 的源码内容为：</p>
+<pre class="line-numbers language-html"><code class="language-html"><span class="token doctype">&lt;!doctype html></span>
+...
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>lib/xmd.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>   <span class="token comment" spellcheck="true">&lt;!-- 模块化框架 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+    <span class="token comment" spellcheck="true">//等待构建工具生成数据替换 `__FRAMEWORK_CONFIG__' 变量</span>
+    require<span class="token punctuation">.</span><span class="token function">config</span><span class="token punctuation">(</span>__FRAMEWORK_CONFIG__<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+    <span class="token comment" spellcheck="true">//用户代码，异步加载模块</span>
+    require<span class="token punctuation">.</span><span class="token keyword">async</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token string">'e'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//do something with a and e.</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+...
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>工程中，<code>mods/a.js</code> 的源码内容为（采用类似CMD的书写规范）：</p>
+<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token function">define</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>require<span class="token punctuation">,</span> exports<span class="token punctuation">,</span> module<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'a.init'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> b <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'b'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> c <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'c'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    exports<span class="token punctuation">.</span>run <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//do something with b and c.</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'a.run'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="具体实现过程"><a href="#具体实现过程" class="headerlink" title="具体实现过程"></a>具体实现过程</h2><ol>
+<li><p>用工具在下线对工程文件进行扫描，得到依赖关系表：</p>
+<pre class="line-numbers language-json"><code class="language-json"> <span class="token punctuation">{</span>
+     <span class="token property">"a"</span> <span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token string">"b"</span><span class="token punctuation">,</span> <span class="token string">"c"</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+     <span class="token property">"b"</span> <span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token string">"d"</span> <span class="token punctuation">]</span>
+ <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>工具把依赖表构建到页面或者脚本中，并调用模块化框架的配置接口，<code>index.html</code>的构建结果为：</p>
+<pre class="line-numbers language-html"><code class="language-html"> <span class="token doctype">&lt;!doctype html></span>
+ ...
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>lib/xmd.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>   <span class="token comment" spellcheck="true">&lt;!-- 模块化框架 --></span>
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+     <span class="token comment" spellcheck="true">//构建工具生成的依赖数据</span>
+     require<span class="token punctuation">.</span><span class="token function">config</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+         <span class="token string">"deps"</span> <span class="token punctuation">:</span> <span class="token punctuation">{</span>
+             <span class="token string">"a"</span> <span class="token punctuation">:</span> <span class="token punctuation">[</span> <span class="token string">"b"</span><span class="token punctuation">,</span> <span class="token string">"c"</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+             <span class="token string">"b"</span> <span class="token punctuation">:</span> <span class="token punctuation">[</span> <span class="token string">"d"</span> <span class="token punctuation">]</span>
+         <span class="token punctuation">}</span>
+     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+     <span class="token comment" spellcheck="true">//用户代码，异步加载模块</span>
+     require<span class="token punctuation">.</span><span class="token keyword">async</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token string">'e'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">{</span>
+         <span class="token comment" spellcheck="true">//do something with a and e.</span>
+     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>模块化框架根据依赖表加载资源，比如上述例子，入口需要加载a、e两个模块，查表得知完整依赖关系，配合combo服务，可以发起一个合并后的请求：</p>
+<p> <a href="http://www.example.com/??d.js,b.js,c.js,a.js,e.js" target="_blank" rel="noopener">http://www.example.com/??d.js,b.js,c.js,a.js,e.js</a></p>
+</li>
+</ol>
+<h2 id="先来看一下这种方案的优点"><a href="#先来看一下这种方案的优点" class="headerlink" title="先来看一下这种方案的优点"></a>先来看一下这种方案的优点</h2><ol>
+<li>采用类似CMD的书写规范（同步require函数声明依赖），可以在执行到require语句的时候才调用模块的factory。</li>
+<li>虽然采用CMD书写规范，但放弃了运行时分析依赖，改成工具输出依赖表，因此 <code>依赖分析完成后可以压缩掉require关键字</code></li>
+<li>框架并没有严格依赖工具，它只是约定了一种数据结构。不使用工具，人工维护 <code>require.config({...})</code> 相关的数据也是可以的。对于小项目，文件全部合并的情况，更加不需要deps表了，只要在入口的require.async调用之前加载所有模块化的文件，依赖关系无需额外维护</li>
+<li>构建工具设计非常简单，而且可靠。工作就是扫描模块文件目录，得到依赖表，JSON序列化之后插入到构建代码中</li>
+<li>由于框架预先知道所有模块的依赖关系，因此可以借助combo服务实现<code>请求合并</code>，而不用等到一级模块加载完成才能知道后续的依赖关系。</li>
+<li>如果构建工具可以自动包装define函数，那么整个系统开发起来会感觉跟nodejs非常接近，比较舒服。</li>
+</ol>
+<h2 id="再来讨论一下这种方案的缺点："><a href="#再来讨论一下这种方案的缺点：" class="headerlink" title="再来讨论一下这种方案的缺点："></a>再来讨论一下这种方案的缺点：</h2><p>由于采用require函数作为依赖标记，因此如果需要变量方式require，需要额外声明，这个时候可以实现兼容AMD规范写法，比如</p>
+<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token function">define</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">'b'</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>require<span class="token punctuation">,</span> exports<span class="token punctuation">,</span> module<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'a.init'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> name <span class="token operator">=</span> isIE <span class="token operator">?</span> <span class="token string">'b'</span> <span class="token punctuation">:</span> <span class="token string">'c'</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> mod <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    exports<span class="token punctuation">.</span>run <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//do something with mod.</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'a.run'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>只要工具把define函数中的 <code>deps</code> 参数，或者factory内的require都作为依赖声明标记来识别，这样工程性就比较完备了。</p>
+<p>但不管怎样， <code>线下分析始终依靠了字面量信息</code>，所以开发上可能会有一定的局限性，但总的来说瑕不掩瑜。</p>
+<blockquote>
+<p>希望本文能为前端模块化框架的作者带来一些新的思路。没有必要争论规范，工程问题才是最根本的问题。</p>
+</blockquote>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2016/08/08/前端工程与模块化框架/" target="_blank" rel="external">http://www.chenya.site/2016/08/08/前端工程与模块化框架/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端工程/">前端工程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/模块化/">模块化</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/模块化框架/">模块化框架</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2016/08/08/前端工程与模块化框架/&title=《前端工程与模块化框架》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2016/08/08/前端工程与模块化框架/&title=《前端工程与模块化框架》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2016/08/08/前端工程与模块化框架/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《前端工程与模块化框架》 — 陈亚的个人主页&url=http://www.chenya.site/2016/08/08/前端工程与模块化框架/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2016/08/08/前端工程与模块化框架/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2016/08/30/002.前端知识体系/003.高级篇/002.高级篇之浏览器进阶知识/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">高级篇-02.浏览器进阶知识</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2016/08/05/002.前端知识体系/003.高级篇/001.高级篇之JavaScript进阶知识/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">高级篇-01.JavaScript进阶知识</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2016/08/08/前端工程与模块化框架/&title=《前端工程与模块化框架》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2016/08/08/前端工程与模块化框架/&title=《前端工程与模块化框架》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2016/08/08/前端工程与模块化框架/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《前端工程与模块化框架》 — 陈亚的个人主页&url=http://www.chenya.site/2016/08/08/前端工程与模块化框架/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2016/08/08/前端工程与模块化框架/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACuUlEQVR42u3aQZLCIBAFUO9/aadqthrym6ZHp+plZWkkPBZAfvN4xNfz97r65vXz6/2v/123kPTh2IWHh4e31fWrK+lQglx/sx6U/L9vWsDDw8Mb460n4gSfdCufw6+eW1488PDw8D7Kq26119/02Xh4eHj/i1fd/vbzEjw8PLxv4+Wb5nyazknVoGEka8HDw8OLeZ1J+VOfB+t7eHh4eI2qerU0tXf/Xokr6i0eHh7eAK9TZOozzq5vhTcGPDw8vAbv7KGBfNJPWs6ffhkx4+Hh4Q3zknJXHuYWClTt6Payn3h4eHgDvLy4tT46kEcD1WGq3vPmVzw8PLwBXvVwwLrpZDHIDyUk4OjQAB4eHt5R3nRYUD1yupdGRwUwPDw8vDYviQbyznUi3XwDXRgUPDw8vAFeNVbIp+Z+a52jWnh4eHhzvKiAdOiRe89qLRJ4eHh4Y/vPiQm9+mt+kKsc++Lh4eGN8Trv9fn9N4nyxGEsPDw8vD/h9ctU+cGC/OBCXtPDw8PDm+Ott7zVx5/KlfcWgzft4+Hh4Q3w8u3v2Uk/P75QHTI8PDy8aV6VkXSlXxjb68PNuwIeHh7eUV4nis03wdVF5cBRAzw8PLwxXnXqr3YxXzY6/2rV6/Dw8PC2qld5o3vDsTdAp3qLh4eHd4r3DK6k0TzayIthSQGs8MaAh4eHN8w7FeDuhbl7UW9hYcDDw8Nr8PICfzUyqLZZ2PvHxxTw8PDwJnjP4nWqiJUHFq0IGA8PD2+A11lP8tJXp8yWLzN7cTAeHh7eHq8fIlQn9Lmt9k1lDw8PD+8orxpP5IFvMmTJMJXzFTw8PLwv4CWb41NFtWrR68DCgIeHhzfGyyPUfLrPg+N8cPHw8PCmeXkYUZ3uq9vi6uGDmzvx8PDwBnidAli10JUvLfm2e/O4AB4eHt4O7wdrbFS5eetUfQAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

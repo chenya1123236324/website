@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>基础篇-10.综合问题 | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="前端知识体系,基础篇,综合问题">
+    <meta name="description" content="十、综合1 谈谈你对重构的理解 网站重构：在不改变外部行为的前提下，简化结构、添加可读性，而在网站前端保持一致的行为。也就是说是在不改变UI的情况下，对网站进行优化， 在扩展的同时保持一致的UI 对于传统的网站来说重构通常是： 表格(table)布局改为DIV+CSS 使网站前端兼容于现代浏览器(针对于不合规范的CSS、如对IE6有效的) 对于移动平台的优化 针对于SEO进行优化    2 什么样">
+<meta name="keywords" content="前端知识体系,基础篇,综合问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基础篇-10.综合问题">
+<meta property="og:url" content="http://www.chenya.site/2016/06/25/002.前端知识体系/001.基础篇/010.基础篇之综合问题/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="十、综合1 谈谈你对重构的理解 网站重构：在不改变外部行为的前提下，简化结构、添加可读性，而在网站前端保持一致的行为。也就是说是在不改变UI的情况下，对网站进行优化， 在扩展的同时保持一致的UI 对于传统的网站来说重构通常是： 表格(table)布局改为DIV+CSS 使网站前端兼容于现代浏览器(针对于不合规范的CSS、如对IE6有效的) 对于移动平台的优化 针对于SEO进行优化    2 什么样">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.488Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基础篇-10.综合问题">
+<meta name="twitter:description" content="十、综合1 谈谈你对重构的理解 网站重构：在不改变外部行为的前提下，简化结构、添加可读性，而在网站前端保持一致的行为。也就是说是在不改变UI的情况下，对网站进行优化， 在扩展的同时保持一致的UI 对于传统的网站来说重构通常是： 表格(table)布局改为DIV+CSS 使网站前端兼容于现代浏览器(针对于不合规范的CSS、如对IE6有效的) 对于移动平台的优化 针对于SEO进行优化    2 什么样">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">基础篇-10.综合问题</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">基础篇-10.综合问题</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2016-06-25T13:55:19.000Z" itemprop="datePublished" class="page-time">
+  2016-06-25
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#十、综合"><span class="post-toc-number">1.</span> <span class="post-toc-text">十、综合</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-谈谈你对重构的理解"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">1 谈谈你对重构的理解</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-什么样的前端代码是好的"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">2 什么样的前端代码是好的</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-对前端工程师这个职位是怎么样理解的？它的前景会怎么样"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">3 对前端工程师这个职位是怎么样理解的？它的前景会怎么样</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-你觉得前端工程的价值体现在哪"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">4 你觉得前端工程的价值体现在哪</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5-平时如何管理你的项目"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">5 平时如何管理你的项目</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#6-组件封装"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">6 组件封装</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#十一、一些常见问题"><span class="post-toc-number">2.</span> <span class="post-toc-text">十一、一些常见问题</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-002.前端知识体系/001.基础篇/010.基础篇之综合问题"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">基础篇-10.综合问题</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2016-06-25 21:55:19" datetime="2016-06-25T13:55:19.000Z"  itemprop="datePublished">2016-06-25</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="十、综合"><a href="#十、综合" class="headerlink" title="十、综合"></a>十、综合</h2><h3 id="1-谈谈你对重构的理解"><a href="#1-谈谈你对重构的理解" class="headerlink" title="1 谈谈你对重构的理解"></a>1 谈谈你对重构的理解</h3><ul>
+<li>网站重构：在不改变外部行为的前提下，简化结构、添加可读性，而在网站前端保持一致的行为。也就是说是在不改变UI的情况下，对网站进行优化， 在扩展的同时保持一致的UI</li>
+<li>对于传统的网站来说重构通常是：<ul>
+<li>表格(<code>table</code>)布局改为<code>DIV+CSS</code></li>
+<li>使网站前端兼容于现代浏览器(针对于不合规范的<code>CSS</code>、如对IE6有效的)</li>
+<li>对于移动平台的优化</li>
+<li>针对于<code>SEO</code>进行优化</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-什么样的前端代码是好的"><a href="#2-什么样的前端代码是好的" class="headerlink" title="2 什么样的前端代码是好的"></a>2 什么样的前端代码是好的</h3><ul>
+<li>高复用低耦合，这样文件小，好维护，而且好扩展。</li>
+</ul>
+<h3 id="3-对前端工程师这个职位是怎么样理解的？它的前景会怎么样"><a href="#3-对前端工程师这个职位是怎么样理解的？它的前景会怎么样" class="headerlink" title="3 对前端工程师这个职位是怎么样理解的？它的前景会怎么样"></a>3 对前端工程师这个职位是怎么样理解的？它的前景会怎么样</h3><ul>
+<li>前端是最贴近用户的程序员，比后端、数据库、产品经理、运营、安全都近<ul>
+<li>实现界面交互</li>
+<li>提升用户体验</li>
+<li>有了Node.js，前端可以实现服务端的一些事情</li>
+</ul>
+</li>
+<li>前端是最贴近用户的程序员，前端的能力就是能让产品从 90分进化到 100 分，甚至更好，</li>
+<li>与团队成员，<code>UI</code>设计，产品经理的沟通；</li>
+<li>做好的页面结构，页面重构和用户体验；</li>
+</ul>
+<h3 id="4-你觉得前端工程的价值体现在哪"><a href="#4-你觉得前端工程的价值体现在哪" class="headerlink" title="4 你觉得前端工程的价值体现在哪"></a>4 你觉得前端工程的价值体现在哪</h3><ul>
+<li>为简化用户使用提供技术支持（交互部分）</li>
+<li>为多个浏览器兼容性提供支持</li>
+<li>为提高用户浏览速度（浏览器性能）提供支持</li>
+<li>为跨平台或者其他基于webkit或其他渲染引擎的应用提供支持</li>
+<li>为展示数据提供支持（数据接口）</li>
+</ul>
+<h3 id="5-平时如何管理你的项目"><a href="#5-平时如何管理你的项目" class="headerlink" title="5 平时如何管理你的项目"></a>5 平时如何管理你的项目</h3><ul>
+<li>先期团队必须确定好全局样式（<code>globe.css</code>），编码模式(<code>utf-8</code>) 等；</li>
+<li>编写习惯必须一致（例如都是采用继承式的写法，单样式都写成一行）；</li>
+<li>标注样式编写人，各模块都及时标注（标注关键样式调用的地方）；</li>
+<li>页面进行标注（例如 页面 模块 开始和结束）；</li>
+<li><code>CSS</code>跟<code>HTML</code> 分文件夹并行存放，命名都得统一（例如<code>style.css</code>）；</li>
+<li><code>JS</code> 分文件夹存放 命名以该<code>JS</code>功能为准的英文翻译。</li>
+<li>图片采用整合的 <code>images.png png8</code> 格式文件使用 - 尽量整合在一起使用方便将来的管理</li>
+</ul>
+<h3 id="6-组件封装"><a href="#6-组件封装" class="headerlink" title="6 组件封装"></a>6 组件封装</h3><blockquote>
+<p>目的：为了重用，提高开发效率和代码质量 注意：低耦合，单一职责，可复用性，可维护性 常用操作</p>
+</blockquote>
+<ul>
+<li>分析布局</li>
+<li>初步开发</li>
+<li>化繁为简</li>
+<li>组件抽象</li>
+</ul>
+<h2 id="十一、一些常见问题"><a href="#十一、一些常见问题" class="headerlink" title="十一、一些常见问题"></a>十一、一些常见问题</h2><ul>
+<li>自我介绍</li>
+<li>面试完你还有什么问题要问的吗</li>
+<li>你有什么爱好?</li>
+<li>你最大的优点和缺点是什么?</li>
+<li>你为什么会选择这个行业，职位?</li>
+<li>你觉得你适合从事这个岗位吗?</li>
+<li>你有什么职业规划?</li>
+<li>你对工资有什么要求?</li>
+<li>如何看待前端开发？</li>
+<li>未来三到五年的规划是怎样的？</li>
+<li>你的项目中技术难点是什么？遇到了什么问题？你是怎么解决的？</li>
+<li>你们部门的开发流程是怎样的</li>
+<li>你认为哪个项目做得最好？</li>
+<li>说下工作中你做过的一些性能优化处理</li>
+<li>最近在看哪些前端方面的书？</li>
+<li>平时是如何学习前端开发的？</li>
+<li>你最有成就感的一件事</li>
+<li>你为什么要离开前一家公司？</li>
+<li>你对加班的看法</li>
+<li>你希望通过这份工作获得什么？<ul>
+<li>我想通过这份工作好好的锻炼自己，提升自己的能力，同时为公司贡献自己的一份力量</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2016/06/25/002.前端知识体系/001.基础篇/010.基础篇之综合问题/" target="_blank" rel="external">http://www.chenya.site/2016/06/25/002.前端知识体系/001.基础篇/010.基础篇之综合问题/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端知识体系/">前端知识体系</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/基础篇/">基础篇</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/综合问题/">综合问题</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2016/06/25/002.前端知识体系/001.基础篇/010.基础篇之综合问题/&title=《基础篇-10.综合问题》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2016/06/25/002.前端知识体系/001.基础篇/010.基础篇之综合问题/&title=《基础篇-10.综合问题》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2016/06/25/002.前端知识体系/001.基础篇/010.基础篇之综合问题/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《基础篇-10.综合问题》 — 陈亚的个人主页&url=http://www.chenya.site/2016/06/25/002.前端知识体系/001.基础篇/010.基础篇之综合问题/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2016/06/25/002.前端知识体系/001.基础篇/010.基础篇之综合问题/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2016/07/02/002.前端知识体系/002.进阶篇/001.进阶篇之JavaScript进阶知识/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">进阶篇-01.JavaScript进阶知识</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2016/06/23/002.前端知识体系/001.基础篇/009.基础篇之其他问题/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">基础篇-09.其他综合问题</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2016/06/25/002.前端知识体系/001.基础篇/010.基础篇之综合问题/&title=《基础篇-10.综合问题》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2016/06/25/002.前端知识体系/001.基础篇/010.基础篇之综合问题/&title=《基础篇-10.综合问题》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2016/06/25/002.前端知识体系/001.基础篇/010.基础篇之综合问题/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《基础篇-10.综合问题》 — 陈亚的个人主页&url=http://www.chenya.site/2016/06/25/002.前端知识体系/001.基础篇/010.基础篇之综合问题/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2016/06/25/002.前端知识体系/001.基础篇/010.基础篇之综合问题/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADMklEQVR42u3awa4aMRAEwPf/P02knCIhSPfMJmJN7QnB4nWZw+Bp//zE1+P39efr5+vVnc/fejVO+6zn+y++sLGxsW/Cfry92qHfTyt5Vj5mspQvx8fGxsY+jp0UrVelKBnnPS9f4mRZk29hY2Njfyf7fSGZMfJtyf5+bGxsbOx8KvkIyVIm92NjY2NjJ02lvFnfNvRnY/6nXho2Njb2x7NnQe9nvv7n+TY2Njb2h7Efi+uqIHYfCdczx8bGxj6I/b7F35a0JE7YHxWatbR+ki9gY2Nj35Y9C3fzB+fLuol18wYTNjY29qnstowlj5+tfV7G2o3NBdUbGxsb+8PYbVCaT2WzIUlKWn5P1E7CxsbGvi27rXLtoZk2rN00mIaHdbCxsbFvzm7bNHnByNtVsy1Q+xRsbGzsU9mzllDbYGpbV7MR6h8MGxsb+wh2u2HYLEHeSJrxsLGxsb+T3U60nXR7lCcJdGd3vsxGsLGxsW/O3gyXTytfgk1ZKo71YGNjYx/EnhWn2XaiDYln7a3VYR1sbGzsG7I3zZ2rlqw9ErTZomBjY2Ofx95vJ5IDPcnk2oVugwdsbGzsb2C/n/TsNNAM3MbGw3AaGxsb+wh2Pq22yCXtnjYMaBtSq6AXGxsb++bs4g99XLo24cGmxL48domNjY19BHs26Zw0a07NNjn5kSBsbGzss9l5+Jp8ug8JZuzih8TGxsa+OXtfBvKmfN6uSsLjTcnExsbGPo/dHnbJo9yrNh75O9EyYWNjYx/EnrWK8oKXB8b7ubXFDBsbG/tsdlvY2sZ9XibzpZxtcrCxsbHPY2/+9OebjXxR8o1Nu4jY2NjY57HzaHbWys/Dg6sCg+GFjY2NfVv2Jl5NytisgbVpMBXlChsbG/u27Ed5JbBZiLtv+hdbIGxsbOyD2JtHziLhvGTOjvK0n2JjY2Ofwd635mdNpTzWnRXUvyw9NjY29nHs/K//psjl71wVAGBjY2Nj5zHtrES1Lae8eVQcu8TGxsb+GnYSvrYLlGw/8pCgKMDY2NjYx7Hzxk2+AZhlFG2JSn4qbGxs7LPZm9ZMvm2YBbSbI0Sbnw0bGxv7JuxfN02/gxTlzksAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

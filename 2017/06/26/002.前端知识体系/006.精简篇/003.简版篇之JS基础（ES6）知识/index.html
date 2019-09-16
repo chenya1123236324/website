@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>简版篇-03.JS基础（ES6）知识 | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="前端知识体系,简版篇,JavaScript">
+    <meta name="description" content="三、JS 基础（ES6）3.1 let，const let 产生块级作用域（通常配合 for 循环或者 {} 进行使用产生块级作用域），const 申明的变量是常量（内存地址不变）  3.2 Promise 这里你谈 promise的时候，除了将他解决的痛点以及常用的 API 之外，最好进行拓展把 eventloop 带进来好好讲一下，microtask(微任务)、macrotask(任务) 的执">
+<meta name="keywords" content="前端知识体系,简版篇,JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简版篇-03.JS基础（ES6）知识">
+<meta property="og:url" content="http://www.chenya.site/2017/06/26/002.前端知识体系/006.精简篇/003.简版篇之JS基础（ES6）知识/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="三、JS 基础（ES6）3.1 let，const let 产生块级作用域（通常配合 for 循环或者 {} 进行使用产生块级作用域），const 申明的变量是常量（内存地址不变）  3.2 Promise 这里你谈 promise的时候，除了将他解决的痛点以及常用的 API 之外，最好进行拓展把 eventloop 带进来好好讲一下，microtask(微任务)、macrotask(任务) 的执">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.494Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="简版篇-03.JS基础（ES6）知识">
+<meta name="twitter:description" content="三、JS 基础（ES6）3.1 let，const let 产生块级作用域（通常配合 for 循环或者 {} 进行使用产生块级作用域），const 申明的变量是常量（内存地址不变）  3.2 Promise 这里你谈 promise的时候，除了将他解决的痛点以及常用的 API 之外，最好进行拓展把 eventloop 带进来好好讲一下，microtask(微任务)、macrotask(任务) 的执">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">简版篇-03.JS基础（ES6）知识</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">简版篇-03.JS基础（ES6）知识</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-06-26T15:16:37.000Z" itemprop="datePublished" class="page-time">
+  2017-06-26
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#三、JS-基础（ES6）"><span class="post-toc-number">1.</span> <span class="post-toc-text">三、JS 基础（ES6）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-1-let，const"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">3.1 let，const</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-2-Promise"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">3.2 Promise</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-3-Generator"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">3.3 Generator</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-4-async、await"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">3.4 async、await</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-5-AMD，CMD，CommonJs，ES6-Module：解决原始无模块化的痛点"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">3.5 AMD，CMD，CommonJs，ES6 Module：解决原始无模块化的痛点</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-002.前端知识体系/006.精简篇/003.简版篇之JS基础（ES6）知识"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">简版篇-03.JS基础（ES6）知识</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-06-26 23:16:37" datetime="2017-06-26T15:16:37.000Z"  itemprop="datePublished">2017-06-26</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="三、JS-基础（ES6）"><a href="#三、JS-基础（ES6）" class="headerlink" title="三、JS 基础（ES6）"></a>三、JS 基础（ES6）</h2><h3 id="3-1-let，const"><a href="#3-1-let，const" class="headerlink" title="3.1 let，const"></a>3.1 let，const</h3><blockquote>
+<p><code>let</code> 产生块级作用域（通常配合 <code>for</code> 循环或者 <code>{}</code> 进行使用产生块级作用域），<code>const</code> 申明的变量是常量（内存地址不变）</p>
+</blockquote>
+<h3 id="3-2-Promise"><a href="#3-2-Promise" class="headerlink" title="3.2 Promise"></a>3.2 Promise</h3><blockquote>
+<p>这里你谈 <code>promise</code>的时候，除了将他解决的痛点以及常用的 <code>API</code> 之外，最好进行拓展把 <code>eventloop</code> 带进来好好讲一下，<code>microtask</code>(微任务)、<code>macrotask</code>(任务) 的执行顺序，如果看过 <code>promise</code> 源码，最好可以谈一谈 原生 <code>Promise</code> 是如何实现的。<code>Promise</code> 的关键点在于<code>callback</code> 的两个参数，一个是 <code>resovle</code>，一个是 <code>reject</code>。还有就是 <code>Promise</code> 的链式调用（<code>Promise.then()</code>，每一个 <code>then</code> 都是一个责任人）</p>
+</blockquote>
+<h3 id="3-3-Generator"><a href="#3-3-Generator" class="headerlink" title="3.3 Generator"></a>3.3 Generator</h3><blockquote>
+<p>遍历器对象生成函数，最大的特点是可以交出函数的执行权</p>
+</blockquote>
+<ul>
+<li><code>function</code> 关键字与函数名之间有一个星号；</li>
+<li>函数体内部使用 <code>yield</code>表达式，定义不同的内部状态；</li>
+<li><code>next</code>指针移向下一个状态</li>
+</ul>
+<blockquote>
+<p>这里你可以说说 <code>Generator</code>的异步编程，以及它的语法糖 <code>async</code> 和 <code>awiat</code>，传统的异步编程。<code>ES6</code> 之前，异步编程大致如下</p>
+</blockquote>
+<ul>
+<li>回调函数</li>
+<li>事件监听</li>
+<li>发布/订阅</li>
+</ul>
+<blockquote>
+<p>传统异步编程方案之一：协程，多个线程互相协作，完成异步任务。</p>
+</blockquote>
+<h3 id="3-4-async、await"><a href="#3-4-async、await" class="headerlink" title="3.4 async、await"></a>3.4 async、await</h3><blockquote>
+<p><code>Generator</code> 函数的语法糖。有更好的语义、更好的适用性、返回值是 <code>Promise</code>。</p>
+</blockquote>
+<ul>
+<li><code>async =&gt; *</code></li>
+<li><code>await =&gt; yield</code></li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// 基本用法</span>
+
+<span class="token keyword">async</span> <span class="token keyword">function</span> timeout <span class="token punctuation">(</span>ms<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">await</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token punctuation">(</span>resolve<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> ms<span class="token punctuation">)</span>    
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">async</span> <span class="token keyword">function</span> asyncConsole <span class="token punctuation">(</span>value<span class="token punctuation">,</span> ms<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">await</span> <span class="token function">timeout</span><span class="token punctuation">(</span>ms<span class="token punctuation">)</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token function">asyncConsole</span><span class="token punctuation">(</span><span class="token string">'hello async and await'</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>注：最好把2，3，4 连到一起讲</p>
+</blockquote>
+<h3 id="3-5-AMD，CMD，CommonJs，ES6-Module：解决原始无模块化的痛点"><a href="#3-5-AMD，CMD，CommonJs，ES6-Module：解决原始无模块化的痛点" class="headerlink" title="3.5 AMD，CMD，CommonJs，ES6 Module：解决原始无模块化的痛点"></a>3.5 AMD，CMD，CommonJs，ES6 Module：解决原始无模块化的痛点</h3><ul>
+<li><strong>AMD</strong>：<code>requirejs</code> 在推广过程中对模块定义的规范化产出，提前执行，推崇依赖前置</li>
+<li><strong>CMD</strong>：<code>seajs</code> 在推广过程中对模块定义的规范化产出，延迟执行，推崇依赖就近</li>
+<li><strong>CommonJs</strong>：模块输出的是一个值的 <code>copy</code>，运行时加载，加载的是一个对象（<code>module.exports</code> 属性），该对象只有在脚本运行完才会生成</li>
+<li><strong>ES6 Module</strong>：模块输出的是一个值的引用，编译时输出接口，<code>ES6</code>模块不是对象，它对外接口只是一种静态定义，在代码静态解析阶段就会生成。</li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2017/06/26/002.前端知识体系/006.精简篇/003.简版篇之JS基础（ES6）知识/" target="_blank" rel="external">http://www.chenya.site/2017/06/26/002.前端知识体系/006.精简篇/003.简版篇之JS基础（ES6）知识/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端知识体系/">前端知识体系</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/简版篇/">简版篇</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2017/06/26/002.前端知识体系/006.精简篇/003.简版篇之JS基础（ES6）知识/&title=《简版篇-03.JS基础（ES6）知识》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2017/06/26/002.前端知识体系/006.精简篇/003.简版篇之JS基础（ES6）知识/&title=《简版篇-03.JS基础（ES6）知识》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2017/06/26/002.前端知识体系/006.精简篇/003.简版篇之JS基础（ES6）知识/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《简版篇-03.JS基础（ES6）知识》 — 陈亚的个人主页&url=http://www.chenya.site/2017/06/26/002.前端知识体系/006.精简篇/003.简版篇之JS基础（ES6）知识/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2017/06/26/002.前端知识体系/006.精简篇/003.简版篇之JS基础（ES6）知识/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/07/02/002.前端知识体系/006.精简篇/004.简版篇之框架相关知识/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">简版篇-04.框架相关知识</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/06/18/002.前端知识体系/006.精简篇/002.简版篇之JS基础（ES5）知识/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">简版篇-02.JS基础（ES5）知识</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2017/06/26/002.前端知识体系/006.精简篇/003.简版篇之JS基础（ES6）知识/&title=《简版篇-03.JS基础（ES6）知识》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2017/06/26/002.前端知识体系/006.精简篇/003.简版篇之JS基础（ES6）知识/&title=《简版篇-03.JS基础（ES6）知识》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2017/06/26/002.前端知识体系/006.精简篇/003.简版篇之JS基础（ES6）知识/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《简版篇-03.JS基础（ES6）知识》 — 陈亚的个人主页&url=http://www.chenya.site/2017/06/26/002.前端知识体系/006.精简篇/003.简版篇之JS基础（ES6）知识/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2017/06/26/002.前端知识体系/006.精简篇/003.简版篇之JS基础（ES6）知识/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAEOCAAAAABd2qZ5AAAD+ElEQVR42u3ay2ojMRAFUP//T3tgVhMSt++tUpsMnF4FY8vSUaBcj8cjfp5/n1evfP/73+d6hevPfn9Pu9rjjgcHDhw4cARHvd7EM35ebW7GnUPnr1xD48CBAweOUxzXW5x9Qf6eWexrOZJrwIEDBw4cn+RIPpW/ZxYgk6tK9o8DBw4cOH4PR16q2xQi87CdXAYOHDhw4Pg8R5torQpwl8duS4enkkkcOHDgwHGKo20L/Y9/3zjfgQMHDhw4RuEqb+okITkv/OVtp9mJvqyGAwcOHDjWHO22Wo7N+EIyWpHTJ6fAgQMHDhx7jtmY2myj7YDC7BpmLbQvvztw4MCBA8fNHPmIwCy5unsAohjdwIEDBw4ca47NaFoe2OphtbhE2I5lRKvhwIEDB44FR368DcGphlMS1GfXgwMHDhw4znK0m25Lb3kgbEuEOUpU4sSBAwcOHGuOJJVKmkx52W423JCXDttBh5cr48CBAweOEccsxWoH1862tdoQXuwBBw4cOHAc5dgXCvPELC8ItqN4edNr2H/DgQMHDhwlx4FccLFyWyjcN7d+GGjAgQMHDhwLjiQdmjWWZqW9PChuAvybgI0DBw4cOBYcsyDXplX5wEEb2vOyYHQxOHDgwIFjzTF7ZsleO5TQNp9ONbdw4MCBA8d9HG2bJz9Gu36dlZY/AiIUHDhw4MARcORjAW1DaFNknB2mDck/fBYHDhw4cBziaNs5eflvU1hMin2bK3nZf8OBAwcOHAuO6xRrlrAlB9iUI0+1joopDxw4cODAUa65ScOugWYos3G3tnz58l8BBw4cOHAsOGYjbpuvzyk30MMLwIEDBw4cN3AkW8lDY0LTrr8he5Oy4sCBAweONcfmkG26NWsIzUYWNg0tHDhw4MBxB0ey3dVXHgqfeVmzGInAgQMHDhxrjjY45UHubNDNi4wHBiBw4MCBA8eIo20dtQW4tn2Vb/2OtBMHDhw4cJziSLbVpkxtqpavloT2/CfFy4EGHDhw4MCx4GhTo/yoebrYrtMW/pILwIEDBw4cpzjahKptPs0gTjWWitPhwIEDB45DHLPi4IamTcDaY+elzGO1Uhw4cODAERT+ZuXCJDTOSninxhfefAoHDhw4cCw4nuWzSc/aANmu0zbDiuIgDhw4cOCIOfLnOjXKA/MsqWvD+amxCRw4cODAMePYtHCSRCsZcWuxkoO1r+PAgQMHjrMcbdCaHWYW1Fv0VfERBw4cOHB8kCMp1eUFxPxgeSmwbZsVUx44cODAgeM2jk0Clg8ZtGEyD8lvSo04cODAgeMQx6lxhH0itykXHtg/Dhw4cOA4uf+oYDc73qwUeCqEJz8dcODAgQPHmuMPGnlyFNe7624AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

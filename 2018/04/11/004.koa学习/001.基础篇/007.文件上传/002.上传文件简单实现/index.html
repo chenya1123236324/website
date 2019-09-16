@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?72795d00f0f8823340c6bba6d9a8e7b2"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>上传文件简单实现 | 陈亚的个人主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="日常学习,前端资源,koa学习">
+    <meta name="description" content="上传文件简单实现依赖模块安装依赖npm install --save busboy   busboy 是用来解析出请求中文件流  例子源码demo源码 upload 封装上传文件到写入服务的方法const inspect = require(&apos;util&apos;).inspect const path = require(&apos;path&apos;) const os = require(&apos;os&apos;) const fs">
+<meta name="keywords" content="日常学习,前端资源,koa学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="上传文件简单实现">
+<meta property="og:url" content="http://www.chenya.site/2018/04/11/004.koa学习/001.基础篇/007.文件上传/002.上传文件简单实现/index.html">
+<meta property="og:site_name" content="陈亚的个人主页">
+<meta property="og:description" content="上传文件简单实现依赖模块安装依赖npm install --save busboy   busboy 是用来解析出请求中文件流  例子源码demo源码 upload 封装上传文件到写入服务的方法const inspect = require(&apos;util&apos;).inspect const path = require(&apos;path&apos;) const os = require(&apos;os&apos;) const fs">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/7.7.1.upload-simple-result-03.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/71.1.upload-simple-result-02.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/7.7.1.upload-simple-result-01.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/7.7.1.upload-simple-result-04.png">
+<meta property="og:updated_time" content="2019-09-16T01:57:01.500Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="上传文件简单实现">
+<meta name="twitter:description" content="上传文件简单实现依赖模块安装依赖npm install --save busboy   busboy 是用来解析出请求中文件流  例子源码demo源码 upload 封装上传文件到写入服务的方法const inspect = require(&apos;util&apos;).inspect const path = require(&apos;path&apos;) const os = require(&apos;os&apos;) const fs">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/7.7.1.upload-simple-result-03.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="陈亚的个人主页" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<link rel="stylesheet" href="/css/prism-pojoaque.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/gruffalo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">陈亚</h5>
+          <a href="mailto:1123236324@qq.com" title="1123236324@qq.com" class="mail">1123236324@qq.com</a>
+          <div style="margin-top: 5px; margin-bottom: 5px; font-size: 92%"><b>文章共 89 篇，约 202.5k 字</b></div>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/前端知识体系"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/学习笔记"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/works/"  >
+                <i class="icon icon-lg icon-file-code-o"></i>
+                作品
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/"  >
+                <i class="icon icon-lg icon-address-card"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.cnblogs.com/chenyablog" target="_blank" >
+                <i class="icon icon-lg icon-edit"></i>
+                博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/chenya1123236324" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div id="headerTitle" class="flex-col header-title ellipsis">上传文件简单实现</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="themeToggle" title="夜间模式">
+            <i class="icon icon-lg icon-moon-o"></i>
+        </a>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">上传文件简单实现</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-04-11T15:15:19.000Z" itemprop="datePublished" class="page-time">
+  2018-04-11
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    <div class="grass fade-scale">
+
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#上传文件简单实现"><span class="post-toc-number">1.</span> <span class="post-toc-text">上传文件简单实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#依赖模块"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">依赖模块</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装依赖"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">安装依赖</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#例子源码"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">例子源码</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#封装上传文件到写入服务的方法"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">封装上传文件到写入服务的方法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#入口文件"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">入口文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#运行结果"><span class="post-toc-number">1.2.3.</span> <span class="post-toc-text">运行结果</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-004.koa学习/001.基础篇/007.文件上传/002.上传文件简单实现"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">上传文件简单实现</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-04-11 23:15:19" datetime="2018-04-11T15:15:19.000Z"  itemprop="datePublished">2018-04-11</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="上传文件简单实现"><a href="#上传文件简单实现" class="headerlink" title="上传文件简单实现"></a>上传文件简单实现</h1><h2 id="依赖模块"><a href="#依赖模块" class="headerlink" title="依赖模块"></a>依赖模块</h2><h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><pre class="line-numbers language-sh"><code class="language-sh">npm install --save busboy
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>busboy 是用来解析出请求中文件流</li>
+</ul>
+<h2 id="例子源码"><a href="#例子源码" class="headerlink" title="例子源码"></a>例子源码</h2><p>demo源码</p>
+<p><a href="https://github.com/chenya1123236324/picture-management/tree/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/demo/upload" target="_blank" rel="noopener">upload</a></p>
+<h3 id="封装上传文件到写入服务的方法"><a href="#封装上传文件到写入服务的方法" class="headerlink" title="封装上传文件到写入服务的方法"></a>封装上传文件到写入服务的方法</h3><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> inspect <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'util'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>inspect
+<span class="token keyword">const</span> path <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'path'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> os <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'os'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> fs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'fs'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> Busboy <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'busboy'</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">/**
+ * 同步创建文件目录
+ * @param  {string} dirname 目录绝对地址
+ * @return {boolean}        创建目录结果
+ */</span>
+<span class="token keyword">function</span> <span class="token function">mkdirsSync</span><span class="token punctuation">(</span> dirname <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>fs<span class="token punctuation">.</span><span class="token function">existsSync</span><span class="token punctuation">(</span> dirname <span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token boolean">true</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">mkdirsSync</span><span class="token punctuation">(</span> path<span class="token punctuation">.</span><span class="token function">dirname</span><span class="token punctuation">(</span>dirname<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      fs<span class="token punctuation">.</span><span class="token function">mkdirSync</span><span class="token punctuation">(</span> dirname <span class="token punctuation">)</span>
+      <span class="token keyword">return</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">/**
+ * 获取上传文件的后缀名
+ * @param  {string} fileName 获取上传文件的后缀名
+ * @return {string}          文件后缀名
+ */</span>
+<span class="token keyword">function</span> <span class="token function">getSuffixName</span><span class="token punctuation">(</span> fileName <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> nameList <span class="token operator">=</span> fileName<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">'.'</span><span class="token punctuation">)</span>
+  <span class="token keyword">return</span> nameList<span class="token punctuation">[</span>nameList<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">/**
+ * 上传文件
+ * @param  {object} ctx     koa上下文
+ * @param  {object} options 文件上传参数 fileType文件类型， path文件存放路径
+ * @return {promise}
+ */</span>
+<span class="token keyword">function</span> <span class="token function">uploadFile</span><span class="token punctuation">(</span> ctx<span class="token punctuation">,</span> options<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> req <span class="token operator">=</span> ctx<span class="token punctuation">.</span>req
+  <span class="token keyword">let</span> res <span class="token operator">=</span> ctx<span class="token punctuation">.</span>res
+  <span class="token keyword">let</span> busboy <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Busboy</span><span class="token punctuation">(</span><span class="token punctuation">{</span>headers<span class="token punctuation">:</span> req<span class="token punctuation">.</span>headers<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+  <span class="token comment" spellcheck="true">// 获取类型</span>
+  <span class="token keyword">let</span> fileType <span class="token operator">=</span> options<span class="token punctuation">.</span>fileType <span class="token operator">||</span> <span class="token string">'common'</span>
+  <span class="token keyword">let</span> filePath <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span> options<span class="token punctuation">.</span>path<span class="token punctuation">,</span>  fileType<span class="token punctuation">)</span>
+  <span class="token keyword">let</span> mkdirResult <span class="token operator">=</span> <span class="token function">mkdirsSync</span><span class="token punctuation">(</span> filePath <span class="token punctuation">)</span>
+
+  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'文件上传中...'</span><span class="token punctuation">)</span>
+    <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token punctuation">{</span>
+      success<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+      formData<span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 解析请求文件事件</span>
+    busboy<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'file'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>fieldname<span class="token punctuation">,</span> file<span class="token punctuation">,</span> filename<span class="token punctuation">,</span> encoding<span class="token punctuation">,</span> mimetype<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">let</span> fileName <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">substr</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">'.'</span> <span class="token operator">+</span> <span class="token function">getSuffixName</span><span class="token punctuation">(</span>filename<span class="token punctuation">)</span>
+      <span class="token keyword">let</span> _uploadFilePath <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span> filePath<span class="token punctuation">,</span> fileName <span class="token punctuation">)</span>
+      <span class="token keyword">let</span> saveTo <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>_uploadFilePath<span class="token punctuation">)</span>
+
+      <span class="token comment" spellcheck="true">// 文件保存到制定路径</span>
+      file<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>fs<span class="token punctuation">.</span><span class="token function">createWriteStream</span><span class="token punctuation">(</span>saveTo<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+      <span class="token comment" spellcheck="true">// 文件写入事件结束</span>
+      file<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'end'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        result<span class="token punctuation">.</span>success <span class="token operator">=</span> <span class="token boolean">true</span>
+        result<span class="token punctuation">.</span>message <span class="token operator">=</span> <span class="token string">'文件上传成功'</span>
+
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'文件上传成功！'</span><span class="token punctuation">)</span>
+        <span class="token function">resolve</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    <span class="token comment" spellcheck="true">// 解析表单中其他字段信息</span>
+    busboy<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'field'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>fieldname<span class="token punctuation">,</span> val<span class="token punctuation">,</span> fieldnameTruncated<span class="token punctuation">,</span> valTruncated<span class="token punctuation">,</span> encoding<span class="token punctuation">,</span> mimetype<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'表单字段数据 ['</span> <span class="token operator">+</span> fieldname <span class="token operator">+</span> <span class="token string">']: value: '</span> <span class="token operator">+</span> <span class="token function">inspect</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      result<span class="token punctuation">.</span>formData<span class="token punctuation">[</span>fieldname<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">inspect</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 解析结束事件</span>
+    busboy<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'finish'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'文件上结束'</span><span class="token punctuation">)</span>
+      <span class="token function">resolve</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    <span class="token comment" spellcheck="true">// 解析错误事件</span>
+    busboy<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'error'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'文件上出错'</span><span class="token punctuation">)</span>
+      <span class="token function">reject</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    req<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>busboy<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token punctuation">}</span>
+
+
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span>  <span class="token punctuation">{</span>
+  uploadFile
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="入口文件"><a href="#入口文件" class="headerlink" title="入口文件"></a>入口文件</h3><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> Koa <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'koa'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> path <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'path'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Koa</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// const bodyParser = require('koa-bodyparser')</span>
+
+<span class="token keyword">const</span> <span class="token punctuation">{</span> uploadFile <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./util/upload'</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// app.use(bodyParser())</span>
+
+app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span> <span class="token keyword">async</span> <span class="token punctuation">(</span> ctx <span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span> ctx<span class="token punctuation">.</span>url <span class="token operator">===</span> <span class="token string">'/'</span> <span class="token operator">&amp;&amp;</span> ctx<span class="token punctuation">.</span>method <span class="token operator">===</span> <span class="token string">'GET'</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 当GET请求时候返回表单页面</span>
+    <span class="token keyword">let</span> html <span class="token operator">=</span> <span class="token template-string"><span class="token string">`
+      &lt;h1>koa2 upload demo&lt;/h1>
+      &lt;form method="POST" action="/upload.json" enctype="multipart/form-data">
+        &lt;p>file upload&lt;/p>
+        &lt;span>picName:&lt;/span>&lt;input name="picName" type="text" />&lt;br/>
+        &lt;input name="file" type="file" />&lt;br/>&lt;br/>
+        &lt;button type="submit">submit&lt;/button>
+      &lt;/form>
+    `</span></span>
+    ctx<span class="token punctuation">.</span>body <span class="token operator">=</span> html
+
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span> ctx<span class="token punctuation">.</span>url <span class="token operator">===</span> <span class="token string">'/upload.json'</span> <span class="token operator">&amp;&amp;</span> ctx<span class="token punctuation">.</span>method <span class="token operator">===</span> <span class="token string">'POST'</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 上传文件请求处理</span>
+    <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token punctuation">{</span> success<span class="token punctuation">:</span> <span class="token boolean">false</span> <span class="token punctuation">}</span>
+    <span class="token keyword">let</span> serverFilePath <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span> __dirname<span class="token punctuation">,</span> <span class="token string">'upload-files'</span> <span class="token punctuation">)</span>
+
+    <span class="token comment" spellcheck="true">// 上传文件事件</span>
+    result <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">uploadFile</span><span class="token punctuation">(</span> ctx<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+      fileType<span class="token punctuation">:</span> <span class="token string">'album'</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// common or album</span>
+      path<span class="token punctuation">:</span> serverFilePath
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    ctx<span class="token punctuation">.</span>body <span class="token operator">=</span> result
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 其他请求显示404</span>
+    ctx<span class="token punctuation">.</span>body <span class="token operator">=</span> <span class="token string">'&lt;h1>404！！！ o(╯□╰)o&lt;/h1>'</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'[demo] upload-simple is starting at port 3000'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h3><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/7.7.1.upload-simple-result-03.png" alt="upload-simple-result" title>
+                </div>
+                <div class="image-caption">upload-simple-result</div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/71.1.upload-simple-result-02.png" alt="upload-simple-result" title>
+                </div>
+                <div class="image-caption">upload-simple-result</div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/7.7.1.upload-simple-result-01.png" alt="upload-simple-result" title>
+                </div>
+                <div class="image-caption">upload-simple-result</div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/chenya1123236324/picture-management/master/2019/koa%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E9%85%8D%E5%9B%BE/7.7.1.upload-simple-result-04.png" alt="upload-simple-result" title>
+                </div>
+                <div class="image-caption">upload-simple-result</div>
+            </figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/04/11/004.koa学习/001.基础篇/007.文件上传/002.上传文件简单实现/" target="_blank" rel="external">http://www.chenya.site/2018/04/11/004.koa学习/001.基础篇/007.文件上传/002.上传文件简单实现/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://www.chenya.site">
+            <img src="/img/gruffalo.jpg" alt="陈亚">
+            陈亚
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/koa学习/">koa学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端资源/">前端资源</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/日常学习/">日常学习</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2018/04/11/004.koa学习/001.基础篇/007.文件上传/002.上传文件简单实现/&title=《上传文件简单实现》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2018/04/11/004.koa学习/001.基础篇/007.文件上传/002.上传文件简单实现/&title=《上传文件简单实现》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2018/04/11/004.koa学习/001.基础篇/007.文件上传/002.上传文件简单实现/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《上传文件简单实现》 — 陈亚的个人主页&url=http://www.chenya.site/2018/04/11/004.koa学习/001.基础篇/007.文件上传/002.上传文件简单实现/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2018/04/11/004.koa学习/001.基础篇/007.文件上传/002.上传文件简单实现/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/04/14/005.vue源码学习/004.响应式原理/006.检测变化的注意事项/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Vue源码学习 - 检测变化的注意事项</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/04/08/004.koa学习/001.基础篇/007.文件上传/001.busboy模块/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">busboy模块</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 暂时写在这里引入，之后放在全局 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'true' == 'true',
+            appId: "THkD2SIN9zTrX2dQQfkloGeG-gzGzoHsz",
+            appKey: "2gy2cgtyylBrXjOuKclSbXXM",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+        window.onload = function () {
+            $(".vhead").each(function (i,v) {
+                //浏览器图标
+                if($(this).find(".vsys").eq(0).text().toUpperCase().includes('CHROME')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/chrome.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('UC')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/UC浏览器.svg"/>');
+                }else if($(this).find(".vsys").eq(0).text().toUpperCase().includes('OPERA')){
+                    $(this).find(".vsys").eq(0).prepend('<img src="../../../../img/opera.svg"/>');
+                }
+                //系统图标
+                if($(this).find(".vsys").eq(1).text().toUpperCase().includes('WINDOWS')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/windows.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('APPLE')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/apple.svg"/>');
+                }else if($(this).find(".vsys").eq(1).text().toUpperCase().includes('LINUX')){
+                    $(this).find(".vsys").eq(1).prepend('<img src="../../../../img/linux.svg"/>');
+                }
+            })
+        }
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我吃辣条~~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>网站内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>陈亚 &copy; 2015 - 2019</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">皖ICP备18000525号-1</a><br>
+                
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.chenya.site/2018/04/11/004.koa学习/001.基础篇/007.文件上传/002.上传文件简单实现/&title=《上传文件简单实现》 — 陈亚的个人主页&pic=http://www.chenya.site/img/gruffalo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.chenya.site/2018/04/11/004.koa学习/001.基础篇/007.文件上传/002.上传文件简单实现/&title=《上传文件简单实现》 — 陈亚的个人主页&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.chenya.site/2018/04/11/004.koa学习/001.基础篇/007.文件上传/002.上传文件简单实现/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《上传文件简单实现》 — 陈亚的个人主页&url=http://www.chenya.site/2018/04/11/004.koa学习/001.基础篇/007.文件上传/002.上传文件简单实现/&via=http://www.chenya.site" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.chenya.site/2018/04/11/004.koa学习/001.基础篇/007.文件上传/002.上传文件简单实现/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAEOCAAAAABd2qZ5AAAD5UlEQVR42u3ay24jMQwEQP//TzvXAMFMuklNHkDNaWF7ZalyaFPk6xU/709P8vrVZ66eq9XuV75aP/+/wwcHDhw4cJTL3W80eT159+um2wO0rPdnxIEDBw4cZzmSjSaxerXm1bFb9OQb89DFgQMHDhx/geM+ulqmthjLy0gcOHDgwPFfOGZBuL+UbK//cODAgQPH73LkX7zfRNsuSsK1vdw8cFeKAwcOHDgWaZhf7f3Nfz8y34EDBw4cOOICaRNLzwVt/iNgeC4cOHDgwLHmyNv/ebPn/tizaJ+lZIuFAwcOHDhOceRLb7Z+v9o+2ovGUvtHwoEDBw4cMcd9COVfnLR52ku9zdjcEAsHDhw4cDzA0TZy2uMlW2/Ls/06OHDgwIHjFEcSbG3Hf1O2tUXabFTum2/HgQMHDhwLjv2FXTsu0L6bxPap8g8HDhw4cOw5kmKsrW5OhV9eKLY/FKKGGQ4cOHDgWHPkww2z1tHsqrGIxsWgQ7EyDhw4cOCIOWbxdurqcFYcnqq/Xm0m48CBAweOi1PMDjaLsbys2v9GGMY5Dhw4cOBYc7TPqcO3sZqvcGqfOHDgwIFjs8/N9d+Mr4VuUWaFHw4cOHDg2HMM/UbHyNff/DHy9euIxYEDBw4cJUdbbrVjB7NiLH9lUy7iwIEDB45THEk0Jl+fFFr7sYNNkVmP3OHAgQMHjgVHewGXF2lJfG7+DKf2PxyYw4EDBw4cX97dzDi042j7ZtWsdCz2jwMHDhw41hxJZCZXae2gcz4Sl4R03V5qm084cODAgSPmyFsym8Os6ssR7vBnAQ4cOHDgOMQxGwuYXRG2bap8jC//zDcVLQ4cOHDgOMrxdHy2V4qb8YV6Vzhw4MCBY80xO2RbyLUtonf8JG2qlhgHDhw4cGw4ZgVSe3k3Gy9oS8FZJOPAgQMHjic48m1twnIzHpePO7Q7HM5l4MCBAweOW46kTNofJo/SNiBnpWZUwuHAgQMHjpKjzZc6ukqgWTMpb2VFRSYOHDhw4FhwnGrnPDFUlx8jeQUHDhw4cPwkx2ywYFaw5cMQSUPrVMPssu2EAwcOHDgmeVcEWBKQm7GGhCP/oVAHLQ4cOHDgWHO8yyfHyhHbGJ6ViMnrOHDgwIFjz9EG3qzttG8XzVpfm4tOHDhw4MCx4WhHGVqatk2VX0FuBiCGo3I4cODAgSPmONXyydtILeXZK8h6rAEHDhw4cDzA0Q4o5JeM+bv5Z3KmYdDiwIEDB441x2ZMrQ3aWbTv22Y4cODAgeMUx2yMIG9B7eGeuBBctZ1w4MCBA8diQmzfzkm+vj3wvt2Vxz8OHDhw4Ag4PgC9x7nMXzxZjgAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, MOON: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '(‧_‧？) 人呢？';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '●-● 你肥来啦~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
